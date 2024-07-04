@@ -13,8 +13,9 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
     }
 })
 .then(response => {
-    console.log('First fetch response:', response);
-    if(!response.ok){
+    if(response.ok){
+        console.log('First fetch response:', response);
+    }else{
         throw new Error(response.statusText);
     }
     return response.json();
@@ -35,8 +36,9 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
     });
 })
 .then(response => {
-    console.log('Second fetch response:', response);
-    if(!response.ok){
+    if(response.ok){
+        console.log('Second fetch response:', response);
+    }else{
         throw new Error(response.statusText);
     }
     return response.json();
@@ -124,7 +126,7 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
     randomState();
     render();
 
-    const ws = new WebSocket('ws://pre.bootcamp.tk.sg:9002');
+    const ws = new WebSocket('ws://pre.bootcamp.tk.sg:9002/Observers');
     const botMap = new Map();
 
     ws.onopen = function(){
@@ -142,13 +144,6 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
             if(data.land_update){
                 updateLand(data.land_update);
             }
-            // const data = JSON.parse(msg.data);
-            // console.log('WebSocket message data:', data);
-            // if (data.hasOwnProperty('current_energy') && data.hasOwnProperty('current_job_id')) {
-            //     updateBot(data);
-            // } else if (data.hasOwnProperty('terrain_id') && data.hasOwnProperty('is_traversable')) {
-            //     updateLand(data);
-            // } 
         }catch(error){
             console.error('Error parsing message:', error);
         }
@@ -180,3 +175,4 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
 .catch(error => {
     console.error('Error:', error);
 });
+
