@@ -7,8 +7,9 @@ const port = 9002;
 const playerKey = 716811849;
 let playerId = 123123123;
 let gameId = 1347569398;
-let factory_position;
-let factory_id;
+let factoryPosition;
+let factoryId;
+const miningBots = [];
 
 const sendRequest = (path, method, params) => {
   return new Promise((resolve, reject) => {
@@ -60,6 +61,9 @@ const handleMessage = (ws, message) => {
         factoryPosition = bot.position;
         factoryId = bot.id;
       } else if (bot.variant === 'kMiningBot') {
+        if (!miningBots.some(existingBot => existingBot.id === bot.id)) {
+          miningBots.push(bot);
+        }
         console.log(`Mining bot ${bot.id} is at position ${bot.position}`);
       }
     });
@@ -85,23 +89,23 @@ const performMove = async (ws, botId, targetPosition) => {
   }
 };
 
-// const performMine = async (ws, botId) => {
-//   const mineRequest = {
-//     game_id: gameId,
-//     player_id: playerId,
-//     key: playerKey,
-//     bot_id: botId,
-//     position: { x: 3, y: 7 },
-//     resource: { id: 1, amount: 200 }
-//   };
-//   try {
-//     const response = await sendRequest('/mine', 'POST', { request: JSON.stringify(mineRequest) });
-//     console.log('Mine response:', response);
-//     buildBot(ws);
-//   } catch (error) {
-//     console.error('Mine error:', error);
-//   }
-// };
+const performMine = async (ws, botId, targetPosition, targetChunk) => {
+  const mineRequest = {
+    game_id: gameId,
+    player_id: playerId,
+    player_key: playerKey,
+    bot_id: botId,
+    target_position: targetPosition,
+    target_chunk: targrtChunk
+  };
+  try {
+    const response = await sendRequest('/mine', 'POST', { request: JSON.stringify(mineRequest) });
+    console.log('Mine response:', response);
+    buildBot(ws);
+  } catch (error) {
+    console.error('Mine error:', error);
+  }
+};
 
 const buildBot = async (ws) => {
   const buildBotRequest = {
@@ -157,6 +161,13 @@ const main = async () => {
     ws.on('close', () => {
       console.log('WebSocket connection closed');
     });
+
+    testBot1 = miningBots[1]
+
+    await performMove(ws, testBot1.bot_id, {x: 3, y: 7});
+   // await performMine(ws, testBot1.bot_id, targetPosition, targetChunk);
+    await buildBot(ws);
+
   } catch (error) {
     console.error('Error in main:', error);
   }

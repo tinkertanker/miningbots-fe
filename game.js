@@ -6,7 +6,7 @@ var gameStatus;
 var resource_configs;
 console.log('script ran');
 
-var hostname = "pre.bootcamp.tk.sg";
+var hostname = 'pre.bootcamp.tk.sg';
 var port = 9002;
 fetch(`http://${hostname}:${port}/games`, {
         method: 'GET',
@@ -16,10 +16,10 @@ fetch(`http://${hostname}:${port}/games`, {
         console.log(response);
         if (response.ok) {
             console.log('First fetch response:', response);
+            return response.json();
         } else {
             throw new Error(response.statusText);
         }
-        return response.json();
     })
     .then(data => {
         console.log('First fetch data:', data);
@@ -37,10 +37,10 @@ fetch(`http://${hostname}:${port}/games`, {
     .then(response => {
         if(response.ok){
             console.log('Second fetch response:', response);
+            return response.json();
         }else{
             throw new Error(response.statusText);
         }
-        return response.json();
     })
     .then(data => {
         console.log('Second fetch data:', data);
