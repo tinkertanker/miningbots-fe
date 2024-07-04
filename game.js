@@ -1,44 +1,48 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const GRID_SIZE = 10;
-
-var gameId = 0;
-var resource_configs = 0;
-
-console.log('Starting fetch request');
+var gameId;
+var gameStatus;
+var resource_configs;
+console.log('script ran');
 
 fetch('http://pre.bootcamp.tk.sg:9002/games', {
     method: 'GET', 
     headers: {
-        'content-type': 'application/json' 
+        'Content-Type': 'application/json'
     }
 })
 .then(response => {
-    console.log('checking fetching games');
+    console.log('First fetch response:', response);
     if(!response.ok){
-        console.log("Error fetching games");
         throw new Error(response.statusText);
     }
     return response.json();
 })
 .then(data => {
-    console.log('fetching map_config');
+    console.log('First fetch data:', data);
     gameId = data[0].game_id;
-    return fetch(`http://pre.bootcamp.tk.sg:9002/map_config?game_id=${gameId}`, {
+    gameStatus = data[0].game_status;
+    if(gameStatus = 'kEnded'){
+        console.log('failed to subscribe because game has ended');
+        return;
+    }
+    return fetch('http://pre.bootcamp.tk.sg:9002/map_config', {
         method: 'GET', 
         headers: {
-            'content-type': 'application/json' 
+            'Content-Type': 'application/json'
         }
     });
 })
 .then(response => {
+    console.log('Second fetch response:', response);
     if(!response.ok){
-        console.log("Error fetching map_config");
         throw new Error(response.statusText);
     }
     return response.json();
 })
 .then(data => {
+    console.log('Second fetch data:', data);
     canvas.width = data.max_x * GRID_SIZE;
     canvas.height = data.max_y * GRID_SIZE;
     resource_configs = data.resource_configs;
@@ -54,7 +58,6 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
         Vibranium: 4,
         Adamantite: 5,
         Unobtanium: 6,
-    
     };
 
     //Adds new game elements from resource_configs if they do not already exist
@@ -79,8 +82,8 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for(let row = 0; row < ROWS; row++){
             for(let col = 0; col < COLS; col++){
-                const elements = gameState[row][col];
-                    switch(elements){
+                const element = gameState[row][col];
+                    switch(element){
                         case elements.EMPTY:
                             ctx.fillStyle = 'black';
                             break;
@@ -133,11 +136,19 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
     ws.onmessage = function(msg){
         try{
             const data = JSON.parse(msg.data);
-            if (data.hasOwnProperty('current_energy') && data.hasOwnProperty('current_job_id')) {
-                updateBot(data);
-            } else if (data.hasOwnProperty('terrain_id') && data.hasOwnProperty('is_traversable')) {
-                updateLand(data);
-            } 
+            if(data.bot_update){
+                updateBot(data.bot_update);
+            }
+            if(data.land_update){
+                updateLand(data.land_update);
+            }
+            // const data = JSON.parse(msg.data);
+            // console.log('WebSocket message data:', data);
+            // if (data.hasOwnProperty('current_energy') && data.hasOwnProperty('current_job_id')) {
+            //     updateBot(data);
+            // } else if (data.hasOwnProperty('terrain_id') && data.hasOwnProperty('is_traversable')) {
+            //     updateLand(data);
+            // } 
         }catch(error){
             console.error('Error parsing message:', error);
         }
@@ -169,5 +180,3 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
 .catch(error => {
     console.error('Error:', error);
 });
-
-console.log('Starting fetch request');
