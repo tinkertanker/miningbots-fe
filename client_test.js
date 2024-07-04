@@ -7,8 +7,8 @@ const port = 9002;
 const playerKey = 716811849;
 let playerId = 123123123;
 let gameId = 1347569398;
-let factoryPosition;
-let factoryId;
+let factory_position;
+let factory_id;
 
 const sendRequest = (path, method, params) => {
   return new Promise((resolve, reject) => {
@@ -54,31 +54,27 @@ const subscribeClient = (ws) => {
 const handleMessage = (ws, message) => {
   const msg = JSON.parse(message);
 
-  if (msg.upd) {
-    const botUpdates = msg.upd.bot_updates;
-
-    if (botUpdates && botUpdates.length > 0) {
-      botUpdates.forEach((bot) => {
-        if (bot.variant === 'kFactoryBot') {
-          factoryPosition = bot.position;
-          factoryId = bot.id;
-        } else if (bot.variant === 'kMiningBot') {
-          performMove(ws, bot.id);
-        }
-      });
-    }
-  } else if (msg.err) {
-    console.error('Error:', msg.err);
+  if (Array.isArray(msg.bot_updates)) {
+    msg.bot_updates.forEach((bot) => {
+      if (bot.variant === 'kFactoryBot') {
+        factoryPosition = bot.position;
+        factoryId = bot.id;
+      } else if (bot.variant === 'kMiningBot') {
+        console.log(`Mining bot ${bot.id} is at position ${bot.position}`);
+      }
+    });
+  } else {
+    console.error('Unexpected message structure:', msg);
   }
 };
 
-const performMove = async (ws, botId) => {
+const performMove = async (ws, botId, targetPosition) => {
   const moveRequest = {
     game_id: gameId,
     player_id: playerId,
-    key: playerKey,
+    player_key: playerKey,
     bot_id: botId,
-    position: { x: 3, y: 7 }
+    target_position: targetPosition,
   };
   try {
     const response = await sendRequest('/move', 'POST', { request: JSON.stringify(moveRequest) });
@@ -89,30 +85,30 @@ const performMove = async (ws, botId) => {
   }
 };
 
-const performMine = async (ws, botId) => {
-  const mineRequest = {
-    game_id: gameId,
-    player_id: playerId,
-    key: playerKey,
-    bot_id: botId,
-    position: { x: 3, y: 7 },
-    resource: { id: 1, amount: 200 }
-  };
-  try {
-    const response = await sendRequest('/mine', 'POST', { request: JSON.stringify(mineRequest) });
-    console.log('Mine response:', response);
-    buildBot(ws);
-  } catch (error) {
-    console.error('Mine error:', error);
-  }
-};
+// const performMine = async (ws, botId) => {
+//   const mineRequest = {
+//     game_id: gameId,
+//     player_id: playerId,
+//     key: playerKey,
+//     bot_id: botId,
+//     position: { x: 3, y: 7 },
+//     resource: { id: 1, amount: 200 }
+//   };
+//   try {
+//     const response = await sendRequest('/mine', 'POST', { request: JSON.stringify(mineRequest) });
+//     console.log('Mine response:', response);
+//     buildBot(ws);
+//   } catch (error) {
+//     console.error('Mine error:', error);
+//   }
+// };
 
 const buildBot = async (ws) => {
   const buildBotRequest = {
     game_id: gameId,
     player_id: playerId,
-    key: playerKey,
-    factory_id: factoryId
+    player_key: playerKey,
+    bot_id: factoryId
   };
   try {
     const response = await sendRequest('/build_bot', 'POST', { request: JSON.stringify(buildBotRequest) });
@@ -134,9 +130,9 @@ const main = async () => {
 
     // Join the game
     const joinGameRequest = {
-      game_id: gameId,
-      player_name: "Simulated Player",
-      key: playerKey
+        game_id: gameId,
+        player_name: 'Player',
+        player_key: playerId,
     };
     response = await sendRequest('/join_game', 'PUT', { request: JSON.stringify(joinGameRequest) });
     playerId = response;
