@@ -28,7 +28,7 @@ fetch('http://pre.bootcamp.tk.sg:9002/games', {
         console.log('failed to subscribe because game has ended');
         return;
     }
-    return fetch('http://pre.bootcamp.tk.sg:9002/map_config', {
+    return fetch(`http://pre.bootcamp.tk.sg:9002/map_config?game_id=${gameId}`, {
         method: 'GET', 
         headers: {
             'Content-Type': 'application/json'
