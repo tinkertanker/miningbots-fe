@@ -9,8 +9,7 @@ console.log('script ran');
 var hostname = 'pre.bootcamp.tk.sg';
 var port = 9002;
 fetch(`http://${hostname}:${port}/games`, {
-        method: 'GET',
-        mode: 'no-cors'
+        method: 'GET'
     })
     .then(response => {
         console.log(response);
@@ -30,8 +29,7 @@ fetch(`http://${hostname}:${port}/games`, {
             return;
         }
         return fetch(`http://${hostname}:${port}/map_config?game_id=${gameId}`, {
-            method: 'GET',
-            mode: 'no-cors'
+            method: 'GET'
         });
     })
     .then(response => {
