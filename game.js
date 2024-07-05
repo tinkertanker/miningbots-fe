@@ -119,33 +119,45 @@ fetch(`http://${hostname}:${port}/games`, {
         };
 
         ws.onmessage = function(msg){
+            console.log(msg);
             try{
-                const data = JSON.parse(msg.data);
-                switch(data.UpdateType){
-                    case kTickUpdate:
-                        if(Array.isArray(data.bot_updates)){
-                            data.bot_updates.forEach(botUpdate => {
-                                updateBot(botUpdate);
-                            })
-                        }
-                        if(Array.isArray(data.land_updates)){
-                            data.land_updates.forEach(landUpdate => {
-                                updateLand(landUpdate);
-                            })
-                        }
-                        render();
-                        break;
-                    //did not include kEndInWin because observer recieves both loss & win updates
-                    case 'kEndInWin':
-                        console.log(`game ended player id ${data.player_id} won`);
-                        break;
-                    case 'kEndInDraw':
-                        console.log('game ended in draw');
-                        break;
+                if(isJsonString(msg)){
+                    const data = JSON.parse(msg.data);
+                    switch(data.UpdateType){
+                        case kTickUpdate:
+                            if(Array.isArray(data.bot_updates)){
+                                data.bot_updates.forEach(botUpdate => {
+                                    updateBot(botUpdate);
+                                })
+                            }
+                            if(Array.isArray(data.land_updates)){
+                                data.land_updates.forEach(landUpdate => {
+                                    updateLand(landUpdate);
+                                })
+                            }
+                            render();
+                            break;
+                        //did not include kEndInWin because observer recieves both loss & win updates
+                        case 'kEndInWin':
+                            console.log(`game ended player id ${data.player_id} won`);
+                            break;
+                        case 'kEndInDraw':
+                            console.log('game ended in draw');
+                            break;
+                    }
                 }
             }catch(error){
                 console.error('Error parsing message:', error);
             }
+        }
+
+        function isJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
         }
 
         function updateBot(data){
