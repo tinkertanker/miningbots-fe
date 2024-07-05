@@ -125,7 +125,7 @@ fetch(`http://${hostname}:${port}/games`, {
         randomState();
         render();
 
-        const ws = new WebSocket('ws://pre.bootcamp.tk.sg:9002/Observers');
+        const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
         const botMap = new Map();
 
         ws.onopen = function(){
@@ -137,16 +137,28 @@ fetch(`http://${hostname}:${port}/games`, {
         ws.onmessage = function(msg){
             try{
                 const data = JSON.parse(msg.data);
-                if(Array.isArray(data.bot_updates)){
-                    data.bot_updates.forEach(botUpdate => {
-                        updateBot(botUpdate);
-                    })
+                switch(data.UpdateType){
+                    case kTickUpdate:
+                        if(Array.isArray(data.bot_updates)){
+                            data.bot_updates.forEach(botUpdate => {
+                                updateBot(botUpdate);
+                            })
+                        }
+                        if(Array.isArray(data.land_updates)){
+                            data.land_updates.forEach(landUpdate => {
+                                updateLand(landUpdate);
+                            })
+                        }
+                        break;
+                    //did not include kEndInWin because observer recieves both loss & win updates
+                    case kEndInWin:
+                        console.log(`game ended player id ${data.player_id} won`);
+                        break;
+                    case kEndInDraw:
+                        console.log('game ended in draw');
+                        break;
                 }
-                if(Array.isArray(data.land_updates)){
-                    data.land_updates.forEach(landUpdate => {
-                        updateLand(landUpdate);
-                    })
-                }
+        
             }catch(error){
                 console.error('Error parsing message:', error);
             }
