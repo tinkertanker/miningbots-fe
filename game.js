@@ -1,6 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const GRID_SIZE = 10;
+const GRID_SIZE = 35;
 var gameId;
 var gameStatus;
 var resource_configs;

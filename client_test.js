@@ -179,7 +179,7 @@ const main = async () => {
       console.log('WebSocket connection closed');
     });
 
-    testBot1 = miningBots[0]
+    testBot1 = miningBots[0];
     testBot2 = miningBots[1];
 
     await performScan(ws, testBot1.bot_id, {x: 3, y: 7});
@@ -191,7 +191,7 @@ const main = async () => {
     await buildBot(ws);
     await buildBot(ws);
 
-    testBot3 = miningBots[2]
+    testBot3 = miningBots[2];
     testBot4 = miningBots[3];
 
     await performScan(ws, testBot3.bot_id, {x: 2, y: 5});
@@ -199,7 +199,6 @@ const main = async () => {
 
     await performMove(ws, testBot3.bot_id, {x: 2, y: 5});
     await performMove(ws, testBot4.bot_id, {x: 1, y: 6});
-
 
   } catch (error) {
     console.error('Error in main:', error);
