@@ -96,7 +96,7 @@ const performMine = async (ws, botId, targetPosition, targetChunk) => {
     player_key: playerKey,
     bot_id: botId,
     target_position: targetPosition,
-    target_chunk: targrtChunk
+    target_chunk: targetChunk
   };
   try {
     const response = await sendRequest('/mine', 'POST', { request: JSON.stringify(mineRequest) });

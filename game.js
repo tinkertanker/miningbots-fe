@@ -46,36 +46,38 @@ fetch(`http://${hostname}:${port}/games`, {
         canvas.height = data.max_y * GRID_SIZE;
         resource_configs = data.resource_configs;
 
-        const ROWS = canvas.height / GRID_SIZE;
-        const COLS = canvas.width / GRID_SIZE;  
+        const COLS = data.max_x;
+        const ROWS = data.max_y;  
 
         const elements = {
-            EMPTY: 0,
+            kMiningBot: 0,
             kFactoryBot: 1,
-            kMiningBot: 2,
-            Granite: 3,
-            Vibranium: 4,
-            Adamantite: 5,
-            Unobtanium: 6,
+            unknown: 2,
+            traversable: 3,
+            resource: 4,
         };
+
+        const resources = {
+
+        }
 
         //Adds new game elements from resource_configs if they do not already exist
         resource_configs.forEach(resource => {
-            if(!(resource.name in elements)){
-                elements[resource.name] = Object.keys(elements).length;
+            if(!(resource.name in resources)){
+                resources[resource.name] = Object.keys(resources).length;
             }
         });
 
-        let gameState = Array.from({length: ROWS}, () => Array(COLS).fill(elements.EMPTY));
+        let gameState = Array.from({length: ROWS}, () => Array(COLS).fill(elements.unknown));
 
-        function randomState(){
-            for(let row = 0; row < ROWS; row++){
-                for(let col = 0; col < COLS; col++){
-                    gameState[row][col] = Math.floor(Math.random() * Object.keys(elements).length);
-                }
-            }
-            console.log(gameState);
-        }
+        // function randomState(){
+        //     for(let row = 0; row < ROWS; row++){
+        //         for(let col = 0; col < COLS; col++){
+        //             gameState[row][col] = Math.floor(Math.random() * Object.keys(elements).length);
+        //         }
+        //     }
+        //     console.log(gameState);
+        // }
 
         function render(){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -83,36 +85,20 @@ fetch(`http://${hostname}:${port}/games`, {
                 for(let col = 0; col < COLS; col++){
                     const element = gameState[row][col];
                         switch(element){
-                            case elements.EMPTY:
-                                ctx.fillStyle = 'black';
-                                break;
                             case elements.kFactoryBot:
-                                ctx.fillStyle = 'gray';
+                                ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                                 break;
                             case elements.kMiningBot:
-                                ctx.fillStyle = 'lightgray';
+                                ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                                 break;
-                            case elements.Granite:
-                                ctx.fillStyle = '#B22222'; // Reddish variant for Granite
+                            case elements.unknown:
+                                ctx.fillStyle = 'rgb(64, 64, 64)'; // very dark gray
                                 break;
-                            case elements.Vibranium:
-                                ctx.fillStyle = '#4682B4'; // Metallic blue for Vibranium
+                            case elements.traversable:
+                                ctx.fillStyle = 'rgb(105, 105, 105)'; // dark gray
                                 break;
-                            case elements.Adamantite:
-                                ctx.fillStyle = '#006400'; // Dark green for Adamantite
-                                break;
-                            case elements.Unobtanium:
-                                ctx.fillStyle = '#800080'; // Deep purple for Unobtanium
-                                break;
-                            //place holder for future resources;
-                            case 7:
-                                ctx.fillStyle = 'yellow';
-                                break;
-                            case 8:
-                                ctx.fillStyle = 'pink';
-                                break;
-                            case 9:
-                                ctx.fillStyle = 'orange'
+                            case elements.resource:
+                                ctx.fillStyle = 'green';
                                 break;
                         }
                         ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -120,7 +106,7 @@ fetch(`http://${hostname}:${port}/games`, {
             }
         }
 
-        randomState();
+        // randomState();
         render();
 
         const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
@@ -147,6 +133,7 @@ fetch(`http://${hostname}:${port}/games`, {
                                 updateLand(landUpdate);
                             })
                         }
+                        render();
                         break;
                     //did not include kEndInWin because observer recieves both loss & win updates
                     case kEndInWin:
@@ -156,7 +143,6 @@ fetch(`http://${hostname}:${port}/games`, {
                         console.log('game ended in draw');
                         break;
                 }
-        
             }catch(error){
                 console.error('Error parsing message:', error);
             }
@@ -170,7 +156,7 @@ fetch(`http://${hostname}:${port}/games`, {
                 var oldPosition = botMap.get(id);
                 var oldX = oldPosition.x;
                 var oldY = oldPosition.y;
-                gameState[oldX][oldY] = elements.EMPTY;
+                gameState[oldX][oldY] = elements.traversable;
             }
             var newX = position.x;
             var newY = position.y;
@@ -179,9 +165,11 @@ fetch(`http://${hostname}:${port}/games`, {
         }
 
         function updateLand(data){
-            const {position: {x, y}, is_traversable} = data;
+            const {position: {x, y}, is_traversable, resources} = data;
             if(is_traversable){
-                gameState[x][y] = elements.EMPTY;
+                gameState[x][y] = elements.traversable;
+            }else{
+                gameState[x][y] = elements.resource;
             }
         }
     })
