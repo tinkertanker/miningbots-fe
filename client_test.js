@@ -107,6 +107,23 @@ const performMine = async (ws, botId, targetPosition, targetChunk) => {
   }
 };
 
+const performScan = async (ws, botId, targetPosition) => {
+  const scanRequest = {
+    game_id: gameId,
+    player_id: playerId,
+    player_key: playerKey,
+    bot_id: botId,
+    target_position: targetPosition
+  };
+  try {
+    const response = await sendRequest('/scan', 'POST', { request: JSON.stringify(scanRequest)});
+    console.log('Scan response: ', response);
+  }
+  catch (error) {
+    console.error('Scan error: ', error);
+  }
+};
+
 const buildBot = async (ws) => {
   const buildBotRequest = {
     game_id: gameId,
@@ -165,6 +182,9 @@ const main = async () => {
     testBot1 = miningBots[0]
     testBot2 = miningBots[1];
 
+    await performScan(ws, testBot1.bot_id, {x: 3, y: 7});
+    await performScan(ws, testBot2.bot_id, {x: 4, y: 7});
+
     await performMove(ws, testBot1.bot_id, {x: 3, y: 7});
     await performMove(ws, testBot2.bot_id, {x: 4, y: 7});
    // await performMine(ws, testBot1.bot_id, targetPosition, targetChunk);
@@ -174,8 +194,12 @@ const main = async () => {
     testBot3 = miningBots[2]
     testBot4 = miningBots[3];
 
+    await performScan(ws, testBot3.bot_id, {x: 2, y: 5});
+    await performScan(ws, testBot4.bot_id, {x: 1, y: 6});
+
     await performMove(ws, testBot3.bot_id, {x: 2, y: 5});
     await performMove(ws, testBot4.bot_id, {x: 1, y: 6});
+
 
   } catch (error) {
     console.error('Error in main:', error);
