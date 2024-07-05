@@ -136,10 +136,10 @@ fetch(`http://${hostname}:${port}/games`, {
                         render();
                         break;
                     //did not include kEndInWin because observer recieves both loss & win updates
-                    case kEndInWin:
+                    case 'kEndInWin':
                         console.log(`game ended player id ${data.player_id} won`);
                         break;
-                    case kEndInDraw:
+                    case 'kEndInDraw':
                         console.log('game ended in draw');
                         break;
                 }
@@ -149,27 +149,47 @@ fetch(`http://${hostname}:${port}/games`, {
         }
 
         function updateBot(data){
-            const {id, position, variant} = data;
-            if(!botMap.has(id)){
-                botMap.set(id, position);
-            }else{
-                var oldPosition = botMap.get(id);
+            const {id, position, variant, current_energy, current_job_id, cargo} = data;
+            if(botMap.has(id)){
+                var oldPosition = botMap.get(id)[0];
                 var oldX = oldPosition.x;
                 var oldY = oldPosition.y;
                 gameState[oldX][oldY] = elements.traversable;
             }
+            botMap.set(id, [position, variant, current_energy, current_job_id, cargo]);
             var newX = position.x;
             var newY = position.y;
-            botMap.set(id, position);
             gameState[newX][newY] = elements[variant];
+            updateSidebar();
         }
 
         function updateLand(data){
-            const {position: {x, y}, is_traversable, resources} = data;
+            const {position: {x, y}, is_traversable} = data;
             if(is_traversable){
                 gameState[x][y] = elements.traversable;
             }else{
                 gameState[x][y] = elements.resource;
+            }
+        }
+
+        function updateSidebar(){
+            const sidebar = document.getElementById('bot-sidebar');
+            sidebar.innerHTML = ''; // Clear the existing sidebar content
+
+            for (const [id, [position, variant, current_energy, current_job_id, cargo]] of botMap.entries()) {
+                const botDiv = document.createElement('div');
+                botDiv.classList.add('bot-info');
+                
+                botDiv.innerHTML = `
+                    <h4>Bot ID: ${id}</h4>
+                    <p>Position: (${position.x}, ${position.y})</p>
+                    <p>Variant: ${variant}</p>
+                    <p>Energy: ${current_energy}</p>
+                    <p>Job ID: ${current_job_id}</p>
+                    <p>Cargo: ${cargo}</p>
+                `;
+                
+                sidebar.appendChild(botDiv);
             }
         }
     })

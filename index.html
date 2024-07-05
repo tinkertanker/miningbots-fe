@@ -4,9 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mining Bots</title>
+    <style>
+        /* Step 2: CSS for Styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            background-color: #f1f1f1;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            overflow-y: auto;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .bot-info {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .bot-info h4 {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .bot-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-    <canvas id="gameCanvas", width="800", height="800"></canvas>
+    <canvas id="gameCanvas"></canvas>
+    <div class="sidebar" id="bot-sidebar"></div>
     <script src="game.js"></script>
 </body>
 </html>
