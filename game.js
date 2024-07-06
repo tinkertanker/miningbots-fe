@@ -1,9 +1,9 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const GRID_SIZE = 35;
+const GRID_SIZE = 32;
 console.log('script started');
 
-var hostname = 'server.bootcamp.tk.sg';
+var hostname = 'pre.bootcamp.tk.sg';
 var port = 9005;
 fetch(`http://${hostname}:${port}/games`, {
     method: 'GET'
@@ -116,6 +116,9 @@ fetch(`http://${hostname}:${port}/games`, {
         const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
         const botMap = new Map();
         const jobMap = new Map();
+        const players = {
+
+        };
 
         ws.onopen = function () {
             console.log('Connected to WebSocket server');
@@ -150,6 +153,7 @@ fetch(`http://${hostname}:${port}/games`, {
                                     updateLand(landUpdate);
                                 })
                             }
+                            updateSidebar(data.player_id);
                             render();
                             break;
                         //did not include kEndInWin because observer recieves both loss & win updates
@@ -189,7 +193,9 @@ fetch(`http://${hostname}:${port}/games`, {
                 gameState[oldRow][oldCol] = elements.traversable;
             }
             var job;
-            if(jobMap.has(current_job_id)){
+            if(current_job_id == 0){
+                job = {action: 'kNoAction', status: 'kNotStarted'};
+            }else if(jobMap.has(current_job_id)){
                 job = jobMap.get(current_job_id);
             }else{
                 job = {action: 'kNoAction', status: 'kNotStarted'};
@@ -198,7 +204,8 @@ fetch(`http://${hostname}:${port}/games`, {
             var newRow = ROWS - position.y - 1;
             var newCol = position.x;
             gameState[newRow][newCol] = elements[variant];
-            updateSidebar();
+            renderBots();
+            //updateSidebar();
         }
 
         function updateJob(data){
@@ -214,11 +221,37 @@ fetch(`http://${hostname}:${port}/games`, {
             } else {
                 gameState[ROWS - y - 1][x] = elements.resource;
             }
+            renderBots();
         }
 
-        function updateSidebar() {
-            const sidebar = document.getElementById('bot-sidebar');
+        function renderBots(){
+            for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
+                gameState[ROWS - position.y -1][position.x] = elements[variant];
+            }
+        }
+
+        function updateSidebar(data) {
+            if(!players.hasOwnProperty(data) && Object.keys(players).length < 2){
+                players[data] = Object.keys(players).length;
+            }
+
+            console.log('Players object:', players);
+            console.log('Current player ID:', data);
+
+            const sidebars = [
+                document.getElementById('bot-sidebar-one'),
+                document.getElementById('bot-sidebar-two')
+            ];
+            const sidebarKey = players[data];
+            console.log('sidebarKey:', sidebarKey);
+            const sidebar = sidebars[sidebarKey];
+            console.log('sidebar:', sidebar);
+
             sidebar.innerHTML = ''; // Clear the existing sidebar content
+
+            const header = document.createElement('h3');
+            header.textContent = `Player: ${data}`;
+            sidebar.appendChild(header);
 
             for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
                 const botDiv = document.createElement('div');
