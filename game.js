@@ -99,20 +99,25 @@ fetch(`http://${hostname}:${port}/games`, {
                     switch (element) {
                         case elements.kFactoryBot:
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.globalAlpha = 0;
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBot:
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.globalAlpha = 0;
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
                             ctx.fillStyle = 'black'; //'rgb(64, 64, 64)'; // very dark gray
+                            ctx.globalAlpha = 1;
                             break;
                         case elements.traversable:
                             ctx.fillStyle = 'purple'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.globalAlpha = 1;
                             break;
                         case elements.resource:
                             ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.globalAlpha = 0;
                             // ctx.fillStyle = 'green';
                             break;
                     }
