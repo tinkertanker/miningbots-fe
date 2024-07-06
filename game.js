@@ -122,15 +122,17 @@ fetch(`http://${hostname}:${port}/games`, {
         };
 
         ws.onmessage = function (msg) {
-            console.log(msg);
+            console.log('before parse:', msg);
             try {
-                if (isJsonString(msg)) {
+               // if (isJsonString(msg.data)) {
                     const data = JSON.parse(msg.data);
-                    console.log(data);
-                    switch (data.UpdateType) {
-                        case kTickUpdate:
+                    console.log('after parse:', data);
+                    switch (data.update_type) {
+                        case 'kTickUpdate':
+                            console.log('tick update: ', data)
                             if (Array.isArray(data.bot_updates)) {
                                 data.bot_updates.forEach(botUpdate => {
+                                    console.log('botUpdate: ', botUpdate);
                                     updateBot(botUpdate);
                                 })
                             }
@@ -148,10 +150,13 @@ fetch(`http://${hostname}:${port}/games`, {
                         case 'kEndInDraw':
                             console.log('game ended in draw');
                             break;
+                        default:
+                            console.log(data.UpdateType);
+                            break;
                     }
-                } else {
-                    console.log(msg.data);
-                }
+                // } else {
+                //     console.log(msg.data);
+                // }
             } catch (error) {
                 console.error('Error parsing message:', error);
             }
