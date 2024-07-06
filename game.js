@@ -65,10 +65,8 @@ fetch(`http://${hostname}:${port}/games`, {
 
         // let resource_configs = result.map_config.resource_configs;
         //Adds new game elements from resource_configs if they do not already exist
-        resource_configs.forEach(resource => {
-            if (!(resource.name in resources)) {
-                resources[resource.name] = Object.keys(resources).length;
-            }
+        resource_configs.forEach(resource => {   
+            resources[Object.keys(resources).length] = resource.name;
         });
 
         let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown));
@@ -95,16 +93,19 @@ fetch(`http://${hostname}:${port}/games`, {
                             ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
-                            ctx.fillStyle = 'rgb(64, 64, 64)'; // very dark gray
+                            ctx.fillStyle = 'black'; //'rgb(64, 64, 64)'; // very dark gray
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = 'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillStyle = 'purple'; //'rgb(105, 105, 105)'; // dark gray
                             break;
                         case elements.resource:
                             ctx.fillStyle = 'green';
                             break;
                     }
                     ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                    ctx.strokeStyle = 'white'; // set border color to white
+                    ctx.lineWidth = 1; // set border width
+                    ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                 }
             }
         }
@@ -114,6 +115,7 @@ fetch(`http://${hostname}:${port}/games`, {
 
         const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
         const botMap = new Map();
+        const jobMap = new Map();
 
         ws.onopen = function () {
             console.log('Connected to WebSocket server');
@@ -136,8 +138,15 @@ fetch(`http://${hostname}:${port}/games`, {
                                     updateBot(botUpdate);
                                 })
                             }
+                            if (Array.isArray(data.job_updates)) {
+                                data.job_updates.forEach(jobUpdate => {
+                                    console.log('jobUpdate: ', jobUpdate);
+                                    updateJob(jobUpdate);
+                                })
+                            }
                             if (Array.isArray(data.land_updates)) {
                                 data.land_updates.forEach(landUpdate => {
+                                    console.log('landUpdate: ', landUpdate);
                                     updateLand(landUpdate);
                                 })
                             }
@@ -162,36 +171,48 @@ fetch(`http://${hostname}:${port}/games`, {
             }
         }
 
-        function isJsonString(str) {
-            try {
-                JSON.parse(str);
-            } catch (e) {
-                return false;
-            }
-            return true;
-        }
+        // function isJsonString(str) {
+        //     try {
+        //         JSON.parse(str);
+        //     } catch (e) {
+        //         return false;
+        //     }
+        //     return true;
+        // }
 
         function updateBot(data) {
             const { id, position, variant, current_energy, current_job_id, cargo } = data;
             if (botMap.has(id)) {
                 var oldPosition = botMap.get(id)[0];
-                var oldX = oldPosition.x;
-                var oldY = oldPosition.y;
-                gameState[oldX][oldY] = elements.traversable;
+                var oldRow = ROWS - oldPosition.y - 1;
+                var oldCol = oldPosition.x;
+                gameState[oldRow][oldCol] = elements.traversable;
             }
-            botMap.set(id, [position, variant, current_energy, current_job_id, cargo]);
-            var newX = position.x;
-            var newY = position.y;
-            gameState[newX][newY] = elements[variant];
+            var job;
+            if(jobMap.has(current_job_id)){
+                job = jobMap.get(current_job_id);
+            }else{
+                job = {action: 'kNoAction', status: 'kNotStarted'};
+            }
+            botMap.set(id, [position, variant, current_energy, job, cargo]);
+            var newRow = ROWS - position.y - 1;
+            var newCol = position.x;
+            gameState[newRow][newCol] = elements[variant];
             updateSidebar();
+        }
+
+        function updateJob(data){
+            const {id, action, status} = data;
+            var job = {action: action, status: status}
+            jobMap.set(id, job);
         }
 
         function updateLand(data) {
             const { position: { x, y }, is_traversable } = data;
             if (is_traversable) {
-                gameState[x][y] = elements.traversable;
+                gameState[ROWS - y - 1][x] = elements.traversable;
             } else {
-                gameState[x][y] = elements.resource;
+                gameState[ROWS - y - 1][x] = elements.resource;
             }
         }
 
@@ -199,19 +220,29 @@ fetch(`http://${hostname}:${port}/games`, {
             const sidebar = document.getElementById('bot-sidebar');
             sidebar.innerHTML = ''; // Clear the existing sidebar content
 
-            for (const [id, [position, variant, current_energy, current_job_id, cargo]] of botMap.entries()) {
+            for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
                 const botDiv = document.createElement('div');
                 botDiv.classList.add('bot-info');
 
+                const cargoDetails = document.createElement('details');
+                const cargoSummary = document.createElement('summary');
+                cargoSummary.textContent = 'Cargo';
+                cargoDetails.appendChild(cargoSummary);
+
+                cargo.forEach(item => {
+                    const cargoItem = document.createElement('p');
+                    cargoItem.textContent = `${resources[item.id]}: ${item.amount}`; 
+                    cargoDetails.appendChild(cargoItem);
+                });
+
                 botDiv.innerHTML = `
-                    <h4>Bot ID: ${id}</h4>
+                    <h4>Bot ID: ${id}, ${variant}</h4>
                     <p>Position: (${position.x}, ${position.y})</p>
-                    <p>Variant: ${variant}</p>
                     <p>Energy: ${current_energy}</p>
-                    <p>Job ID: ${current_job_id}</p>
-                    <p>Cargo: ${cargo}</p>
+                    <p>Job Info: ${job.action}, ${job.status}</p>
                 `;
 
+                botDiv.appendChild(cargoDetails);
                 sidebar.appendChild(botDiv);
             }
         }
