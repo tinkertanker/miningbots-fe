@@ -98,33 +98,32 @@ fetch(`http://${hostname}:${port}/games`, {
                     const element = gameState[row][col];
                     switch (element) {
                         case elements.kFactoryBot:
-                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.globalAlpha = 0;
+                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);     
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBot:
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.globalAlpha = 0;
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
                             ctx.fillStyle = 'black'; //'rgb(64, 64, 64)'; // very dark gray
-                            ctx.globalAlpha = 1;
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = 'purple'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.globalAlpha = 1;
+                            ctx.fillStyle = 'green'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.resource:
                             ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.globalAlpha = 0;
-                            // ctx.fillStyle = 'green';
+                            // ctx.fillStyle = 'purple';
                             break;
                     }
-                    ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                    ctx.strokeStyle = 'white'; // set border color to white
-                    ctx.lineWidth = 1; // set border width
-                    ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                 }
             }
         }
@@ -158,14 +157,12 @@ fetch(`http://${hostname}:${port}/games`, {
                                 data.bot_updates.forEach(botUpdate => {
                                     console.log('botUpdate: ', botUpdate);
                                     updateBot(botUpdate);
-                                    updateSidebar(data.player_id);
                                 })
                             }
                             if (Array.isArray(data.job_updates)) {
                                 data.job_updates.forEach(jobUpdate => {
                                     console.log('jobUpdate: ', jobUpdate);
                                     updateJob(jobUpdate);
-                                    updateSidebar(data.player_id);
                                 })
                             }
                             if (Array.isArray(data.land_updates)) {
@@ -174,6 +171,7 @@ fetch(`http://${hostname}:${port}/games`, {
                                     updateLand(landUpdate);
                                 })
                             }
+                            updateSidebar(data.player_id);
                             render();
                             break;
                         //did not include kEndInWin because observer recieves both loss & win updates
@@ -275,26 +273,28 @@ fetch(`http://${hostname}:${port}/games`, {
 
             for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
                 const botDiv = document.createElement('div');
+                console.log('cargo: ', cargo);
                 botDiv.classList.add('bot-info');
-
-                const cargoDetails = document.createElement('details');
-                const cargoSummary = document.createElement('summary');
-                cargoSummary.textContent = 'Cargo';
-                cargoDetails.appendChild(cargoSummary);
-
-                cargo.forEach(item => {
-                    const cargoItem = document.createElement('p');
-                    cargoItem.textContent = `${resources[item.id]}: ${item.amount}`; 
-                    cargoDetails.appendChild(cargoItem);
-                });
-
+            
+                // Set the inner HTML of botDiv with all the details including cargo
                 botDiv.innerHTML = `
                     <h4>Bot ID: ${variant}, ${id}</h4>
                     <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
                     <p>Job Info: ${job.action}, ${job.status}</p>
                 `;
 
-                botDiv.appendChild(cargoDetails);
+                const cargoContainer = document.createElement('div');
+                // Add each cargo item as a new paragraph
+                cargo.forEach(item => {
+                    const cargoItem = document.createElement('p');
+                    cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
+                    cargoContainer.appendChild(cargoItem);
+                });
+            
+                // Append the cargo container to the botDiv
+                botDiv.appendChild(cargoContainer);
+            
+                // Append the botDiv to the sidebar
                 sidebar.appendChild(botDiv);
             }
         }
