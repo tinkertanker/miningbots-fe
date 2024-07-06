@@ -5,6 +5,17 @@ console.log('script started');
 
 var hostname = 'pre.bootcamp.tk.sg';
 var port = 9005;
+
+const images = {
+    kFactoryBot: new Image(),
+    kMiningBot: new Image(),
+    mixed_ore: new Image()
+};
+
+images.kFactoryBot.src = 'assets/Factory_Bot.png';
+images.kMiningBot.src = 'assets/Mining_Bot.png';
+images.mixed_ore.src = 'assets/Mixed_Ore.png';
+
 fetch(`http://${hostname}:${port}/games`, {
     method: 'GET'
 })
@@ -87,10 +98,12 @@ fetch(`http://${hostname}:${port}/games`, {
                     const element = gameState[row][col];
                     switch (element) {
                         case elements.kFactoryBot:
-                            ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
+                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBot:
-                            ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
+                            ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
                             ctx.fillStyle = 'black'; //'rgb(64, 64, 64)'; // very dark gray
@@ -99,7 +112,8 @@ fetch(`http://${hostname}:${port}/games`, {
                             ctx.fillStyle = 'purple'; //'rgb(105, 105, 105)'; // dark gray
                             break;
                         case elements.resource:
-                            ctx.fillStyle = 'green';
+                            ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'green';
                             break;
                     }
                     ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -283,4 +297,3 @@ fetch(`http://${hostname}:${port}/games`, {
     .catch(error => {
         console.error('Error:', error);
     });
-
