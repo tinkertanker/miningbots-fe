@@ -139,12 +139,14 @@ fetch(`http://${hostname}:${port}/games`, {
                                 data.bot_updates.forEach(botUpdate => {
                                     console.log('botUpdate: ', botUpdate);
                                     updateBot(botUpdate);
+                                    updateSidebar(data.player_id);
                                 })
                             }
                             if (Array.isArray(data.job_updates)) {
                                 data.job_updates.forEach(jobUpdate => {
                                     console.log('jobUpdate: ', jobUpdate);
                                     updateJob(jobUpdate);
+                                    updateSidebar(data.player_id);
                                 })
                             }
                             if (Array.isArray(data.land_updates)) {
@@ -153,7 +155,6 @@ fetch(`http://${hostname}:${port}/games`, {
                                     updateLand(landUpdate);
                                 })
                             }
-                            updateSidebar(data.player_id);
                             render();
                             break;
                         //did not include kEndInWin because observer recieves both loss & win updates
@@ -269,9 +270,8 @@ fetch(`http://${hostname}:${port}/games`, {
                 });
 
                 botDiv.innerHTML = `
-                    <h4>Bot ID: ${id}, ${variant}</h4>
-                    <p>Position: (${position.x}, ${position.y})</p>
-                    <p>Energy: ${current_energy}</p>
+                    <h4>Bot ID: ${variant}, ${id}</h4>
+                    <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
                     <p>Job Info: ${job.action}, ${job.status}</p>
                 `;
 
