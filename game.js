@@ -131,7 +131,7 @@ images.kFactoryBot.src = 'assets/Factory_Bot.png';
 images.kMiningBot.src = 'assets/Mining_Bot.png';
 images.mixed_ore.src = 'assets/Mixed_Ore.png';
 
-fetch(`http://${hostname}:${port}/games`, {
+fetch(`https://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
@@ -151,7 +151,7 @@ fetch(`http://${hostname}:${port}/games`, {
             console.log('failed to subscribe because game has ended');
             return;
         }
-        let fetch_map_config = fetch(`http://${hostname}:${port}/map_config?game_id=${gameId}`, {
+        let fetch_map_config = fetch(`https://${hostname}:${port}/map_config?game_id=${gameId}`, {
             method: 'GET'
         });
 
@@ -268,7 +268,7 @@ fetch(`http://${hostname}:${port}/games`, {
         // randomState();
         render();
 
-        const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
+        const ws = new WebSocket(`wss://${hostname}:${port}/observer`);
         const botMap = new Map();
         const jobMap = new Map();
         const players = {
@@ -449,4 +449,4 @@ fetch(`http://${hostname}:${port}/games`, {
     });
 }
 document.getElementById("navbarDropdownMenuLink").textContent = "Main Game";
-drawGame("server.bootcamp.tk.sg", 9007);
+drawGame(hostname, port);
