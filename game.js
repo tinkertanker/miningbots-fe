@@ -316,6 +316,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         break;
                     case 'kEndInWin':
                         console.log(`game ended player id ${data.player_id} won`);
+                        showWinner(data.player_id);
                         break;
                     case 'kEndInDraw':
                         console.log('game ended in draw');
@@ -373,6 +374,8 @@ fetch(`https://${hostname}:${port}/games`, {
             jobMap.set(id, job);
         }
 
+        
+
         function updateLand(data) {
             const { position: { x, y }, is_traversable } = data;
             if (is_traversable) {
@@ -381,6 +384,27 @@ fetch(`https://${hostname}:${port}/games`, {
                 gameState[ROWS - y - 1][x] = elements.resource;
             }
             renderBots();
+        }
+
+        function nextGame()
+        {
+            fetch(`https://${hostname}:${port}/games`,  {
+                method: 'GET'
+            })
+        }
+
+        function showWinner(playerId) {
+            const winnerDiv = document.createElement('div');
+            winnerDiv.style.position = 'absolute';
+            winnerDiv.style.top = '50%';
+            winnerDiv.style.left = '50%';
+            winnerDiv.style.transform = 'translate(-50%, -50%)';
+            winnerDiv.style.padding = '20px';
+            winnerDiv.style.backgroundColor = 'white';
+            winnerDiv.style.border = '2px solid black';
+            winnerDiv.style.zIndex = '1000';
+            winnerDiv.innerHTML = `<h1>Player ${playerId} Won!</h1>`;
+            document.body.appendChild(winnerDiv);
         }
 
         function renderBots(){
@@ -447,10 +471,13 @@ fetch(`https://${hostname}:${port}/games`, {
                 sidebar.appendChild(botDiv);
             }
         }
+
+        
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 }
+
 document.getElementById("navbarDropdownMenuLink").textContent = "Main Game";
 drawGame(hostname, port);
