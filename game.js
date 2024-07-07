@@ -1,6 +1,6 @@
 console.log("script started");
 
-var hostname = "p7.bootcamp.tk.sg";
+var hostname = "s3.bootcamp.tk.sg";
 var port = 443;
 
 var servers = {
@@ -170,12 +170,16 @@ fetch(`https://${hostname}:${port}/games`, {
     .then(async result => {
         let map_config = await result.map_config;
         console.log('map_config:', map_config);
-        canvas.width = map_config.max_x * GRID_SIZE;
-        canvas.height = map_config.max_y * GRID_SIZE;
-        let resource_configs = map_config.resource_configs;
-
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
         const COLS = map_config.max_x;
         const ROWS = map_config.max_y;
+        const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS);
+
+        // Update canvas dimensions
+        canvas.width = COLS * GRID_SIZE;
+        canvas.height = ROWS * GRID_SIZE;
+        let resource_configs = map_config.resource_configs;
 
         const elements = {
             kMiningBotOne: 0,
