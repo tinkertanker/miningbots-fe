@@ -443,32 +443,33 @@ fetch(`https://${hostname}:${port}/games`, {
             header.style.color = color;
             sidebar.appendChild(header);
 
-            for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
+            for (const [id, [position, variant, current_energy, job, cargo, botPlayerIndex]] of botMap.entries()) {
+                if(playerIndex == botPlayerIndex){ //THIS MIGHT NOT WORK
+                    const botDiv = document.createElement('div');
+                    console.log('cargo: ', cargo);
+                    botDiv.classList.add('bot-info');
+                
+                    // Set the inner HTML of botDiv with all the details including cargo
+                    botDiv.innerHTML = `
+                        <h4>Bot ID: ${variant}, ${id}</h4>
+                        <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
+                        <p>Job Info: ${job.action}, ${job.status}</p>
+                    `;
 
-                const botDiv = document.createElement('div');
-                console.log('cargo: ', cargo);
-                botDiv.classList.add('bot-info');
-            
-                // Set the inner HTML of botDiv with all the details including cargo
-                botDiv.innerHTML = `
-                    <h4>Bot ID: ${variant}, ${id}</h4>
-                    <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
-                    <p>Job Info: ${job.action}, ${job.status}</p>
-                `;
-
-                const cargoContainer = document.createElement('div');
-                // Add each cargo item as a new paragraph
-                cargo.forEach(item => {
-                    const cargoItem = document.createElement('p');
-                    cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
-                    cargoContainer.appendChild(cargoItem);
-                });
-            
-                // Append the cargo container to the botDiv
-                botDiv.appendChild(cargoContainer);
-            
-                // Append the botDiv to the sidebar
-                sidebar.appendChild(botDiv);
+                    const cargoContainer = document.createElement('div');
+                    // Add each cargo item as a new paragraph
+                    cargo.forEach(item => {
+                        const cargoItem = document.createElement('p');
+                        cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
+                        cargoContainer.appendChild(cargoItem);
+                    });
+                
+                    // Append the cargo container to the botDiv
+                    botDiv.appendChild(cargoContainer);
+                
+                    // Append the botDiv to the sidebar
+                    sidebar.appendChild(botDiv);
+                }
             }
         }
 
