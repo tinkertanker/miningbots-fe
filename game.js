@@ -1,12 +1,127 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const GRID_SIZE = 32;
-console.log('script started');
+console.log("script started");
 
-var hostname = 'pre.bootcamp.tk.sg';
-var port = 9005;
+var hostname = "p7.bootcamp.tk.sg";
+var port = 443;
 
-const images = {
+var servers = {
+  "https://p1.bootcamp.tk.sg": {
+    name: "Game 1",
+    url: "p1.bootcamp.tk.sg",
+  },
+  "https://p2.bootcamp.tk.sg": {
+    name: "Game 2",
+    url: "p2.bootcamp.tk.sg",
+  },
+  "https://p3.bootcamp.tk.sg": {
+    name: "Game 3",
+    url: "p3.bootcamp.tk.sg",
+  },
+  "https://p4.bootcamp.tk.sg": {
+    name: "Game 4",
+    url: "p4.bootcamp.tk.sg",
+  },
+  "https://p5.bootcamp.tk.sg": {
+    name: "Game 5",
+    url: "p5.bootcamp.tk.sg",
+  },
+  "https://p6.bootcamp.tk.sg": {
+    name: "Game 6",
+    url: "p6.bootcamp.tk.sg",
+  },
+  "https://p7.bootcamp.tk.sg": {
+    name: "Main Game",
+    url: "p7.bootcamp.tk.sg",
+  },
+  "https://p8.bootcamp.tk.sg": {
+    name: "Game 8",
+    url: "p8.bootcamp.tk.sg",
+  },
+  "https://p9.bootcamp.tk.sg": {
+    name: "Game 9",
+    url: "p9.bootcamp.tk.sg",
+  },
+  "https://p10.bootcamp.tk.sg": {
+    name: "Game 10",
+    url: "p10.bootcamp.tk.sg",
+  },
+  "https://s1.bootcamp.tk.sg": {
+    name: "Staging 1",
+    url: "s1.bootcamp.tk.sg",
+  },
+  "https://s2.bootcamp.tk.sg": {
+    name: "Staging 2",
+    url: "s2.bootcamp.tk.sg",
+  },
+  "https://s3.bootcamp.tk.sg": {
+    name: "Staging 3",
+    url: "s3.bootcamp.tk.sg",
+  },
+  "https://s4.bootcamp.tk.sg": {
+    name: "Staging 4",
+    url: "s4.bootcamp.tk.sg",
+  },
+  "https://s5.bootcamp.tk.sg": {
+    name: "Staging 5",
+    url: "s5.bootcamp.tk.sg",
+  },
+  "https://s6.bootcamp.tk.sg": {
+    name: "Staging 6",
+    url: "s6.bootcamp.tk.sg",
+  },
+  "https://s7.bootcamp.tk.sg": {
+    name: "Staging 7",
+    url: "s7.bootcamp.tk.sg",
+  },
+  "https://s8.bootcamp.tk.sg": {
+    name: "Staging 8",
+    url: "s8.bootcamp.tk.sg",
+  },
+  "https://s9.bootcamp.tk.sg": {
+    name: "Staging 9",
+    url: "s9.bootcamp.tk.sg",
+  },
+  "https://s10.bootcamp.tk.sg": {
+    name: "Staging 10",
+    url: "s10.bootcamp.tk.sg",
+  },
+};
+
+// Variable to hold the selected server URL
+let selectedServerUrl = null;
+
+// Function to populate the dropdown menu
+function populateDropdown() {
+  let dropdownMenu = document.querySelector(".dropdown-menu");
+  Object.keys(servers).forEach(function (key) {
+    let server = servers[key];
+    let menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
+    dropdownMenu.innerHTML += menuItem;
+  });
+}
+
+// Event listener for dropdown item click
+document.addEventListener("DOMContentLoaded", function () {
+  populateDropdown();
+
+  let dropdownItems = document.querySelectorAll(".dropdown-item");
+  dropdownItems.forEach(function (item) {
+    item.addEventListener("click", function (event) {
+      event.preventDefault();
+      selectedServerUrl = this.getAttribute("data-url");
+      console.log(selectedServerUrl);
+      let selectedServerName = this.textContent;
+      document.getElementById("navbarDropdownMenuLink").textContent =
+        selectedServerName;
+      drawGame(selectedServerUrl, port);
+    });
+  });
+});
+
+function drawGame(hostname, port) {
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
+  const GRID_SIZE = 32;
+  const images = {
     kFactoryBot: new Image(),
     kMiningBot: new Image(),
     mixed_ore: new Image()
@@ -16,7 +131,7 @@ images.kFactoryBot.src = 'assets/Factory_Bot.png';
 images.kMiningBot.src = 'assets/Mining_Bot.png';
 images.mixed_ore.src = 'assets/Mixed_Ore.png';
 
-fetch(`http://${hostname}:${port}/games`, {
+fetch(`https://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
@@ -36,7 +151,7 @@ fetch(`http://${hostname}:${port}/games`, {
             console.log('failed to subscribe because game has ended');
             return;
         }
-        let fetch_map_config = fetch(`http://${hostname}:${port}/map_config?game_id=${gameId}`, {
+        let fetch_map_config = fetch(`https://${hostname}:${port}/map_config?game_id=${gameId}`, {
             method: 'GET'
         });
 
@@ -131,7 +246,7 @@ fetch(`http://${hostname}:${port}/games`, {
         // randomState();
         render();
 
-        const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
+        const ws = new WebSocket(`wss://${hostname}:${port}/observer`);
         const botMap = new Map();
         const jobMap = new Map();
         const players = {
@@ -299,6 +414,9 @@ fetch(`http://${hostname}:${port}/games`, {
             }
         }
     })
-    .catch(error => {
-        console.error('Error:', error);
+    .catch((error) => {
+      console.error("Error:", error);
     });
+}
+document.getElementById("navbarDropdownMenuLink").textContent = "Main Game";
+drawGame(hostname, port);

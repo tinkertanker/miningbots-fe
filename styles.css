@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+  .sidebar-container {
+    display: flex;
+    flex-direction: row;
+    width: 600px;
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
+  
+  .sidebar {
+    width: 300px;
+    height: 100vh;
+    background-color: #f1f1f1;
+    padding: 10px;
+    overflow-y: auto;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bot-info {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+  }
+  
+  .bot-info h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+  }
+  
+  .bot-info p {
+    margin: 5px 0;
+    font-size: 12px;
+  }
+  .navbar {
+    padding-left: 1%;
+  }
+  
