@@ -219,31 +219,27 @@ fetch(`https://${hostname}:${port}/games`, {
                     const element = gameState[row][col];
                     switch (element) {
                         case elements.kFactoryBotOne:
+                            ctx.fillStyle = 'blue'; // set border color to white
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);  
-                            ctx.strokeStyle = 'blue'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
-                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);   
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBotOne:
+                            ctx.fillStyle = 'blue'; // set border color to white
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'blue'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
-                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.kFactoryBotTwo:
+                            ctx.fillStyle = 'red'; // set border color to white
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE); 
-                            ctx.strokeStyle = 'red'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
-                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);    
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBotTwo:
+                            ctx.fillStyle = 'red'; // set border color to white
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'red'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
-                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
@@ -328,6 +324,10 @@ fetch(`https://${hostname}:${port}/games`, {
             } catch (error) {
                 console.error('Error parsing message:', error);
             }
+        }
+
+        ws.onclose = function() {
+
         }
 
         const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
