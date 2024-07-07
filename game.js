@@ -131,7 +131,7 @@ images.kFactoryBot.src = 'assets/Factory_Bot.png';
 images.kMiningBot.src = 'assets/Mining_Bot.png';
 images.mixed_ore.src = 'assets/Mixed_Ore.png';
 
-fetch(`https://${hostname}:${port}/games`, {
+fetch(`http://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
@@ -151,7 +151,7 @@ fetch(`https://${hostname}:${port}/games`, {
             console.log('failed to subscribe because game has ended');
             return;
         }
-        let fetch_map_config = fetch(`https://${hostname}:${port}/map_config?game_id=${gameId}`, {
+        let fetch_map_config = fetch(`http://${hostname}:${port}/map_config?game_id=${gameId}`, {
             method: 'GET'
         });
 
@@ -178,11 +178,13 @@ fetch(`https://${hostname}:${port}/games`, {
         const ROWS = map_config.max_y;
 
         const elements = {
-            kMiningBot: 0,
-            kFactoryBot: 1,
-            unknown: 2,
-            traversable: 3,
-            resource: 4,
+            kMiningBotOne: 0,
+            kFactoryBotOne: 1,
+            kMiningBotTwo: 2,
+            kFactoryBotTwo: 3,
+            unknown: 4,
+            traversable: 5,
+            resource: 6,
         };
 
         const resources = {
@@ -212,12 +214,32 @@ fetch(`https://${hostname}:${port}/games`, {
                 for (let col = 0; col < COLS; col++) {
                     const element = gameState[row][col];
                     switch (element) {
-                        case elements.kFactoryBot:
-                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);     
+                        case elements.kFactoryBotOne:
+                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);  
+                            ctx.strokeStyle = 'blue'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);   
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
-                        case elements.kMiningBot:
+                        case elements.kMiningBotOne:
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'blue'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
+                            break;
+                        case elements.kFactoryBotTwo:
+                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE); 
+                            ctx.strokeStyle = 'red'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);    
+                            // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
+                            break;
+                        case elements.kMiningBotTwo:
+                            ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'red'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
@@ -246,7 +268,7 @@ fetch(`https://${hostname}:${port}/games`, {
         // randomState();
         render();
 
-        const ws = new WebSocket(`wss://${hostname}:${port}/observer`);
+        const ws = new WebSocket(`ws://${hostname}:${port}/observer`);
         const botMap = new Map();
         const jobMap = new Map();
         const players = {
@@ -262,63 +284,57 @@ fetch(`https://${hostname}:${port}/games`, {
         ws.onmessage = function (msg) {
             console.log('before parse:', msg);
             try {
-               // if (isJsonString(msg.data)) {
-                    const data = JSON.parse(msg.data);
-                    console.log('after parse:', data);
-                    switch (data.update_type) {
-                        case 'kTickUpdate':
-                            console.log('tick update: ', data)
-                            if (Array.isArray(data.bot_updates)) {
-                                data.bot_updates.forEach(botUpdate => {
-                                    console.log('botUpdate: ', botUpdate);
-                                    updateBot(botUpdate);
-                                })
-                            }
-                            if (Array.isArray(data.job_updates)) {
-                                data.job_updates.forEach(jobUpdate => {
-                                    console.log('jobUpdate: ', jobUpdate);
-                                    updateJob(jobUpdate);
-                                })
-                            }
-                            if (Array.isArray(data.land_updates)) {
-                                data.land_updates.forEach(landUpdate => {
-                                    console.log('landUpdate: ', landUpdate);
-                                    updateLand(landUpdate);
-                                })
-                            }
-                            updateSidebar(data.player_id);
-                            render();
-                            break;
-                        //did not include kEndInWin because observer recieves both loss & win updates
-                        case 'kEndInWin':
-                            console.log(`game ended player id ${data.player_id} won`);
-                            break;
-                        case 'kEndInDraw':
-                            console.log('game ended in draw');
-                            break;
-                        default:
-                            console.log(data.UpdateType);
-                            break;
-                    }
-                // } else {
-                //     console.log(msg.data);
-                // }
+                const data = JSON.parse(msg.data);
+                console.log('after parse:', data);
+                switch (data.update_type) {
+                    case 'kTickUpdate':
+                        console.log('tick update: ', data)
+                        if (Array.isArray(data.bot_updates)) {
+                            data.bot_updates.forEach(botUpdate => {
+                                console.log('botUpdate: ', botUpdate);
+                                updateBot(botUpdate, data.player_id);
+                            })
+                        }
+                        if (Array.isArray(data.job_updates)) {
+                            data.job_updates.forEach(jobUpdate => {
+                                console.log('jobUpdate: ', jobUpdate);
+                                updateJob(jobUpdate);
+                            })
+                        }
+                        if (Array.isArray(data.land_updates)) {
+                            data.land_updates.forEach(landUpdate => {
+                                console.log('landUpdate: ', landUpdate);
+                                updateLand(landUpdate);
+                            })
+                        }
+                        updateUI(data.player_id);
+                        render();
+                        break;
+                    case 'kEndInWin':
+                        console.log(`game ended player id ${data.player_id} won`);
+                        break;
+                    case 'kEndInDraw':
+                        console.log('game ended in draw');
+                        break;
+                    default:
+                        console.log(data.UpdateType);
+                        break;
+                }
             } catch (error) {
                 console.error('Error parsing message:', error);
             }
         }
 
-        // function isJsonString(str) {
-        //     try {
-        //         JSON.parse(str);
-        //     } catch (e) {
-        //         return false;
-        //     }
-        //     return true;
-        // }
+        const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
+        const colors = ['blue','red'];
 
-        function updateBot(data) {
-            const { id, position, variant, current_energy, current_job_id, cargo } = data;
+        function updateBot(botUpdate, playerId) {
+            if(!players.hasOwnProperty(playerId) && Object.keys(players).length < 2){
+                players[playerId] = Object.keys(players).length;
+            }
+            const playerIndex = players[playerId];
+
+            const { id, position, variant, current_energy, current_job_id, cargo } = botUpdate;
             if (botMap.has(id)) {
                 var oldPosition = botMap.get(id)[0];
                 var oldRow = ROWS - oldPosition.y - 1;
@@ -333,12 +349,18 @@ fetch(`https://${hostname}:${port}/games`, {
             }else{
                 job = {action: 'kNoAction', status: 'kNotStarted'};
             }
-            botMap.set(id, [position, variant, current_energy, job, cargo]);
+            botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
             var newRow = ROWS - position.y - 1;
             var newCol = position.x;
-            gameState[newRow][newCol] = elements[variant];
+            var playerNum = '';
+            if(playerIndex == 0){
+                playerNum = 'One';
+            }else{
+                playerNum = 'Two';
+            }
+            var element = String(variant) + playerNum;
+            gameState[newRow][newCol] = elements[element];
             renderBots();
-            //updateSidebar();
         }
 
         function updateJob(data){
@@ -358,12 +380,19 @@ fetch(`https://${hostname}:${port}/games`, {
         }
 
         function renderBots(){
-            for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
-                gameState[ROWS - position.y -1][position.x] = elements[variant];
+            for (const [id, [position, variant, current_energy, job, cargo, playerIndex]] of botMap.entries()) {
+                var playerNum = '';
+                if(playerIndex == 0){
+                    playerNum = 'One';
+                }else{
+                    playerNum = 'Two';
+                }
+                var element = String(variant) + playerNum;
+                gameState[ROWS - position.y -1][position.x] = elements[element];
             }
         }
 
-        function updateSidebar(data) {
+        function updateUI(data) {
             if(!players.hasOwnProperty(data) && Object.keys(players).length < 2){
                 players[data] = Object.keys(players).length;
             }
@@ -371,22 +400,23 @@ fetch(`https://${hostname}:${port}/games`, {
             console.log('Players object:', players);
             console.log('Current player ID:', data);
 
-            const sidebars = [
-                document.getElementById('bot-sidebar-one'),
-                document.getElementById('bot-sidebar-two')
-            ];
-            const sidebarKey = players[data];
-            console.log('sidebarKey:', sidebarKey);
-            const sidebar = sidebars[sidebarKey];
+            const playerIndex = players[data];
+            console.log('playerIndex:', playerIndex);
+
+            const sidebar = sidebars[playerIndex];
             console.log('sidebar:', sidebar);
+
+            const color = colors[playerIndex];
 
             sidebar.innerHTML = ''; // Clear the existing sidebar content
 
             const header = document.createElement('h3');
             header.textContent = `Player: ${data}`;
+            header.style.color = color;
             sidebar.appendChild(header);
 
             for (const [id, [position, variant, current_energy, job, cargo]] of botMap.entries()) {
+
                 const botDiv = document.createElement('div');
                 console.log('cargo: ', cargo);
                 botDiv.classList.add('bot-info');
@@ -419,4 +449,4 @@ fetch(`https://${hostname}:${port}/games`, {
     });
 }
 document.getElementById("navbarDropdownMenuLink").textContent = "Main Game";
-drawGame(hostname, port);
+drawGame("server.bootcamp.tk.sg", 9007);
