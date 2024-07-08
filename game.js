@@ -256,14 +256,14 @@ fetch(`https://${hostname}:${port}/games`, {
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
-                            ctx.fillStyle = '#3B3B3B'; //'rgb(64, 64, 64)'; // very dark gray
+                            ctx.fillStyle = '#CECECD'; //'rgb(64, 64, 64)'; // very dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = '#E9FCE9'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillStyle = '#ACE1AF'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
@@ -413,12 +413,12 @@ fetch(`https://${hostname}:${port}/games`, {
             } else {
                 if(Array.isArray(resources)){
                     var highestId = -1;
-                    resources.forEach(resource => {
+                    forEach(resource => {
                         if(resource.id > highestId){
                             highestId = resource.id;
                         }
                     })
-                    console.log(`Highest id: `, highestId);
+                    
                     switch(highestId){
                         case 0:
                             gameState[ROWS - y - 1][x] = elements.granite;
@@ -436,9 +436,7 @@ fetch(`https://${hostname}:${port}/games`, {
                             gameState[ROWS - y - 1][x] = elements.resource;
                             break;
                     }
-                }
-                
-               
+                }  
             }
             renderBots();
         }
