@@ -263,7 +263,7 @@ fetch(`https://${hostname}:${port}/games`, {
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = 'green'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillStyle = '#ACE1AF'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
