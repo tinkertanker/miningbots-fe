@@ -413,11 +413,12 @@ fetch(`https://${hostname}:${port}/games`, {
             } else {
                 if(Array.isArray(resources)){
                     var highestId = -1;
-                    forEach(resource => {
+                    resources.forEach(resource => {
                         if(resource.id > highestId){
                             highestId = resource.id;
                         }
                     })
+                    console.log(`Highest id: `, highestId);
                     switch(highestId){
                         case 0:
                             gameState[ROWS - y - 1][x] = elements.granite;
