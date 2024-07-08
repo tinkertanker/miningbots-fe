@@ -124,12 +124,21 @@ function drawGame(hostname, port) {
   const images = {
     kFactoryBot: new Image(),
     kMiningBot: new Image(),
-    mixed_ore: new Image()
+    mixed_ore: new Image(),
+    granite: new Image(),
+    vibranium: new Image(),
+    adamantite: new Image(),
+    unobtanium: new Image()
+
 };
 
 images.kFactoryBot.src = 'assets/Factory_Bot.png';
 images.kMiningBot.src = 'assets/Mining_Bot.png';
 images.mixed_ore.src = 'assets/Mixed_Ore.png';
+images.granite.src = 'assets/Granite.png';
+images.vibranium.src = 'assets/Vibranium.png';
+images.adamantite.src = 'assets/Adamantite.png';
+images.unobtanium.src = 'assets/Unobtanium.png';
 
 fetch(`https://${hostname}:${port}/games`, {
     method: 'GET'
@@ -189,6 +198,10 @@ fetch(`https://${hostname}:${port}/games`, {
             unknown: 4,
             traversable: 5,
             resource: 6,
+            granite: 7,
+            vibranium: 8,
+            adamantite: 9,
+            unobtanium: 10
         };
 
         const resources = {
@@ -243,7 +256,7 @@ fetch(`https://${hostname}:${port}/games`, {
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
-                            ctx.fillStyle = 'grey'; //'rgb(64, 64, 64)'; // very dark gray
+                            ctx.fillStyle = 'black'; //'rgb(64, 64, 64)'; // very dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
@@ -260,6 +273,23 @@ fetch(`https://${hostname}:${port}/games`, {
                             ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
                             break;
+                        case elements.granite:
+                            ctx.drawImage(images.granite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'purple';
+                            break;
+                        case elements.vibranium:
+                            ctx.drawImage(images.vibranium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'purple';
+                            break;
+                        case elements.adamantite:
+                            ctx.drawImage(images.adamantite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'purple';
+                            break;
+                        case elements.unobtanium:
+                            ctx.drawImage(images.unobtanium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            // ctx.fillStyle = 'purple';
+                            break;
+                        
                     }
                 }
             }
@@ -377,11 +407,37 @@ fetch(`https://${hostname}:${port}/games`, {
         
 
         function updateLand(data) {
-            const { position: { x, y }, is_traversable } = data;
+            const { position: { x, y }, is_traversable, resources} = data;
             if (is_traversable) {
                 gameState[ROWS - y - 1][x] = elements.traversable;
             } else {
-                gameState[ROWS - y - 1][x] = elements.resource;
+                if(Array.isArray(resources)){
+                    var highestId = -1;
+                    forEach(resource => {
+                        if(resource.id > highestId){
+                            highestId = resource.id;
+                        }
+                    })
+                    switch(highestId){
+                        case 0:
+                            gameState[ROWS - y - 1][x] = elements.granite;
+                            break;
+                        case 1:
+                            gameState[ROWS - y - 1][x] = elements.vibranium;
+                            break;
+                        case 2:
+                            gameState[ROWS - y - 1][x] = elements.adamantite;
+                            break;
+                        case 3:
+                            gameState[ROWS - y - 1][x] = elements.unobtanium;
+                            break;
+                        default:
+                            gameState[ROWS - y - 1][x] = elements.resource;
+                            break;
+                    }
+                }
+                
+               
             }
             renderBots();
         }
@@ -404,25 +460,6 @@ fetch(`https://${hostname}:${port}/games`, {
             winnerDiv.style.border = '2px solid black';
             winnerDiv.style.zIndex = '1000';
             winnerDiv.innerHTML = `<h1>Player ${playerId} Won!</h1>`;
-        
-            const closeButton = document.createElement('button');
-            closeButton.innerText = 'X';
-            closeButton.style.position = 'absolute';
-            closeButton.style.top = '-1px';
-            closeButton.style.right = '-1px';
-            closeButton.addEventListener('click', () => {
-                document.body.removeChild(winnerDiv);
-            });
-        
-            const nextGameButton = document.createElement('button');
-            nextGameButton.innerText = 'Next Game';
-            nextGameButton.addEventListener('click', () => {
-                document.body.removeChild(winnerDiv);
-                nextGame();
-            });
-        
-            winnerDiv.appendChild(closeButton); 
-            winnerDiv.appendChild(nextGameButton);
             document.body.appendChild(winnerDiv);
         }
 
