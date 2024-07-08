@@ -404,6 +404,25 @@ fetch(`https://${hostname}:${port}/games`, {
             winnerDiv.style.border = '2px solid black';
             winnerDiv.style.zIndex = '1000';
             winnerDiv.innerHTML = `<h1>Player ${playerId} Won!</h1>`;
+        
+            const closeButton = document.createElement('button'); // NEW: Close button
+            closeButton.innerText = 'X';
+            closeButton.style.position = 'absolute';
+            closeButton.style.top = '-1px';
+            closeButton.style.right = '-1px';
+            closeButton.addEventListener('click', () => {
+                document.body.removeChild(winnerDiv);
+            });
+        
+            const nextGameButton = document.createElement('button');
+            nextGameButton.innerText = 'Next Game';
+            nextGameButton.addEventListener('click', () => {
+                document.body.removeChild(winnerDiv);
+                nextGame();
+            });
+        
+            winnerDiv.appendChild(closeButton); // NEW: Append close button
+            winnerDiv.appendChild(nextGameButton);
             document.body.appendChild(winnerDiv);
         }
 
