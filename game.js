@@ -525,13 +525,13 @@ fetch(`https://${hostname}:${port}/games`, {
                     console.log('cargo: ', cargo);
                     botDiv.classList.add('bot-info');
                 
-                    // Set the inner HTML of botDiv with all the details including cargo
+        
                     botDiv.innerHTML = `
                         <h4>Bot ID: ${variant}, ${id}</h4>
                         <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
                         <p>Job Info: ${job.action}, ${job.status}</p>
                     `;
-
+                    
                     const cargoContainer = document.createElement('div');
                     // Add each cargo item as a new paragraph
                     cargo.forEach(item => {
