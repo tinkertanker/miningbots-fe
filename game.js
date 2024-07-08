@@ -231,39 +231,39 @@ fetch(`https://${hostname}:${port}/games`, {
                 for (let col = 0; col < COLS; col++) {
                     const element = gameState[row][col];
                     switch (element) {
-                        case elements.kFactoryBotOne:
-                            ctx.fillStyle = '#73A9E5'; // set border color to white
+                        case elements.kFactoryBotOne: // Blue
+                            ctx.fillStyle = '#3D426B'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);  
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
-                        case elements.kMiningBotOne:
-                            ctx.fillStyle = '#73A9E5'; // set border color to white
+                        case elements.kMiningBotOne: // Blue
+                            ctx.fillStyle = '#3D426B'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
-                        case elements.kFactoryBotTwo:
-                            ctx.fillStyle = '#FAA0A0'; // set border color to white
+                        case elements.kFactoryBotTwo: // Red
+                            ctx.fillStyle = '#610000'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE); 
                             // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
-                        case elements.kMiningBotTwo:
-                            ctx.fillStyle = '#FAA0A0'; // set border color to white
+                        case elements.kMiningBotTwo: // Red
+                            ctx.fillStyle = '#610000'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
-                            ctx.fillStyle = '#3b3b3b'; //'rgb(64, 64, 64)'; // very dark gray
+                            ctx.fillStyle = '#221d14'; //'rgb(64, 64, 64)'; // very dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = '#b1f3b1'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillStyle = '#564a31'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
@@ -274,18 +274,39 @@ fetch(`https://${hostname}:${port}/games`, {
                             // ctx.fillStyle = 'purple';
                             break;
                         case elements.granite:
+                            ctx.fillStyle = '#564a31'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.granite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            
                             // ctx.fillStyle = 'purple';
                             break;
                         case elements.vibranium:
+                            ctx.fillStyle = '#564a31'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.vibranium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
                             break;
                         case elements.adamantite:
+                            ctx.fillStyle = '#564a31'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.adamantite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
                             break;
                         case elements.unobtanium:
+                            ctx.fillStyle = '#564a31'; //'rgb(105, 105, 105)'; // dark gray
+                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.unobtanium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
                             break;
