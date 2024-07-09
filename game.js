@@ -562,6 +562,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         <h4>Bot ID: ${variant}, ${id}</h4>
                         <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
                         <p>Job Info: ${job.action}, ${job.status}</p>
+                        <hr>
                     `;
                     
                     const cargoContainer = document.createElement('div');
