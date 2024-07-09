@@ -280,15 +280,19 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.unknown:
                             ctx.fillStyle = '#221d14'; //'rgb(64, 64, 64)'; // very dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
-                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            if (Math.max(ROWS, COLS) < 60) {
+                              ctx.lineWidth = 1; // set border width
+                              ctx.strokeStyle = 'white'; // set border color to white
+                            }
+                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.traversable:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
+                            if (Math.max(ROWS, COLS) < 60) {
+                              ctx.strokeStyle = 'white'; // set border color to white
+                              ctx.lineWidth = 1; // set border width
+                            }
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.resource:
@@ -298,8 +302,10 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.granite:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
+                            if (Math.max(ROWS, COLS) < 60) {
+                              ctx.strokeStyle = 'white'; // set border color to white
+                              ctx.lineWidth = 1; // set border width
+                            }
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.granite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             
@@ -308,8 +314,10 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.vibranium:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
+                            if (Math.max(ROWS, COLS) < 60) {
+                              ctx.strokeStyle = 'white'; // set border color to white
+                              ctx.lineWidth = 1; // set border width
+                            }
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.vibranium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
@@ -317,8 +325,10 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.adamantite:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
+                            if (Math.max(ROWS, COLS) < 60) {
+                              ctx.strokeStyle = 'white'; // set border color to white
+                              ctx.lineWidth = 1; // set border width
+                            }
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.adamantite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
@@ -326,8 +336,10 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.unobtanium:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
+                            if (Math.max(ROWS, COLS) < 60) {
+                              ctx.strokeStyle = 'white'; // set border color to white
+                              ctx.lineWidth = 1; // set border width
+                            }
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             ctx.drawImage(images.unobtanium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
