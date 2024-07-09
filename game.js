@@ -14,83 +14,83 @@ var port = 443;
 var gameId;
 
 var servers = {
-  "https://p1.bootcamp.tk.sg": {
+  "p1.bootcamp.tk.sg": {
     name: "Game 1",
     url: "p1.bootcamp.tk.sg",
   },
-  "https://p2.bootcamp.tk.sg": {
+  "p2.bootcamp.tk.sg": {
     name: "Game 2",
     url: "p2.bootcamp.tk.sg",
   },
-  "https://p3.bootcamp.tk.sg": {
+  "p3.bootcamp.tk.sg": {
     name: "Game 3",
     url: "p3.bootcamp.tk.sg",
   },
-  "https://p4.bootcamp.tk.sg": {
+  "p4.bootcamp.tk.sg": {
     name: "Game 4",
     url: "p4.bootcamp.tk.sg",
   },
-  "https://p5.bootcamp.tk.sg": {
+  "p5.bootcamp.tk.sg": {
     name: "Game 5",
     url: "p5.bootcamp.tk.sg",
   },
-  "https://p6.bootcamp.tk.sg": {
+  "p6.bootcamp.tk.sg": {
     name: "Game 6",
     url: "p6.bootcamp.tk.sg",
   },
-  "https://p7.bootcamp.tk.sg": {
+  "p7.bootcamp.tk.sg": {
     name: "Main Game",
     url: "p7.bootcamp.tk.sg",
   },
-  "https://p8.bootcamp.tk.sg": {
+  "p8.bootcamp.tk.sg": {
     name: "Game 8",
     url: "p8.bootcamp.tk.sg",
   },
-  "https://p9.bootcamp.tk.sg": {
+  "p9.bootcamp.tk.sg": {
     name: "Game 9",
     url: "p9.bootcamp.tk.sg",
   },
-  "https://p10.bootcamp.tk.sg": {
+  "p10.bootcamp.tk.sg": {
     name: "Game 10",
     url: "p10.bootcamp.tk.sg",
   },
-  "https://s1.bootcamp.tk.sg": {
+  "s1.bootcamp.tk.sg": {
     name: "Staging 1",
     url: "s1.bootcamp.tk.sg",
   },
-  "https://s2.bootcamp.tk.sg": {
+  "s2.bootcamp.tk.sg": {
     name: "Staging 2",
     url: "s2.bootcamp.tk.sg",
   },
-  "https://s3.bootcamp.tk.sg": {
+  "s3.bootcamp.tk.sg": {
     name: "Staging 3",
     url: "s3.bootcamp.tk.sg",
   },
-  "https://s4.bootcamp.tk.sg": {
+  "s4.bootcamp.tk.sg": {
     name: "Staging 4",
     url: "s4.bootcamp.tk.sg",
   },
-  "https://s5.bootcamp.tk.sg": {
+  "s5.bootcamp.tk.sg": {
     name: "Staging 5",
     url: "s5.bootcamp.tk.sg",
   },
-  "https://s6.bootcamp.tk.sg": {
+  "s6.bootcamp.tk.sg": {
     name: "Staging 6",
     url: "s6.bootcamp.tk.sg",
   },
-  "https://s7.bootcamp.tk.sg": {
+  "s7.bootcamp.tk.sg": {
     name: "Staging 7",
     url: "s7.bootcamp.tk.sg",
   },
-  "https://s8.bootcamp.tk.sg": {
+  "s8.bootcamp.tk.sg": {
     name: "Staging 8",
     url: "s8.bootcamp.tk.sg",
   },
-  "https://s9.bootcamp.tk.sg": {
+  "s9.bootcamp.tk.sg": {
     name: "Staging 9",
     url: "s9.bootcamp.tk.sg",
   },
-  "https://s10.bootcamp.tk.sg": {
+  "s10.bootcamp.tk.sg": {
     name: "Staging 10",
     url: "s10.bootcamp.tk.sg",
   },
@@ -615,5 +615,5 @@ fetch(`https://${hostname}:${port}/games`, {
     });
 }
 
-document.getElementById("navbarDropdownMenuLink").textContent = "Main Game";
+document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 drawGame(hostname, port);
