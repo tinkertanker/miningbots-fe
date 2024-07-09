@@ -1,6 +1,15 @@
 console.log("script started");
 
+// Get hostname from cookie, otherwise leave as null
+
+
+const server = document.cookie
+  .split("; ")
+  .find((row) => row.startsWith("lastServer="))
+  ?.split("=")[1];
+
 var hostname = "s3.bootcamp.tk.sg";
+if (server !== null) hostname = server; 
 var port = 443;
 var gameId;
 
@@ -115,7 +124,10 @@ document.addEventListener("DOMContentLoaded", function () {
       let selectedServerName = this.textContent;
       document.getElementById("navbarDropdownMenuLink").textContent =
         selectedServerName;
-      drawGame(selectedServerUrl, port);
+      // Save to cookie first
+      document.cookie = `lastServer=${selectedServerUrl}`;
+      location.reload();
+      // drawGame(selectedServerUrl, port);
     });
   });
 });
