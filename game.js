@@ -86,6 +86,8 @@ var servers = {
   },
 };
 
+
+
 // Variable to hold the selected server URL
 let selectedServerUrl = null;
 
@@ -116,6 +118,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+async function fetchPlayerNames(gameId, playerIds) {
+    const url = `https://${hostname}:${port}/players`;
+    const playerRequest = { game_id: gameId, player_ids: playerIds };
+  
+    try {
+      const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+  
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  
+      const playerUpdates = await response.json();
+      return playerUpdates;
+    } catch (error) {
+      console.error('Failed to fetch player names:', error);
+    }
+  }
 
 function drawGame(hostname, port) {
   const canvas = document.getElementById("gameCanvas");
@@ -322,9 +343,8 @@ fetch(`https://${hostname}:${port}/games`, {
         const ws = new WebSocket(`wss://${hostname}:${port}/observer`);
         const botMap = new Map();
         const jobMap = new Map();
-        const players = {
-
-        };
+        const players = {};
+        const playerNames = {};
 
         ws.onopen = function () {
             console.log('Connected to WebSocket server');
@@ -375,10 +395,6 @@ fetch(`https://${hostname}:${port}/games`, {
             } catch (error) {
                 console.error('Error parsing message:', error);
             }
-        }
-
-        ws.onclose = function() {
-
         }
 
         const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
@@ -480,6 +496,17 @@ fetch(`https://${hostname}:${port}/games`, {
             winnerDiv.style.border = '2px solid black';
             winnerDiv.style.zIndex = '1000';
             winnerDiv.innerHTML = `<h1>Player ${playerId} Won!</h1>`;
+
+            const closeButton = document.createElement('button'); 
+            closeButton.innerText = 'X';
+            closeButton.style.position = 'absolute';
+            closeButton.style.top = '-1px';
+            closeButton.style.right = '-1px';
+            closeButton.addEventListener('click', () => {
+                document.body.removeChild(winnerDiv);
+            });
+
+            winnerDiv.appendChild(closeButton); 
             document.body.appendChild(winnerDiv);
         }
 
@@ -496,13 +523,17 @@ fetch(`https://${hostname}:${port}/games`, {
             }
         }
 
-        function updateUI(data) {
+        async function updateUI(data) {
             if(!players.hasOwnProperty(data) && Object.keys(players).length < 2){
                 players[data] = Object.keys(players).length;
             }
 
             console.log('Players object:', players);
             console.log('Current player ID:', data);
+
+            var playerInfo = await fetchPlayerNames(gameId, data);
+
+            var name = playerInfo.name[0];
 
             const playerIndex = players[data];
             console.log('playerIndex:', playerIndex);
@@ -515,7 +546,7 @@ fetch(`https://${hostname}:${port}/games`, {
             sidebar.innerHTML = ''; // Clear the existing sidebar content
 
             const header = document.createElement('h3');
-            header.textContent = `Player: ${data}`;
+            header.textContent = `Player: ${name}`;
             header.style.color = color;
             sidebar.appendChild(header);
 
