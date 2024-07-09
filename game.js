@@ -546,7 +546,7 @@ fetch(`https://${hostname}:${port}/games`, {
 
             sidebar.innerHTML = ''; // Clear the existing sidebar content
 
-            const header = document.createElement('h3');
+            const header = document.createElement('h4');
             header.textContent = `Player: ${data}`;
             header.style.color = color;
             sidebar.appendChild(header);
@@ -559,19 +559,21 @@ fetch(`https://${hostname}:${port}/games`, {
                 
         
                     botDiv.innerHTML = `
-                        <h4>Bot ID: ${variant}, ${id}</h4>
-                        <p>Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
-                        <p>Job Info: ${job.action}, ${job.status}</p>
-                        <hr>
-                    `;
-                    
-                    const cargoContainer = document.createElement('div');
-                    // Add each cargo item as a new paragraph
-                    cargo.forEach(item => {
-                        const cargoItem = document.createElement('p');
-                        cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
-                        cargoContainer.appendChild(cargoItem);
-                    });
+                <h4 style="margin: 2px 0; padding: 0;">Bot ID: ${variant}, ${id}</h4>
+                <p style="margin: 2px 0; padding: 0;">Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
+                <p style="margin: 2px 0; padding: 0;">Job Info: ${job.action}, ${job.status}</p>
+                <hr style="margin: 2px 0;">
+            `;
+
+            const cargoContainer = document.createElement('div');
+            // Add each cargo item as a new paragraph
+            cargo.forEach(item => {
+                const cargoItem = document.createElement('p');
+                cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
+                cargoItem.style.margin = '2px 0';
+                cargoItem.style.padding = '0';
+                cargoContainer.appendChild(cargoItem);
+            });
                 
                     // Append the cargo container to the botDiv
                     botDiv.appendChild(cargoContainer);

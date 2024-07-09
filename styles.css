@@ -5,14 +5,14 @@ body {
   .sidebar-container {
     display: flex;
     flex-direction: row;
-    width: 500px;
+    width: 520px;
     position: fixed;
     top: 0;
     right: 0;
   }
   
   .sidebar {
-    width: 250px;
+    width: 260px;
     height: 100vh;
     background-color: #f1f1f1;
     padding: 7px;
@@ -21,7 +21,7 @@ body {
   }
   
   .bot-info {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     background-color: #fff;
