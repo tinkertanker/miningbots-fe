@@ -2,6 +2,7 @@ console.log("script started");
 
 var hostname = "s3.bootcamp.tk.sg";
 var port = 443;
+var gameId;
 
 var servers = {
   "https://p1.bootcamp.tk.sg": {
@@ -531,9 +532,9 @@ fetch(`https://${hostname}:${port}/games`, {
             console.log('Players object:', players);
             console.log('Current player ID:', data);
 
-            var playerInfo = await fetchPlayerNames(gameId, data);
+            var playerInfo = await fetchPlayerNames(gameId, [data]);
 
-            var name = playerInfo.name[0];
+            var name = playerInfo[0].name;
 
             const playerIndex = players[data];
             console.log('playerIndex:', playerIndex);
