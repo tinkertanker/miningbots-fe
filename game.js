@@ -120,24 +120,24 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-async function fetchPlayerNames(gameId, playerIds) {
-    const url = `https://${hostname}:${port}/players`;
-    const playerRequest = { game_id: gameId, player_ids: playerIds };
+// async function fetchPlayerNames(gameId, playerIds) {
+//     const url = `https://${hostname}:${port}/players`;
+//     const playerRequest = { game_id: gameId, player_ids: playerIds };
   
-    try {
-      const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      });
+//     try {
+//       const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
+//         method: 'GET',
+//         headers: { 'Content-Type': 'application/json' }
+//       });
   
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+//       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   
-      const playerUpdates = await response.json();
-      return playerUpdates;
-    } catch (error) {
-      console.error('Failed to fetch player names:', error);
-    }
-  }
+//       const playerUpdates = await response.json();
+//       return playerUpdates;
+//     } catch (error) {
+//       console.error('Failed to fetch player names:', error);
+//     }
+//   }
 
 function drawGame(hostname, port) {
   const canvas = document.getElementById("gameCanvas");
@@ -532,9 +532,9 @@ fetch(`https://${hostname}:${port}/games`, {
             console.log('Players object:', players);
             console.log('Current player ID:', data);
 
-            var playerInfo = await fetchPlayerNames(gameId, [data]);
+            // var playerInfo = await fetchPlayerNames(gameId, [data]);
 
-            var name = playerInfo[0].name;
+            // var name = playerInfo[0].name;
 
             const playerIndex = players[data];
             console.log('playerIndex:', playerIndex);
@@ -547,7 +547,7 @@ fetch(`https://${hostname}:${port}/games`, {
             sidebar.innerHTML = ''; // Clear the existing sidebar content
 
             const header = document.createElement('h3');
-            header.textContent = `Player: ${name}`;
+            header.textContent = `Player: ${data}`;
             header.style.color = color;
             sidebar.appendChild(header);
 
