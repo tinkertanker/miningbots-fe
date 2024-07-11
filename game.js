@@ -132,24 +132,26 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// async function fetchPlayerNames(gameId, playerIds) {
-//     const url = `https://${hostname}:${port}/players`;
-//     const playerRequest = { game_id: gameId, player_ids: playerIds };
+// Player Name fetch code 
+
+async function fetchPlayerNames(gameId, playerIds) {
+    const url = `https://${hostname}:${port}/players`;
+    const playerRequest = { game_id: gameId, player_ids: playerIds };
   
-//     try {
-//       const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
-//         method: 'GET',
-//         headers: { 'Content-Type': 'application/json' }
-//       });
+    try {
+      const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
   
-//       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
   
-//       const playerUpdates = await response.json();
-//       return playerUpdates;
-//     } catch (error) {
-//       console.error('Failed to fetch player names:', error);
-//     }
-//   }
+      const playerUpdates = await response.json();
+      return playerUpdates;
+    } catch (error) {
+      console.error('Failed to fetch player names:', error);
+    }
+  }
 
 function drawGame(hostname, port) {
   const canvas = document.getElementById("gameCanvas");
@@ -263,7 +265,16 @@ fetch(`https://${hostname}:${port}/games`, {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let row = 0; row < ROWS; row++) {
                 for (let col = 0; col < COLS; col++) {
-                    const element = gameState[row][col];
+                  const element = gameState[row][col];
+                  if (COLS < 60) {
+                    ctx.strokeStyle = 'white'; // set border color to white
+                    ctx.lineWidth = 1; // set border width
+                    ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                  }
+                  else {
+                    ctx.lineWidth=0;
+                  }
+
                     switch (element) {
                         case elements.kFactoryBotOne: // Blue
                             ctx.fillStyle = '#25537b'; // set border color to white
@@ -292,7 +303,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.unknown:
                             ctx.fillStyle = '#221d14'; //'rgb(64, 64, 64)'; // very dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (Math.max(ROWS, COLS) < 60) {
+                            if (COLS < 60) {
                               ctx.lineWidth = 1; // set border width
                               ctx.strokeStyle = 'white'; // set border color to white
                               ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -304,7 +315,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.traversable:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (Math.max(ROWS, COLS) < 60) {
+                            if (COLS < 60) {
                               ctx.strokeStyle = 'white'; // set border color to white
                               ctx.lineWidth = 1; // set border width
                               ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -314,13 +325,21 @@ fetch(`https://${hostname}:${port}/games`, {
                             }
                             break;
                         case elements.resource:
-                            ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                          if (COLS < 60) {
+                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.lineWidth = 1; // set border width
+                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                          }
+                          else {
+                            ctx.lineWidth=0;
+                          }
+                          ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             // ctx.fillStyle = 'purple';
                             break;
                         case elements.granite:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (Math.max(ROWS, COLS) < 60) {
+                            if (COLS < 60) {
                               ctx.strokeStyle = 'white'; // set border color to white
                               ctx.lineWidth = 1; // set border width
                               ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -335,7 +354,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.vibranium:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (Math.max(ROWS, COLS) < 60) {
+                            if (COLS < 60) {
                               ctx.strokeStyle = 'white'; // set border color to white
                               ctx.lineWidth = 1; // set border width
                               ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -349,7 +368,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.adamantite:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (Math.max(ROWS, COLS) < 60) {
+                            if (COLS < 60) {
                               ctx.strokeStyle = 'white'; // set border color to white
                               ctx.lineWidth = 1; // set border width
                               ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -363,7 +382,7 @@ fetch(`https://${hostname}:${port}/games`, {
                         case elements.unobtanium:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (Math.max(ROWS, COLS) < 60) {
+                            if (COLS < 60) {
                               ctx.strokeStyle = 'white'; // set border color to white
                               ctx.lineWidth = 1; // set border width
                               ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -566,19 +585,21 @@ fetch(`https://${hostname}:${port}/games`, {
             }
         }
 
-        async function updateUI(data) {
-            if(!players.hasOwnProperty(data) && Object.keys(players).length < 2){
-                players[data] = Object.keys(players).length;
+        async function updateUI(player_id) {
+            if(!players.hasOwnProperty(player_id) && Object.keys(players).length < 2){
+                players[player_id] = Object.keys(players).length;
             }
 
             console.log('Players object:', players);
-            console.log('Current player ID:', data);
+            console.log('Current player ID:', player_id);
 
-            // var playerInfo = await fetchPlayerNames(gameId, [data]);
-
+            
+            // Player names code: 
+            var playerInfo = await fetchPlayerNames(gameId, [player_id]);
+            console.log(playerInfo);
             // var name = playerInfo[0].name;
 
-            const playerIndex = players[data];
+            const playerIndex = players[player_id];
             console.log('playerIndex:', playerIndex);
 
             const sidebar = sidebars[playerIndex];
@@ -589,7 +610,7 @@ fetch(`https://${hostname}:${port}/games`, {
             sidebar.innerHTML = ''; // Clear the existing sidebar content
 
             const header = document.createElement('h4');
-            header.textContent = `Player: ${data}`;
+            header.textContent = `Player: ${player_id}`;
             header.style.color = color;
             sidebar.appendChild(header);
 
