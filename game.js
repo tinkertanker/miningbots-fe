@@ -8,10 +8,14 @@ const server = document.cookie
   .find((row) => row.startsWith("lastServer="))
   ?.split("=")[1];
 
-var hostname = "s3.bootcamp.tk.sg";
-if (server !== null) hostname = server; 
-var port = 443;
+//   var hostname = "s3.bootcamp.tk.sg";
+//   var port = 443;
+var hostname = "localhost";
+var port = 9003;
+// if (server !== null) hostname = server; 
 var gameId;
+var http_type = "http";
+var ws_type = "ws";
 
 var servers = {
   "p1.bootcamp.tk.sg": {
@@ -94,6 +98,10 @@ var servers = {
     name: "Staging 10",
     url: "s10.bootcamp.tk.sg",
   },
+  "localhost": {
+    name: "localhost",
+    url: "localhost",
+  },
 };
 
 
@@ -135,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Player Name fetch code 
 
 async function fetchPlayerNames(gameId, playerIds) {
-    const url = `https://${hostname}:${port}/players`;
+    const url = `${http_type}://${hostname}:${port}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
   
     try {
@@ -176,7 +184,7 @@ images.vibranium.src = 'assets/Vibranium.png';
 images.adamantite.src = 'assets/Adamantite.png';
 images.unobtanium.src = 'assets/Unobtanium.png';
 
-fetch(`https://${hostname}:${port}/games`, {
+fetch(`${http_type}://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
@@ -196,7 +204,7 @@ fetch(`https://${hostname}:${port}/games`, {
             console.log('failed to subscribe because game has ended');
             return;
         }
-        let fetch_map_config = fetch(`https://${hostname}:${port}/map_config?game_id=${gameId}`, {
+        let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
             method: 'GET'
         });
 
@@ -402,7 +410,7 @@ fetch(`https://${hostname}:${port}/games`, {
         // randomState();
         render();
 
-        const ws = new WebSocket(`wss://${hostname}:${port}/observer`);
+        const ws = new WebSocket(`${ws_type}://${hostname}:${port}/observer`);
         const botMap = new Map();
         const jobMap = new Map();
         const players = {};
@@ -542,7 +550,7 @@ fetch(`https://${hostname}:${port}/games`, {
 
         function nextGame()
         {
-            fetch(`https://${hostname}:${port}/games`,  {
+            fetch(`${http_type}://${hostname}:${port}/games`,  {
                 method: 'GET'
             })
         }
@@ -653,6 +661,7 @@ fetch(`https://${hostname}:${port}/games`, {
       console.error("Error:", error);
     });
 }
-
+console.log(servers["localhost"].name);
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
+// document.getElementById("navbarDropdownMenuLink").textContent = "localhost";
 drawGame(hostname, port);
