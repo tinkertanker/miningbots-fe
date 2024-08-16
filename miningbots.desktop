@@ -1,3 +1,4 @@
 [Desktop Entry]
 Name=Mining Bots
-StartupWMClass=miningbots
+StartupWMClass=Mining Bots
+NoDisplay=true
