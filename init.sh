@@ -1,10 +1,10 @@
 #!/bin/bash
-./webserver/abyssws &
+./webserver/abyssws 2>&1 1>>webserver/log/startup.log &
 TIME=0
 STARTED=false
 while ! $STARTED; do
     echo -en "\rWaiting for frontend server to start... ($TIME seconds elapsed)"
-    pidof abyssws-x64 && STARTED=true || pidof abyssws-x86 && STARTED=true
+    pidof abyssws-x64 >/dev/null && STARTED=true || pidof abyssws-x86 >/dev/null && STARTED=true
     sleep 1
     ((TIME++))
     if [ $TIME -gt 20 ]; then
@@ -12,7 +12,7 @@ while ! $STARTED; do
         exit
     fi
 done
-echo
+echo -e "\rServer started successfully.                                "
 source browsersettings.conf
 $ENABLE_KIOSK_MODE && KIOSK="--kiosk" || KIOSK=""
 $TEST_MODE && ../miningbots/build/bin/miningbots &
