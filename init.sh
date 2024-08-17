@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Server starting at $(date)" >> webserver/log/startup.log
-./webserver/abyssws 2>&1 1>>webserver/log/startup.log &
+./webserver/abyssws &
 TIME=0
 STARTED=false
 while ! $STARTED; do
