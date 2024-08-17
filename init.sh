@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Server starting at $(date)" >> webserver/log/startup.log
 ./webserver/abyssws 2>&1 1>>webserver/log/startup.log &
 TIME=0
 STARTED=false
@@ -16,5 +17,6 @@ echo -e "\rServer started successfully.                                "
 source browsersettings.conf
 $ENABLE_KIOSK_MODE && KIOSK="--kiosk" || KIOSK=""
 $TEST_MODE && ../miningbots/build/bin/miningbots &
-XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK --class="Mining Bots" localhost:8000
+XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --class="Mining Bots" localhost:8000
 pkill -2 abyssws
+echo "Server shut down on $(date)" >> webserver/log/startup.log
