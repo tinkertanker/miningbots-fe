@@ -1,11 +1,22 @@
 #!/bin/bash
+function server_is_running(){
+        pidof abyssws-x64 >/dev/null || pidof abyssws-x86
+}
+function start_browser(){
+    source browsersettings.conf
+    $ENABLE_KIOSK_MODE && KIOSK="--kiosk" || KIOSK=""
+    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="Mining Bots" localhost:8000
+}
+cd $(dirname $0)
 echo "Server starting at $(date)" >> webserver/log/startup.log
+if server_is_running; then
+     start_browser
+     exit
+fi
 ./webserver/abyssws &
 TIME=0
-STARTED=false
-while ! $STARTED; do
+while ! server_is_running; do
     echo -en "\rWaiting for frontend server to start... ($TIME seconds elapsed)"
-    pidof abyssws-x64 >/dev/null && STARTED=true || pidof abyssws-x86 >/dev/null && STARTED=true
     sleep 1
     ((TIME++))
     if [ $TIME -gt 20 ]; then
@@ -15,8 +26,7 @@ while ! $STARTED; do
 done
 echo -e "\rServer started successfully.                                "
 source browsersettings.conf
-$ENABLE_KIOSK_MODE && KIOSK="--kiosk" || KIOSK=""
 $TEST_MODE && ../miningbots/build/bin/miningbots &
-XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --class="Mining Bots" localhost:8000
+start_browser
 pkill -2 abyssws
 echo "Server shut down on $(date)" >> webserver/log/startup.log
