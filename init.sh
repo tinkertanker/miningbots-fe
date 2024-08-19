@@ -26,7 +26,8 @@ while ! server_is_running; do
 done
 echo -e "\rServer started successfully.                                "
 source browsersettings.conf
-$TEST_MODE && ../miningbots/build/bin/miningbots &
+$TEST_MODE && ../miningbots/build/mb-server &
 start_browser
 pkill -2 abyssws
+$TEST_MODE && pkill -2 mb-server
 echo "Server shut down on $(date)" >> webserver/log/startup.log
