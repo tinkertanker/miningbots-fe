@@ -24,7 +24,7 @@ while ! server_is_running; do
         exit
     fi
 done
-echo -e "\rServer started successfully.                                "
+echo -e "\rFrontend server started successfully.                                "
 source browsersettings.conf
 $TEST_MODE && ../miningbots/build/mb-server &
 start_browser
