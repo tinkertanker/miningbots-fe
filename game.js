@@ -11,8 +11,8 @@ const server = document.cookie
 //   var hostname = "s3.bootcamp.tk.sg";
 //   var port = 443;
 var hostname = "localhost";
-var port = 9003;
-// if (server !== null) hostname = server; 
+var port = 9002;
+if (server !== null) hostname = server; 
 var gameId;
 var http_type = "http";
 var ws_type = "ws";
@@ -99,7 +99,7 @@ var servers = {
     url: "s10.bootcamp.tk.sg",
   },
   "localhost": {
-    name: "localhost",
+    name: "Testing",
     url: "localhost",
   },
 };
