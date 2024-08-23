@@ -659,6 +659,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
     })
     .catch((error) => {
       console.error("Error:", error);
+      if(server!=undefined) alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline."); // If a server is selected, check if it exists
     });
 }
 console.log(servers["localhost"].name);
