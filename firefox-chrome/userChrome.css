@@ -1,3 +1,4 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 #TabsToolbar,#urlbar-container,#save-to-pocket-button,#fxa-toolbar-menu-button,#PanelUI-button,#unified-extensions-button {
 visibility:collapse;
 }
