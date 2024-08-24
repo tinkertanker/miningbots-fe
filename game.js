@@ -3,10 +3,7 @@ console.log("script started");
 // Get hostname from cookie, otherwise leave as null
 
 
-const server = document.cookie
-  .split("; ")
-  .find((row) => row.startsWith("lastServer="))
-  ?.split("=")[1];
+const server = getCookie("lastServer");
 
 //   var hostname = "s3.bootcamp.tk.sg";
 //   var port = 443;
@@ -133,7 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("navbarDropdownMenuLink").textContent =
         selectedServerName;
       // Save to cookie first
-      document.cookie = `lastServer=${selectedServerUrl}`;
+      var today=new Date();
+      var tomorrow=new Date(today.getTime()+24*60*60*1000);
+      setCookie("lastServer",selectedServerUrl,createExpiryDate(tomorrow),"/");
       location.reload();
       // drawGame(selectedServerUrl, port);
     });
