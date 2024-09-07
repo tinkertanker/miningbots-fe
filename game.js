@@ -660,7 +660,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
       console.error("Error:", error);
       if(server!=undefined){
             alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-            setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400);
+            setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
       }	
     });
 }
