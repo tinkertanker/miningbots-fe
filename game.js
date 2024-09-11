@@ -1,15 +1,14 @@
 console.log("script started");
 
 // Get hostname from cookie, otherwise leave as null
-
-
 const server = document.cookie
   .split("; ")
   .find((row) => row.startsWith("lastServer="))
   ?.split("=")[1];
 
-//   var hostname = "s3.bootcamp.tk.sg";
-//   var port = 443;
+//Probably some default values for original testing:
+//var hostname = "s3.bootcamp.tk.sg";
+//var port = 443;
 var hostname = "localhost";
 var port = 9003;
 // if (server !== null) hostname = server; 
@@ -17,6 +16,7 @@ var gameId;
 var http_type = "http";
 var ws_type = "ws";
 
+//Dictionary of servers and respective names, urls
 var servers = {
   "p1.bootcamp.tk.sg": {
     name: "Game 1",
@@ -104,8 +104,6 @@ var servers = {
   },
 };
 
-
-
 // Variable to hold the selected server URL
 let selectedServerUrl = null;
 
@@ -141,7 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Player Name fetch code 
-
 async function fetchPlayerNames(gameId, playerIds) {
     const url = `${http_type}://${hostname}:${port}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
@@ -173,9 +170,9 @@ function drawGame(hostname, port) {
     vibranium: new Image(),
     adamantite: new Image(),
     unobtanium: new Image()
-
 };
 
+//Assigns images
 images.kFactoryBot.src = 'assets/Factory_Bot.png';
 images.kMiningBot.src = 'assets/Mining_Bot.png';
 images.mixed_ore.src = 'assets/Mixed_Ore.png';
@@ -184,6 +181,7 @@ images.vibranium.src = 'assets/Vibranium.png';
 images.adamantite.src = 'assets/Adamantite.png';
 images.unobtanium.src = 'assets/Unobtanium.png';
 
+//Likely connecting to the server and retrieving initial game state
 fetch(`${http_type}://${hostname}:${port}/games`, {
     method: 'GET'
 })
@@ -220,6 +218,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             throw new Error(response.statusText);
         }
     })
+    //Map config taken from server data
     .then(async result => {
         let map_config = await result.map_config;
         console.log('map_config:', map_config);
@@ -339,13 +338,14 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const jobMap = new Map();
         const players = {};
         const playerNames = {};
-
+    
         ws.onopen = function () {
             console.log('Connected to WebSocket server');
             const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: 514525537, observer_name: 'Observer' });
             ws.send(subscribeRequest);
         };
 
+        //When receiving message from the server, parses it and applies updates to game accordingly
         ws.onmessage = function (msg) {
             console.log('before parse:', msg);
             try {
@@ -394,6 +394,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
         const colors = ['blue','red'];
 
+        //Updates the bot's position and its job?
         function updateBot(botUpdate, playerId) {
             if(!players.hasOwnProperty(playerId) && Object.keys(players).length < 2){
                 players[playerId] = Object.keys(players).length;
@@ -429,14 +430,14 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             renderBots();
         }
 
+        //?
         function updateJob(data){
             const {id, action, status} = data;
             var job = {action: action, status: status}
             jobMap.set(id, job);
         }
-
         
-
+        //Updates the state of a tile on the map
         function updateLand(data) {
             const { position: { x, y }, is_traversable, resources} = data;
             if (is_traversable) {
@@ -479,6 +480,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             })
         }
 
+        //Just the win screen
         function showWinner(playerId) {
             const winnerDiv = document.createElement('div');
             winnerDiv.style.position = 'absolute';
@@ -587,5 +589,4 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
 }
 console.log(servers["localhost"].name);
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
-// document.getElementById("navbarDropdownMenuLink").textContent = "localhost";
 drawGame(hostname, port);
