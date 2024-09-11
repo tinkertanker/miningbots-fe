@@ -227,6 +227,8 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const screenHeight = window.innerHeight;
         const COLS = map_config.max_x;
         const ROWS = map_config.max_y;
+        const MAX_WHITE_WIDTH = 60;
+        const MAX_WHITE_HEIGHT = 60;
         const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS);
 
         console.log(COLS);
@@ -262,157 +264,65 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
 
         let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown));
 
-        // function randomState(){
-        //     for(let row = 0; row < ROWS; row++){
-        //         for(let col = 0; col < COLS; col++){
-        //             gameState[row][col] = Math.floor(Math.random() * Object.keys(elements).length);
-        //         }
-        //     }
-        //     console.log(gameState);
-        // }
 
         function render() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let row = 0; row < ROWS; row++) {
                 for (let col = 0; col < COLS; col++) {
                     const element = gameState[row][col];
-                    // if (COLS < 60) {
-                    //     ctx.strokeStyle = 'white'; // set border color to white
-                    //     ctx.lineWidth = 1; // set border width
-                    //     ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                    // }
-                    // else {
-                    //     ctx.lineWidth=0;
-                    //     console.log("Linewidth: ", ctx.lineWidth)
-                    // }
                     switch (element) {
                         case elements.kFactoryBotOne: // Blue
                             ctx.fillStyle = '#25537b'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);  
-                            // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBotOne: // Blue
                             ctx.fillStyle = '#25537b'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.kFactoryBotTwo: // Red
                             ctx.fillStyle = '#AA4344'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
                             ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE); 
-                            // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
                             break;
                         case elements.kMiningBotTwo: // Red
                             ctx.fillStyle = '#AA4344'; // set border color to white
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
                             ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
                             break;
                         case elements.unknown:
                             ctx.fillStyle = '#221d14'; //'rgb(64, 64, 64)'; // very dark gray
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            // if (COLS < 60) {
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             break;
                         case elements.traversable:
-                            // if (COLS < 60) {
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            // if (COLS < 60) {
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             break;
                         case elements.resource:
-                          // if (COLS < 60) {
-                          //   ctx.strokeStyle = 'white'; // set border color to white
-                          //   ctx.lineWidth = 1; // set border width
-                          //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                          // }
-                          // else {
-                          //   ctx.lineWidth=0;
-                          // }
                           ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                          // ctx.fillStyle = 'purple';
                           break;
                         case elements.granite:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            // if (COLS < 60) {
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             ctx.drawImage(images.granite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            
-                            // ctx.fillStyle = 'purple';
                             break;
                         case elements.vibranium:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            // if (COLS < 60) {
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             ctx.drawImage(images.vibranium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
                             break;
                         case elements.adamantite:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            // if (COLS < 60) {
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             ctx.drawImage(images.adamantite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
                             break;
                         case elements.unobtanium:
                             ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
                             ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            // if (COLS < 60) {
-                            //   ctx.strokeStyle = 'white'; // set border color to white
-                            //   ctx.lineWidth = 1; // set border width
-                            //   ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // }
-                            // else {
-                            //   ctx.lineWidth=0;
-                            // }
                             ctx.drawImage(images.unobtanium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
                             break;
                     }
-                    if (COLS < 60) {
+                    if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) {
                         ctx.strokeStyle = 'white'; // set border color to white
                         ctx.lineWidth = 1; // set border width
                         ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
