@@ -161,6 +161,8 @@ async function fetchPlayerNames(gameId, playerIds) {
 function drawGame(hostname, port) {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
+
+  //Maybe adjust this to dynamically adapt such that the whole canvas will be shown regardless of map aspect ratio?
   const GRID_SIZE = 32;
   const images = {
     kFactoryBot: new Image(),
@@ -399,7 +401,9 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             }
         }
 
+        //Sidebars has to be dynamically added if in the future you want >2 players
         const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
+        //Possibly add more colours for >2 players too
         const colors = ['blue','red'];
 
         //Updates the bot's position and its job?
@@ -572,13 +576,21 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             `;
 
             const cargoContainer = document.createElement('div');
+
+            //Creating a grid: left side will be image of mineral, right side will be count of mineral
+            cargoContainer.style = "display: grid; grid-template-columns: auto auto"
+
             // Add each cargo item as a new paragraph
             cargo.forEach(item => {
-                const cargoItem = document.createElement('p');
-                cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
-                cargoItem.style.margin = '2px 0';
-                cargoItem.style.padding = '0';
-                cargoContainer.appendChild(cargoItem);
+                //Image of the mineral
+                let mineralImage = document.createElement('img')
+                mineralImage.src = "./assets/" + String(resources[item.id]) + ".png"
+                cargoContainer.appendChild(mineralImage);
+
+                //Text describing how much of the mineral there is
+                let mineralAmt = document.createElement('p')
+                mineralAmt.innerHTML = `${item.amount}`
+                cargoContainer.appendChild(mineralAmt)
             });
                 
                     // Append the cargo container to the botDiv
