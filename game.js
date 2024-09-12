@@ -229,6 +229,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const ROWS = map_config.max_y;
         const MAX_WHITE_WIDTH = 60;
         const MAX_WHITE_HEIGHT = 60;
+        const borderWidth = 1
         const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS);
 
         console.log(COLS);
@@ -264,6 +265,13 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
 
         let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown));
 
+        function drawASquare(c, r, colour, image) {
+            ctx.fillStyle = colour;
+            ctx.fillRect(c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
+            if (image) {
+                ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            }
+        }
 
         function render() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -272,54 +280,37 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                     const element = gameState[row][col];
                     switch (element) {
                         case elements.kFactoryBotOne: // Blue
-                            ctx.fillStyle = '#25537b'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);  
+                            drawASquare(col, row, '#25537b', images.kFactoryBot);  
                             break;
                         case elements.kMiningBotOne: // Blue
-                            ctx.fillStyle = '#25537b'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            drawASquare(col, row, '#25537b', images.kMiningBot);
                             break;
                         case elements.kFactoryBotTwo: // Red
-                            ctx.fillStyle = '#AA4344'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE); 
+                            drawASquare(col, row, '#AA4344', images.kFactoryBot);
                             break;
                         case elements.kMiningBotTwo: // Red
-                            ctx.fillStyle = '#AA4344'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            drawASquare(col, row, '#AA4344', images.kMiningBot);
                             break;
                         case elements.unknown:
-                            ctx.fillStyle = '#221d14'; //'rgb(64, 64, 64)'; // very dark gray
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
+                            drawASquare(col, row, '#221d14');
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
+                            drawASquare(col, row, '#67583b');
                             break;
                         case elements.resource:
-                          ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                          break;
+                            ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            break;
                         case elements.granite:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.granite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            drawASquare(col, row, '#67583b', images.granite);
                             break;
                         case elements.vibranium:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.vibranium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            drawASquare(col, row, '#67583b', images.vibranium);
                             break;
                         case elements.adamantite:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.drawImage(images.adamantite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            drawASquare(col, row, '#67583b', images.adamantite);
                             break;
                         case elements.unobtanium:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE-1, row * GRID_SIZE-1, GRID_SIZE+1, GRID_SIZE+1);
-                            ctx.drawImage(images.unobtanium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                            drawASquare(col, row, '#67583b', images.unobtanium);
                             break;
                     }
                     if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) {
