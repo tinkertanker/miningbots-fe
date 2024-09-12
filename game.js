@@ -284,7 +284,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                     let terrainColor; //can change to actual textures later
                     switch(terrain) {
                         case 0:
-                            terrainColor = '#67583b'; //brown? grass?
+                            terrainColor = '#68642e'; //yellow? grass?
                             break;
                         case 1:
                             terrainColor = '#abbaa9'; //light grey hills
