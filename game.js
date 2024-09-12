@@ -265,9 +265,10 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         });
 
         let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown));
+        let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(-1)); //default value for unknown squares
 
-        function drawASquare(c, r, colour, image) {
-            ctx.fillStyle = colour;
+        function drawASquare(c, r, colour, image) { //can modify this to take in two images instead of 1 colour and 1 image later
+            ctx.fillStyle = colour; 
             ctx.fillRect(c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
             if (image) {
                 ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -279,6 +280,21 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             for (let row = 0; row < ROWS; row++) {
                 for (let col = 0; col < COLS; col++) {
                     const element = gameState[row][col];
+                    const terrain = terrains[row][col];
+                    let terrainColor; //can change to actual textures later
+                    switch(terrain) {
+                        case 0:
+                            terrainColor = '#67583b'; //brown? grass?
+                            break;
+                        case 1:
+                            terrainColor = '#abbaa9'; //light grey hills
+                            break;
+                        case 2:
+                            terrainColor = '#5f6b5d'; //dark grey mountains
+                            break;
+                        default:
+                            terrainColor = '#221d14'; //dark brown unknown
+                    }
                     switch (element) {
                         case elements.kFactoryBotOne: // Blue
                             drawASquare(col, row, '#25537b', images.kFactoryBot);  
@@ -293,25 +309,26 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                             drawASquare(col, row, '#AA4344', images.kMiningBot);
                             break;
                         case elements.unknown:
-                            drawASquare(col, row, '#221d14');
+                            drawASquare(col, row, terrainColor);
                             break;
                         case elements.traversable:
-                            drawASquare(col, row, '#67583b');
+
+                            drawASquare(col, row, terrainColor);
                             break;
                         case elements.resource:
                             ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.granite:
-                            drawASquare(col, row, '#67583b', images.granite);
+                            drawASquare(col, row, terrainColor, images.granite);
                             break;
                         case elements.vibranium:
-                            drawASquare(col, row, '#67583b', images.vibranium);
+                            drawASquare(col, row, terrainColor, images.vibranium);
                             break;
                         case elements.adamantite:
-                            drawASquare(col, row, '#67583b', images.adamantite);
+                            drawASquare(col, row, terrainColor, images.adamantite);
                             break;
                         case elements.unobtanium:
-                            drawASquare(col, row, '#67583b', images.unobtanium);
+                            drawASquare(col, row, terrainColor, images.unobtanium);
                             break;
                     }
                     if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) {
@@ -434,7 +451,8 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         
         //Updates the state of a tile on the map
         function updateLand(data) {
-            const { position: { x, y }, is_traversable, resources} = data;
+            const { position: { x, y }, is_traversable, resources, terrain_id} = data;
+            terrains[ROWS - y - 1][x] = terrain_id
             if (is_traversable) {
                 gameState[ROWS - y - 1][x] = elements.traversable;
             } else {
