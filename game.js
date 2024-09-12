@@ -228,7 +228,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const ROWS = map_config.max_y;
         const MAX_WHITE_WIDTH = 60;
         const MAX_WHITE_HEIGHT = 60;
-        const borderWidth = 1
+        const borderWidth = 1;
         const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS);
 
         console.log(COLS);
