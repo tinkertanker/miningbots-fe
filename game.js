@@ -566,19 +566,20 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                     const botDiv = document.createElement('div');
                     console.log('cargo: ', cargo);
                     botDiv.classList.add('bot-info');
-                
-        
+
                     botDiv.innerHTML = `
-                <h4 style="margin: 2px 0; padding: 0;">Bot ID: ${variant}, ${id}</h4>
-                <p style="margin: 2px 0; padding: 0;">Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
-                <p style="margin: 2px 0; padding: 0;">Job Info: ${job.action}, ${job.status}</p>
+                <h4 style="margin: 2px 0; padding: 0;"><b>Bot ID:</b> ${variant}, ${id}</h4>
+                <hr style="margin: 2px 0;">
+                <p style="margin: 2px 0; padding: 0;"><b>Position:</b> (${position.x}, ${position.y})</p>
+                <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
+                <p style="margin: 2px 0; padding: 0;"><b>Job Info:</b> ${job.action}, ${job.status}</p>
                 <hr style="margin: 2px 0;">
             `;
 
             const cargoContainer = document.createElement('div');
 
             //Creating a grid: left side will be image of mineral, right side will be count of mineral
-            cargoContainer.style = "display: grid; grid-template-columns: auto auto"
+            cargoContainer.style = "display: grid; grid-template-columns: auto auto; grid-gap: 0.5vw; padding: 0.5vw"
 
             // Add each cargo item as a new paragraph
             cargo.forEach(item => {
