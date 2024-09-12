@@ -1,43 +1,49 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  .sidebar-container {
-    display: flex;
-    flex-direction: row;
-    width: 520px;
-    position: fixed;
-    top: 0;
-    right: 0;
-  }
-  
-  .sidebar {
-    width: 260px;
-    height: 100vh;
-    background-color: #f1f1f1;
-    padding: 7px;
-    overflow-y: auto;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .bot-info {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-  }
-  
-  .bot-info h4 {
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-  }
-  
-  .bot-info p {
-    margin: 5px 0;
-    font-size: 12px;
-  }
-  .navbar {
-    padding-left: 1%;
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar-container {
+  width: 520px;
+  position: relative;
+  right: 0;
+}
+
+.sidebar {
+  /* This allows the bot-info DIVs to be aligned horizontally */
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+
+  /* In theory, the automatic width would adapt based on the size of the game canvas */
+  /* And auto height should help with > 1 player -> hopefully evenly distributed height */
+  width: auto;
+  height: auto;
+
+  background-color: #f1f1f1;
+  padding: 7px;
+  overflow-x: auto;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.bot-info {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.bot-info h4 {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.bot-info p {
+  margin: 5px 0;
+  font-size: 12px;
+}
+
+.navbar {
+  padding-left: 1%;
+}

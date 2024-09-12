@@ -5,7 +5,7 @@ This site connects to an ongoing `MiningBots` game and provices an birds-eye vie
 ## Deployment Notes
 Deploying this site publicly requires all endpoints be secured, ie `https`/`wss`. Reverse proxy non-TLS traffic as necessary such that your browser will not block loading mixed content from `https` and `http` sources.
 
-An example of a `Caddyfile` (this assumes this code is stored in `/opt/web/miningbots-fe`
+An example of a `Caddyfile` (this assumes this code is stored in `/opt/web/miningbots-fe`)
 
 ```Caddyfile
 game.bootcamp.tk.sg {
