@@ -231,7 +231,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const MAX_WHITE_WIDTH = 60;
         const MAX_WHITE_HEIGHT = 60;
         const borderWidth = 1;
-        const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS);
+        const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
 
         console.log(COLS);
 
@@ -264,13 +264,13 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             resources[Object.keys(resources).length] = resource.name;
         });
 
-        let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown));
+        let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
         let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(-1)); //default value for unknown squares
 
         function drawASquare(c, r, colour, image) { //can modify this to take in two images instead of 1 colour and 1 image later
             ctx.fillStyle = colour; 
             ctx.fillRect(c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
-            if (image) {
+            if (image) { //if an element image was given
                 ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
             }
         }
@@ -309,11 +309,10 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                             drawASquare(col, row, '#AA4344', images.kMiningBot);
                             break;
                         case elements.unknown:
-                            drawASquare(col, row, terrainColor);
+                            drawASquare(col, row, terrainColor); //nothing occupying the space, so no additional image
                             break;
                         case elements.traversable:
-
-                            drawASquare(col, row, terrainColor);
+                            drawASquare(col, row, terrainColor); //nothing occupying the space, so no additional image
                             break;
                         case elements.resource:
                             ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -331,7 +330,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                             drawASquare(col, row, terrainColor, images.unobtanium);
                             break;
                     }
-                    if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) {
+                    if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
                         ctx.strokeStyle = 'white'; // set border color to white
                         ctx.lineWidth = 1; // set border width
                         ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -531,7 +530,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                 gameState[ROWS - position.y -1][position.x] = elements[element];
             }
         }
-
+        //shows a row for each player showing each bot and their data
         async function updateUI(player_id) {
             if(!players.hasOwnProperty(player_id) && Object.keys(players).length < 2){
                 players[player_id] = Object.keys(players).length;
