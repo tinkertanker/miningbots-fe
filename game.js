@@ -187,6 +187,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
+        document.querySelector("#loadingbox").style.display="none";
         // console.log(response);
         if (response.ok) {
             // console.log('games:', response);
@@ -657,11 +658,12 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         
     })
     .catch((error) => {
+      document.querySelector("#loadingbox").style.display="none";
       console.error("Error:", error);
-      if(server!=undefined){
+      setTimeout(function(){if(server!=undefined){
             alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
             setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
-      }	
+      }},400);	
     });
 }
 console.log(servers["localhost"].name);
