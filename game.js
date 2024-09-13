@@ -5,15 +5,17 @@ console.log("script started");
 
 const server = getCookie("lastServer");
 
-//   var hostname = "s3.bootcamp.tk.sg";
-//   var port = 443;
-// var hostname = "localhost";
+//Probably some default values for original testing:
+//var hostname = "s3.bootcamp.tk.sg";
+//var port = 443;
+var hostname = "localhost";
 var port = 9003;
 if (server !== null) hostname = server; 
 var gameId;
 var http_type = "http";
 var ws_type = "ws";
 
+//Dictionary of servers and respective names, urls
 var servers = {
   "p1.bootcamp.tk.sg": {
     name: "Game 1",
@@ -101,8 +103,6 @@ var servers = {
   },
 };
 
-
-
 // Variable to hold the selected server URL
 let selectedServerUrl = null;
 
@@ -140,7 +140,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Player Name fetch code 
-
 async function fetchPlayerNames(gameId, playerIds) {
     const url = `${http_type}://${hostname}:${port}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
@@ -163,6 +162,8 @@ async function fetchPlayerNames(gameId, playerIds) {
 function drawGame(hostname, port) {
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
+
+  //Maybe adjust this to dynamically adapt such that the whole canvas will be shown regardless of map aspect ratio?
   const GRID_SIZE = 32;
   const images = {
     kFactoryBot: new Image(),
@@ -172,9 +173,9 @@ function drawGame(hostname, port) {
     vibranium: new Image(),
     adamantite: new Image(),
     unobtanium: new Image()
-
 };
 
+//Assigns images
 images.kFactoryBot.src = 'assets/Factory_Bot.png';
 images.kMiningBot.src = 'assets/Mining_Bot.png';
 images.mixed_ore.src = 'assets/Mixed_Ore.png';
@@ -183,6 +184,7 @@ images.vibranium.src = 'assets/Vibranium.png';
 images.adamantite.src = 'assets/Adamantite.png';
 images.unobtanium.src = 'assets/Unobtanium.png';
 
+//Likely connecting to the server and retrieving initial game state
 fetch(`${http_type}://${hostname}:${port}/games`, {
     method: 'GET'
 })
@@ -221,6 +223,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             throw new Error(response.statusText);
         }
     })
+    //Map config taken from server data
     .then(async result => {
         let map_config = await result.map_config;
         console.log('map_config:', map_config);
@@ -228,11 +231,24 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const screenHeight = window.innerHeight;
         const COLS = map_config.max_x;
         const ROWS = map_config.max_y;
-        const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS);
+        const MAX_WHITE_WIDTH = 60;
+        const MAX_WHITE_HEIGHT = 60;
+        const borderWidth = 1;
+        const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+
+        console.log(COLS);
 
         // Update canvas dimensions
         canvas.width = COLS * GRID_SIZE;
         canvas.height = ROWS * GRID_SIZE;
+
+        //Since final canvas dimensions are known, resize the container that holds canvas and DIV for bot-info DIVs
+        //This allows the bot-info DIVs to be directly right next to the game canvas without any ugly white space
+        document.getElementById("game-info-container").style = "display: grid; grid-template-columns: " + canvas.width + "px " + (screenWidth - canvas.width) + "px"
+        
+        //Allows the bot-info container to take up as much remaining space as possible (on the right; not any space of game canvas)
+        document.getElementById("bot-info-megacontainer").style.width = screenWidth - canvas.width + "px"
+
         let resource_configs = map_config.resource_configs;
 
         const elements = {
@@ -259,150 +275,76 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             resources[Object.keys(resources).length] = resource.name;
         });
 
-        let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown));
+        let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
+        let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(-1)); //default value for unknown squares
 
-        // function randomState(){
-        //     for(let row = 0; row < ROWS; row++){
-        //         for(let col = 0; col < COLS; col++){
-        //             gameState[row][col] = Math.floor(Math.random() * Object.keys(elements).length);
-        //         }
-        //     }
-        //     console.log(gameState);
-        // }
+        function drawASquare(c, r, colour, image) { //can modify this to take in two images instead of 1 colour and 1 image later
+            ctx.fillStyle = colour; 
+            ctx.fillRect(c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
+            if (image) { //if an element image was given
+                ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+            }
+        }
 
         function render() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let row = 0; row < ROWS; row++) {
                 for (let col = 0; col < COLS; col++) {
-                  const element = gameState[row][col];
-                  if (COLS < 60) {
-                    ctx.strokeStyle = 'white'; // set border color to white
-                    ctx.lineWidth = 1; // set border width
-                    ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                  }
-                  else {
-                    ctx.lineWidth=0;
-                  }
-
+                    const element = gameState[row][col];
+                    const terrain = terrains[row][col];
+                    let terrainColor; //can change to actual textures later
+                    switch(terrain) {
+                        case 0:
+                            terrainColor = '#68642e'; //yellow? grass?
+                            break;
+                        case 1:
+                            terrainColor = '#abbaa9'; //light grey hills
+                            break;
+                        case 2:
+                            terrainColor = '#5f6b5d'; //dark grey mountains
+                            break;
+                        default:
+                            terrainColor = '#221d14'; //dark brown unknown
+                    }
                     switch (element) {
                         case elements.kFactoryBotOne: // Blue
-                            ctx.fillStyle = '#25537b'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);  
-                            // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
+                            drawASquare(col, row, '#25537b', images.kFactoryBot);  
                             break;
                         case elements.kMiningBotOne: // Blue
-                            ctx.fillStyle = '#25537b'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
+                            drawASquare(col, row, '#25537b', images.kMiningBot);
                             break;
                         case elements.kFactoryBotTwo: // Red
-                            ctx.fillStyle = '#AA4344'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.drawImage(images.kFactoryBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE); 
-                            // ctx.fillStyle = 'rgb(169, 169, 169)'; // medium light gray
+                            drawASquare(col, row, '#AA4344', images.kFactoryBot);
                             break;
                         case elements.kMiningBotTwo: // Red
-                            ctx.fillStyle = '#AA4344'; // set border color to white
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            ctx.drawImage(images.kMiningBot, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'rgb(211, 211, 211)'; // lighter shade of gray
+                            drawASquare(col, row, '#AA4344', images.kMiningBot);
                             break;
                         case elements.unknown:
-                            ctx.fillStyle = '#221d14'; //'rgb(64, 64, 64)'; // very dark gray
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (COLS < 60) {
-                              ctx.lineWidth = 1; // set border width
-                              ctx.strokeStyle = 'white'; // set border color to white
-                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            }
-                            else {
-                              ctx.lineWidth=0;
-                            }
+                            drawASquare(col, row, terrainColor); //nothing occupying the space, so no additional image
                             break;
                         case elements.traversable:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (COLS < 60) {
-                              ctx.strokeStyle = 'white'; // set border color to white
-                              ctx.lineWidth = 1; // set border width
-                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            }
-                            else {
-                              ctx.lineWidth=0;
-                            }
+                            drawASquare(col, row, terrainColor); //nothing occupying the space, so no additional image
                             break;
                         case elements.resource:
-                          if (COLS < 60) {
-                            ctx.strokeStyle = 'white'; // set border color to white
-                            ctx.lineWidth = 1; // set border width
-                            ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                          }
-                          else {
-                            ctx.lineWidth=0;
-                          }
-                          ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
+                            ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.granite:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (COLS < 60) {
-                              ctx.strokeStyle = 'white'; // set border color to white
-                              ctx.lineWidth = 1; // set border width
-                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            }
-                            else {
-                              ctx.lineWidth=0;
-                            }
-                            ctx.drawImage(images.granite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            
-                            // ctx.fillStyle = 'purple';
+                            drawASquare(col, row, terrainColor, images.granite);
                             break;
                         case elements.vibranium:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (COLS < 60) {
-                              ctx.strokeStyle = 'white'; // set border color to white
-                              ctx.lineWidth = 1; // set border width
-                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            }
-                            else {
-                              ctx.lineWidth=0;
-                            }
-                            ctx.drawImage(images.vibranium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
+                            drawASquare(col, row, terrainColor, images.vibranium);
                             break;
                         case elements.adamantite:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (COLS < 60) {
-                              ctx.strokeStyle = 'white'; // set border color to white
-                              ctx.lineWidth = 1; // set border width
-                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            }
-                            else {
-                              ctx.lineWidth=0;
-                            }
-                            ctx.drawImage(images.adamantite, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
+                            drawASquare(col, row, terrainColor, images.adamantite);
                             break;
                         case elements.unobtanium:
-                            ctx.fillStyle = '#67583b'; //'rgb(105, 105, 105)'; // dark gray
-                            ctx.fillRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            if (COLS < 60) {
-                              ctx.strokeStyle = 'white'; // set border color to white
-                              ctx.lineWidth = 1; // set border width
-                              ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            }
-                            else {
-                              ctx.lineWidth=0;
-                            }
-                            ctx.drawImage(images.unobtanium, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                            // ctx.fillStyle = 'purple';
+                            drawASquare(col, row, terrainColor, images.unobtanium);
                             break;
-                        
+                    }
+                    if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
+                        ctx.strokeStyle = 'white'; // set border color to white
+                        ctx.lineWidth = 1; // set border width
+                        ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                     }
                 }
             }
@@ -416,13 +358,14 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         const jobMap = new Map();
         const players = {};
         const playerNames = {};
-
+    
         ws.onopen = function () {
             console.log('Connected to WebSocket server');
             const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: 514525537, observer_name: 'Observer' });
             ws.send(subscribeRequest);
         };
 
+        //When receiving message from the server, parses it and applies updates to game accordingly
         ws.onmessage = function (msg) {
             console.log('before parse:', msg);
             try {
@@ -468,9 +411,12 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             }
         }
 
+        //Sidebars has to be dynamically added if in the future you want >2 players
         const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
+        //Possibly add more colours for >2 players too
         const colors = ['blue','red'];
 
+        //Updates the bot's position and its job?
         function updateBot(botUpdate, playerId) {
             if(!players.hasOwnProperty(playerId) && Object.keys(players).length < 2){
                 players[playerId] = Object.keys(players).length;
@@ -506,16 +452,17 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             renderBots();
         }
 
+        //?
         function updateJob(data){
             const {id, action, status} = data;
             var job = {action: action, status: status}
             jobMap.set(id, job);
         }
-
         
-
+        //Updates the state of a tile on the map
         function updateLand(data) {
-            const { position: { x, y }, is_traversable, resources} = data;
+            const { position: { x, y }, is_traversable, resources, terrain_id} = data;
+            terrains[ROWS - y - 1][x] = terrain_id
             if (is_traversable) {
                 gameState[ROWS - y - 1][x] = elements.traversable;
             } else {
@@ -556,6 +503,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
             })
         }
 
+        //Just the win screen
         function showWinner(playerId) {
             const winnerDiv = document.createElement('div');
             winnerDiv.style.position = 'absolute';
@@ -593,7 +541,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                 gameState[ROWS - position.y -1][position.x] = elements[element];
             }
         }
-
+        //shows a row for each player showing each bot and their data
         async function updateUI(player_id) {
             if(!players.hasOwnProperty(player_id) && Object.keys(players).length < 2){
                 players[player_id] = Object.keys(players).length;
@@ -628,23 +576,32 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                     const botDiv = document.createElement('div');
                     console.log('cargo: ', cargo);
                     botDiv.classList.add('bot-info');
-                
-        
+
                     botDiv.innerHTML = `
-                <h4 style="margin: 2px 0; padding: 0;">Bot ID: ${variant}, ${id}</h4>
-                <p style="margin: 2px 0; padding: 0;">Position: (${position.x}, ${position.y}), Energy: ${current_energy}</p>
-                <p style="margin: 2px 0; padding: 0;">Job Info: ${job.action}, ${job.status}</p>
+                <h4 style="margin: 2px 0; padding: 0;"><b>Bot ID:</b> ${variant}, ${id}</h4>
+                <hr style="margin: 2px 0;">
+                <p style="margin: 2px 0; padding: 0;"><b>Position:</b> (${position.x}, ${position.y})</p>
+                <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
+                <p style="margin: 2px 0; padding: 0;"><b>Job Info:</b> ${job.action}, ${job.status}</p>
                 <hr style="margin: 2px 0;">
             `;
 
             const cargoContainer = document.createElement('div');
+
+            //Creating a grid: left side will be image of mineral, right side will be count of mineral
+            cargoContainer.style = "display: grid; grid-template-columns: auto auto; grid-gap: 0.5vw; padding: 0.5vw"
+
             // Add each cargo item as a new paragraph
             cargo.forEach(item => {
-                const cargoItem = document.createElement('p');
-                cargoItem.textContent = `${resources[item.id]}: ${item.amount}`;
-                cargoItem.style.margin = '2px 0';
-                cargoItem.style.padding = '0';
-                cargoContainer.appendChild(cargoItem);
+                //Image of the mineral
+                let mineralImage = document.createElement('img')
+                mineralImage.src = "./assets/" + String(resources[item.id]) + ".png"
+                cargoContainer.appendChild(mineralImage);
+
+                //Text describing how much of the mineral there is
+                let mineralAmt = document.createElement('p')
+                mineralAmt.innerHTML = `${item.amount}`
+                cargoContainer.appendChild(mineralAmt)
             });
                 
                     // Append the cargo container to the botDiv
@@ -669,5 +626,4 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
 }
 console.log(servers["localhost"].name);
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
-// document.getElementById("navbarDropdownMenuLink").textContent = "localhost";
 drawGame(hostname, port);
