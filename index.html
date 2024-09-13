@@ -33,18 +33,18 @@
   </nav>
 
   <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
-  <div style = "display: grid; grid-template-columns: auto auto">
+  <div style="display: grid; grid-template-columns: auto auto" id="game-info-container">
     <!--The drawing of the game-->
     <canvas id="gameCanvas"></canvas>
 
     <!--A DIV to hold all the player-bot info-->
-    <div class = "sidebar-container">
+    <div class="sidebar-container" id="bot-info-megacontainer">
       <!--For the purpose of allowing >2 players to be shown, probably best to also dynamically populate this-->
       <div class="sidebar" id="bot-sidebar-one"></div>
       <div class="sidebar" id="bot-sidebar-two"></div>
     </div>
   </div>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>

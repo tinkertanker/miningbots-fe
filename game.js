@@ -238,6 +238,14 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         // Update canvas dimensions
         canvas.width = COLS * GRID_SIZE;
         canvas.height = ROWS * GRID_SIZE;
+
+        //Since final canvas dimensions are known, resize the container that holds canvas and DIV for bot-info DIVs
+        //This allows the bot-info DIVs to be directly right next to the game canvas without any ugly white space
+        document.getElementById("game-info-container").style = "display: grid; grid-template-columns: " + canvas.width + "px " + (screenWidth - canvas.width) + "px"
+        
+        //Allows the bot-info container to take up as much remaining space as possible (on the right; not any space of game canvas)
+        document.getElementById("bot-info-megacontainer").style.width = screenWidth - canvas.width + "px"
+
         let resource_configs = map_config.resource_configs;
 
         const elements = {
