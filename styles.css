@@ -10,6 +10,10 @@ body {
     top: 0;
     right: 0;
   }
+
+  .sidebar-hidden {
+    visibility:collapse;
+  }
   
   .sidebar {
     width: 260px;

@@ -187,7 +187,8 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
-        document.querySelector("#loadingbox").style.display="none";
+        document.querySelector("#loadingbox").classList.add("loading-complete");
+        document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
         // console.log(response);
         if (response.ok) {
             // console.log('games:', response);
@@ -658,7 +659,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         
     })
     .catch((error) => {
-      document.querySelector("#loadingbox").style.display="none";
+      document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";
       console.error("Error:", error);
       setTimeout(function(){if(server!=undefined){
             alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
