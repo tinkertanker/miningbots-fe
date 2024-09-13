@@ -171,7 +171,13 @@ function drawGame(hostname, port) {
     granite: new Image(),
     vibranium: new Image(),
     adamantite: new Image(),
-    unobtanium: new Image()
+    unobtanium: new Image(),
+};
+  const terrainImages = {
+    unknown: new Image(),
+    grassland: new Image(),
+    hills: new Image(),
+    mountain: new Image()
 };
 
 //Assigns images
@@ -182,6 +188,11 @@ images.granite.src = 'assets/Granite.png';
 images.vibranium.src = 'assets/Vibranium.png';
 images.adamantite.src = 'assets/Adamantite.png';
 images.unobtanium.src = 'assets/Unobtanium.png';
+
+terrainImages.unknown.src = 'assets/unknown.jpg';
+terrainImages.grassland.src = 'assets/grassland.jpg';
+terrainImages.hills.src = 'assets/hills.jpg';
+terrainImages.mountain.src = 'assets/mountain.jpg';
 
 //Likely connecting to the server and retrieving initial game state
 fetch(`${http_type}://${hostname}:${port}/games`, {
@@ -273,14 +284,21 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         });
 
         let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
-        let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(-1)); //default value for unknown squares
+        let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at teh start
 
-        function drawASquare(c, r, colour, image) { //can modify this to take in two images instead of 1 colour and 1 image later
-            ctx.fillStyle = colour; 
-            ctx.fillRect(c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
+        function drawASquare(c, r, background, image) {
+            ctx.drawImage(background, c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
             if (image) { //if an element image was given
                 ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
             }
+        }
+
+//this exists because the bots have a background colour that indicates the player they are attached to, instead of the terrain
+//can remove this if the background is also changed to an image 
+        function drawABot(c, r, colour, image) { 
+            ctx.fillStyle= colour;
+            ctx.fillRect(c * GRID_SIZE-borderWidth, r * GRID_SIZE-borderWidth, GRID_SIZE+borderWidth, GRID_SIZE+borderWidth);
+            ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
         }
 
         function render() {
@@ -289,53 +307,43 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
                 for (let col = 0; col < COLS; col++) {
                     const element = gameState[row][col];
                     const terrain = terrains[row][col];
-                    let terrainColor; //can change to actual textures later
-                    switch(terrain) {
-                        case 0:
-                            terrainColor = '#68642e'; //yellow? grass?
-                            break;
-                        case 1:
-                            terrainColor = '#abbaa9'; //light grey hills
-                            break;
-                        case 2:
-                            terrainColor = '#5f6b5d'; //dark grey mountains
-                            break;
-                        default:
-                            terrainColor = '#221d14'; //dark brown unknown
-                    }
                     switch (element) {
                         case elements.kFactoryBotOne: // Blue
-                            drawASquare(col, row, '#25537b', images.kFactoryBot);  
+                            drawABot(col, row, '#25537b', images.kFactoryBot);
+                            //drawASquare(col, row, terrain, images.kFactoryBot);
                             break;
                         case elements.kMiningBotOne: // Blue
-                            drawASquare(col, row, '#25537b', images.kMiningBot);
+                            drawABot(col, row, '#25537b', images.kMiningBot);
+                            //drawASquare(col, row, terrain, images.kMiningBot);
                             break;
                         case elements.kFactoryBotTwo: // Red
-                            drawASquare(col, row, '#AA4344', images.kFactoryBot);
+                            drawABot(col, row, '#AA4344', images.kFactoryBot);
+                            //drawASquare(col, row, terrain, images.kFactoryBot);
                             break;
                         case elements.kMiningBotTwo: // Red
-                            drawASquare(col, row, '#AA4344', images.kMiningBot);
+                            drawABot(col, row, '#AA4344', images.kMiningBot);
+                            //drawASquare(col, row, terrain, images.kMiningBot);
                             break;
                         case elements.unknown:
-                            drawASquare(col, row, terrainColor); //nothing occupying the space, so no additional image
+                            drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
                             break;
                         case elements.traversable:
-                            drawASquare(col, row, terrainColor); //nothing occupying the space, so no additional image
+                            drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
                             break;
                         case elements.resource:
                             ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                             break;
                         case elements.granite:
-                            drawASquare(col, row, terrainColor, images.granite);
+                            drawASquare(col, row, terrain, images.granite);
                             break;
                         case elements.vibranium:
-                            drawASquare(col, row, terrainColor, images.vibranium);
+                            drawASquare(col, row, terrain, images.vibranium);
                             break;
                         case elements.adamantite:
-                            drawASquare(col, row, terrainColor, images.adamantite);
+                            drawASquare(col, row, terrain, images.adamantite);
                             break;
                         case elements.unobtanium:
-                            drawASquare(col, row, terrainColor, images.unobtanium);
+                            drawASquare(col, row, terrain, images.unobtanium);
                             break;
                     }
                     if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
@@ -459,7 +467,20 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         //Updates the state of a tile on the map
         function updateLand(data) {
             const { position: { x, y }, is_traversable, resources, terrain_id} = data;
-            terrains[ROWS - y - 1][x] = terrain_id
+            switch (terrain_id) {
+                case 0:
+                    terrains[ROWS - y - 1][x] = terrainImages.grassland;
+                    break;
+                case 1: 
+                    terrains[ROWS - y - 1][x] = terrainImages.hills;
+                    break
+                case 2:
+                    terrains[ROWS - y - 1][x] = terrainImages.mountain;
+                    break;
+                default:
+                    terrains[ROWS - y - 1][x] = terrainImages.unknown;
+            }
+            
             if (is_traversable) {
                 gameState[ROWS - y - 1][x] = elements.traversable;
             } else {
