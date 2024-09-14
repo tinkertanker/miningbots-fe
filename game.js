@@ -1,5 +1,5 @@
 console.log("script started");
-
+function activateNoServer(){document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";}
 // Get hostname from cookie, otherwise leave as null
 
 
@@ -8,9 +8,9 @@ const server = getCookie("lastServer");
 //Probably some default values for original testing:
 //var hostname = "s3.bootcamp.tk.sg";
 //var port = 443;
-var hostname = "localhost";
-var port = 9003;
-if (server !== null) hostname = server; 
+//var hostname = "localhost";
+//var port = 9003;
+if (server !== null) hostname = server;
 var gameId;
 var http_type = "http";
 var ws_type = "ws";
@@ -616,7 +616,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
         
     })
     .catch((error) => {
-      document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";
+      activateNoServer();
       console.error("Error:", error);
       setTimeout(function(){if(server!=undefined){
             alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
@@ -625,5 +625,6 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
     });
 }
 console.log(servers["localhost"].name);
+if (!hostname)document.querySelector("#loadingbox").classList.add("loading-completed");
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 drawGame(hostname, port);

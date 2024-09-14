@@ -16,7 +16,7 @@ body {
   }
 
   .loading-completed {
-    display:none;
+    visibility:collapse;
   }
   
   #loadingbox {
