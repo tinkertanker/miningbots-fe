@@ -4,7 +4,15 @@ function server_is_running(){
 }
 function start_browser(){
     source browsersettings.conf
-    $ENABLE_KIOSK_MODE && KIOSK="--kiosk" || KIOSK=""
+    if [ $UI_MODE == "debug" ]; then
+      sed -i -e 's/true/false/' firefox-chrome/user.js
+    elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
+      sed -i -e 's/false/true/' firefox-chrome/user.js
+    else
+      echo "Invalid UI mode" 1>&2
+      return
+    fi
+    [ $UI_MODE == "fullscreen" ]  && KIOSK="--kiosk" || KIOSK=""
     XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="Mining Bots" localhost:8000
 }
 cd $(dirname $0)
