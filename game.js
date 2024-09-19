@@ -9,7 +9,7 @@ const server = getCookie("lastServer");
 //var hostname = "s3.bootcamp.tk.sg";
 //var port = 443;
 //var hostname = "localhost";
-//var port = 9003;
+var port = 9003;
 if (server !== null) hostname = server;
 var gameId;
 var http_type = "http";
