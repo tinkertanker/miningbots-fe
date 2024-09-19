@@ -5,9 +5,11 @@ function server_is_running(){
 function start_browser(){
     source browsersettings.conf
     if [ $UI_MODE == "debug" ]; then
-      sed -i -e 's/true/false/' firefox-chrome/user.js
+      ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets false
+      ./update_ffconfig.py browser.tabs.inTitlebar 1 # put tabs together with window navigation buttons
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
-      sed -i -e 's/false/true/' firefox-chrome/user.js
+      ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets true
+      ./update_ffconfig.py browser.tabs.inTitlebar 0 # separate tabs together from titlebar
     else
       echo "Invalid UI mode" 1>&2
       return
