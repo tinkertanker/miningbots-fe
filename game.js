@@ -200,7 +200,7 @@ fetch(`${http_type}://${hostname}:${port}/games`, {
     method: 'GET'
 })
     .then(response => {
-        document.querySelector("#loadingbox").classList.add("loading-complete");
+        document.querySelector("#loadingbox").classList.add("loading-completed");
         document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
         // console.log(response);
         if (response.ok) {
