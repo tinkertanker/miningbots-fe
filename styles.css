@@ -75,8 +75,8 @@ body {
 
   /* In theory, the automatic width would adapt based on the size of the game canvas */
   /* And auto height should help with > 1 player -> hopefully evenly distributed height */
-  /*width: auto;
-  height: auto;*/
+  width: auto;
+  /*height: auto;*/
 
   background-color: #f1f1f1;
   padding: 7px;
