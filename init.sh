@@ -5,15 +5,17 @@ function server_is_running(){
 function start_browser(){
     source browsersettings.conf
     if [ $UI_MODE == "debug" ]; then
+      CLASS="Mining Bots (debug/test)"
       ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
+      CLASS="Mining Bots"
       ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=true browser.tabs.inTitlebar=0
     else
       echo "Invalid UI mode" 1>&2
       return
     fi
     [ $UI_MODE == "fullscreen" ]  && KIOSK="--kiosk" || KIOSK=""
-    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="Mining Bots" localhost:8000
+    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="$CLASS" localhost:8000
 }
 cd $(dirname $0)
 echo "Server starting at $(date)" >> webserver/log/startup.log
