@@ -3,7 +3,8 @@ function server_is_running(){
         pidof abyssws-x64 >/dev/null || pidof abyssws-x86
 }
 function start_browser(){
-    source browsersettings.conf
+    source browsersettings.conf # simple way to load a name=value pairs config file
+    # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ $UI_MODE == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
       ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1
@@ -36,8 +37,8 @@ while ! server_is_running; do
 done
 echo -e "\rFrontend server started successfully.                                "
 source browsersettings.conf
-$TEST_MODE && ../miningbots/build/mb-server &
+$TEST_MODE && ../miningbots/build/mb-server & # launch the server automatically to ease testing
 start_browser
 pkill -2 abyssws
-$TEST_MODE && pkill -2 mb-server
+$TEST_MODE && pkill -2 mb-server # if the server was started by this script, quit it
 echo "Server shut down on $(date)" >> webserver/log/startup.log
