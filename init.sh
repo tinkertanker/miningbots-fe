@@ -37,8 +37,8 @@ while ! server_is_running; do
 done
 echo -e "\rFrontend server started successfully.                                "
 source browsersettings.conf
-$TEST_MODE && ../miningbots/build/mb-server & # launch the server automatically to ease testing
+$TEST_MODE && sh -c "cd $(dirname $TEST_MB_SERVER_PATH);exec $TEST_MB_SERVER_PATH" & # launch the server automatically to ease testing
 start_browser
 pkill -2 abyssws
-$TEST_MODE && pkill -2 mb-server # if the server was started by this script, quit it
+$TEST_MODE && pkill -2 $(basename $TEST_MB_SERVER_PATH) # if the server was started by this script, quit it
 echo "Server shut down on $(date)" >> webserver/log/startup.log
