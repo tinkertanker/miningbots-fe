@@ -40,8 +40,10 @@ source browsersettings.conf
 TEST_MB_SERVER_DIR=$(dirname $TEST_MB_SERVER_PATH)
 TEST_MB_SERVER_NAME=$(basename $TEST_MB_SERVER_PATH)
 if $TEST_MODE; then
+    CURRENT_DIR=$PWD # save the current directory before switching to another directory, so that we can restore it later
     cd $TEST_MB_SERVER_DIR
     $TEST_MB_SERVER_PATH & # launch the server automatically to ease testing
+    cd $CURRENT_DIR # restore the previous current directory
 fi
 start_browser
 pkill -2 abyssws
