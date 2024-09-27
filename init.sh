@@ -19,14 +19,14 @@ function start_browser(){
     XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="$CLASS" localhost:8000
 }
 cd $(dirname $0)
-echo "Server starting at $(date)" >> webserver/log/startup.log
-if server_is_running; then
+if server_is_running; then # if the frontend server is already running, only start the browser.
      start_browser
      exit
 fi
+echo "Server starting at $(date)" >> webserver/log/startup.log
 ./webserver/abyssws &
 TIME=0
-while ! server_is_running; do
+while ! server_is_running; do # wait for the frontend server to start before loading the the browser
     echo -en "\rWaiting for frontend server to start... ($TIME seconds elapsed)"
     sleep 1
     ((TIME++))
@@ -37,8 +37,13 @@ while ! server_is_running; do
 done
 echo -e "\rFrontend server started successfully.                                "
 source browsersettings.conf
-$TEST_MODE && sh -c "cd $(dirname $TEST_MB_SERVER_PATH);exec $TEST_MB_SERVER_PATH" & # launch the server automatically to ease testing
+TEST_MB_SERVER_DIR=$(dirname $TEST_MB_SERVER_PATH)
+TEST_MB_SERVER_NAME=$(basename $TEST_MB_SERVER_PATH)
+if $TEST_MODE; then
+    cd $TEST_MB_SERVER_DIR
+    $TEST_MB_SERVER_PATH & # launch the server automatically to ease testing
+fi
 start_browser
 pkill -2 abyssws
-$TEST_MODE && pkill -2 $(basename $TEST_MB_SERVER_PATH) # if the server was started by this script, quit it
+$TEST_MODE && pkill -2 $TEST_MB_SERVER_NAME # if the server was started by this script, quit it
 echo "Server shut down on $(date)" >> webserver/log/startup.log
