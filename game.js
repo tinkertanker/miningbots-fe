@@ -233,6 +233,7 @@ function drawGame(hostname, port) {
                 method: 'GET'
             });
 
+            document.getElementById("gameID").innerHTML="Game ID: "+gameId;
             return { response: fetch_map_config, game_id: gameId };
         })
         .then(async result => {
