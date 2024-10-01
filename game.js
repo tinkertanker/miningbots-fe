@@ -211,8 +211,8 @@ function drawGame(hostname, port) {
         method: 'GET'
     })
         .then(response => {
-        document.querySelector("#loadingbox").classList.add("loading-completed");
-        document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
+            document.querySelector("#loadingbox").classList.add("loading-completed");
+            document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
             // console.log(response);
             if (response.ok) {
                 // console.log('games:', response);
