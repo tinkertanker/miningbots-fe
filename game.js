@@ -1,4 +1,8 @@
 console.log("script started");
+if(!navigator.onLine){
+    document.querySelector(".navbar").classList.add("no-internet");
+    document.querySelector("#game-info-container").classList.add("no-internet");
+}
 function activateNoServer(){document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";}
 // Get hostname from cookie, otherwise leave as null
 
@@ -211,7 +215,7 @@ function drawGame(hostname, port) {
         method: 'GET'
     })
         .then(response => {
-            document.querySelector("#loadingbox").classList.add("loading-completed");
+            if(navigator.onLine)document.querySelector("#loadingbox").classList.add("loading-completed");
             document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
             // console.log(response);
             if (response.ok) {
@@ -657,6 +661,7 @@ function drawGame(hostname, port) {
         });
 }
 console.log(servers["localhost"].name);
-if (!hostname)document.querySelector("#loadingbox").classList.add("loading-completed");
+if (navigator.onLine && !hostname)document.querySelector("#loadingbox").classList.add("loading-completed");
+else if (!navigator.onLine)document.querySelector("#loadingbox").innerHTML="Please connect to the Internet and refresh";
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 drawGame(hostname, port);
