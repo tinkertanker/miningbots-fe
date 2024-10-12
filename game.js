@@ -105,15 +105,11 @@ var servers = {
         url: "s10.bootcamp.tk.sg",
     },
     "localhost": {
-        name: "localhost",
-        url: "localhost",
-    },
-    "localhost": {
-        name: "localhost",
+        name: "Testing",
         url: "localhost",
     },
     "miningbots-api.dev.tk.sg": {
-        name: "miningbots-api.dev.tk.sg",
+        name: "Development",
         url: "miningbots-api.dev.tk.sg",
     },
 };
