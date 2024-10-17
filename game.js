@@ -106,7 +106,7 @@ var servers = {
     },
     "localhost": {
         name: "Testing",
-        url: "localhost",
+        url: `localhost:${port}`,
     },
     "miningbots-api.dev.tk.sg": {
         name: "Development",
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Save to cookie first
             var today=new Date();
             var tomorrow=new Date(today.getTime()+24*60*60*1000);
-            setCookie("lastServer",selectedServerUrl,createExpiryDate(tomorrow),"/");
+            setCookie("lastServer",getNameOfSocket(selectedServerUrl),createExpiryDate(tomorrow),"/");
             location.reload();
             // drawGame(selectedServerUrl, port);
         });
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Player Name fetch code 
 async function fetchPlayerNames(gameId, playerIds) {
-    const url = `${http_type}://${hostname}:${port}/players`;
+    const url = `${http_type}://${servers[hostname].url}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
 
     try {
@@ -207,7 +207,7 @@ function drawGame(hostname, port) {
     terrainImages.mountain.src = 'assets/mountain.jpg';
 
     //Likely connecting to the server and retrieving initial game state
-    fetch(`${http_type}://${hostname}:${port}/games`, {
+    fetch(`${http_type}://${servers[hostname].url}/games`, {
         method: 'GET'
     })
         .then(response => {
@@ -229,7 +229,7 @@ function drawGame(hostname, port) {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
-            let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
+            let fetch_map_config = fetch(`${http_type}://${servers[hostname].url}/map_config?game_id=${gameId}`, {
                 method: 'GET'
             });
 
@@ -373,7 +373,7 @@ function drawGame(hostname, port) {
             // randomState();
             render();
 
-            const ws = new WebSocket(`${ws_type}://${hostname}:${port}/observer`);
+            const ws = new WebSocket(`${ws_type}://${servers[hostname].url}/observer`);
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
@@ -530,7 +530,7 @@ function drawGame(hostname, port) {
             }
 
             function nextGame() {
-                fetch(`${http_type}://${hostname}:${port}/games`, {
+                fetch(`${http_type}://${servers[hostname].url}/games`, {
                     method: 'GET'
                 })
             }
@@ -651,7 +651,7 @@ function drawGame(hostname, port) {
             activateNoServer();
             console.error("Error:", error);
             setTimeout(function(){if(server!=undefined){
-            alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+            alert(`Error fetching ${http_type}://${servers[hostname].url}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
             setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
       }},400);	
         });
