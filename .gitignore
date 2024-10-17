@@ -2,3 +2,4 @@ webserver
 browsersettings.conf
 .vscode
 firefox-chrome/user.js
+config.js

@@ -13,14 +13,17 @@ const server = getCookie("lastServer");
 // var hostname = "miningbots-api.dev.tk.sg";
 // var port = 443;
 //var hostname = "localhost";
-var port = 9003;
+var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
 var gameId;
 
-var http_type = "http";
-var ws_type = "ws";
-// var http_type = "https";
-// var ws_type = "wss";
+if(CONFIG["enable_security"]){
+    var http_type = "https";
+    var ws_type = "wss";
+} else {
+    var http_type = "http";
+    var ws_type = "ws";
+}
 
 //Dictionary of servers and respective names, urls
 var servers = {

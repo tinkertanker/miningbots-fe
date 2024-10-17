@@ -35,3 +35,11 @@ p1.bootcamp.tk.sg {
 	}
 }
 ```
+
+An example of a `config.js`
+```config.js
+CONFIG={
+   "enable_security": true
+   "localhost_port": 9003
+}
+```
