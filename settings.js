@@ -1,3 +1,4 @@
+var settings_window;
 function write_settings(){
     let json_settings={
         "enable_security":document.querySelector("#secure-protocols-setting-value").checked,
@@ -20,11 +21,19 @@ function open_popup(){
     let height=600;
     let left=Math.floor((window.innerWidth/2)-(width/2));
     let top=Math.floor((window.innerHeight/2)-(height/2));
-    window.open('/settings.html','_blank',`popup=yes,width=${width},height=${height},left=${left},top=${top}`);
+    return window.open('/settings.html','_blank',`popup=yes,width=${width},height=${height},left=${left},top=${top}`);
 }
 
 function close_popup(){
     write_settings();
     window.opener.location.reload();
     window.close();
+}
+function attachBeforeUnload(){
+    addEventListener("beforeunload", (event)=>{
+        if(!settings_window.closed){
+            settings_window.close();
+        }
+        return false;
+    });
 }

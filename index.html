@@ -32,7 +32,7 @@
       </ul>
     </div>
     <div id="gameID"></div>
-    <button onclick="open_popup();" id="settings-button">Settings</button>
+    <button onclick="settings_window=open_popup();" id="settings-button">Settings</button>
   </nav>
 
   <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
@@ -55,6 +55,7 @@
   <script src="socketnames.js"></script>
   <script src="cookies.js"></script>
   <script src="game.js"></script>
+  <script>attachBeforeUnload();</script>
 </body>
 
 </html>
