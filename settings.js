@@ -7,6 +7,19 @@ function write_settings(){
     let cookie_value=encodeURI(JSON.stringify(json_settings));
     setCookie("settings",cookie_value,"Fri, 31 Dec 9999 23:59:59 GMT");
 }
+function apply_clicked(){
+	write_settings();
+	window.opener.location.reload();
+}
+
+function cancel_clicked(){
+	window.close();
+}
+
+function ok_clicked(){
+	apply_clicked();
+	window.close();
+}
 function read_settings_cookie(){
     return JSON.parse(decodeURI(getCookie("settings")));
 }
@@ -24,11 +37,6 @@ function open_popup(){
     return window.open('/settings.html','_blank',`popup=yes,width=${width},height=${height},left=${left},top=${top}`);
 }
 
-function close_popup(){
-    write_settings();
-    window.opener.location.reload();
-    window.close();
-}
 function attachBeforeUnload(){
     addEventListener("beforeunload", (event)=>{
         if(!settings_window.closed){
