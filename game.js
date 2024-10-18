@@ -13,6 +13,7 @@ const server = getCookie("lastServer");
 // var hostname = "miningbots-api.dev.tk.sg";
 // var port = 443;
 //var hostname = "localhost";
+const CONFIG = read_settings_cookie()
 var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
 var gameId;
