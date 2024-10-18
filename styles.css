@@ -1,52 +1,56 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-  
-  .sidebar-container {
-    width: 520px;
-    position: relative;
-    right: 0;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 
-  #settings-megacontainer {
-    margin-top: 1cm;
-    margin-left: 10px;
-  }
+.sidebar-container {
+  width: 520px;
+  position: relative;
+  right: 0;
+}
 
-  .setting-text-description {
-    font-size:14px;
-    color:gray;
-  }
+#settings-megacontainer {
+  margin-top: 1cm;
+  margin-left: 10px;
+}
 
-  .setting-container {
-    display:flex;
-    flex-direction: row;
-  }
+.setting-text-description {
+  font-size: 14px;
+  color: gray;
+}
 
-  .setting-value, #action-container {
-    margin-left:auto;
-    margin-right: 20px;
-  }
+.setting-container {
+  display: flex;
+  flex-direction: row;
+}
 
-  #settings-button {
-    margin: 5px 5px;
-  }
+.setting-value,
+#action-container {
+  margin-left: auto;
+  margin-right: 20px;
+}
 
-  .loading-completed, .no-internet, .sidebar-hidden {
-    width:0;
-    height:0;
-    visibility:collapse;
-  }
-  
-  #loadingbox {
-    display:flex;
-    width:100vw;
-    height:24px;
-    align-items:center;justify-content:center;
-  }
-  
-  .sidebar {
+#settings-button {
+  margin: 5px 5px;
+}
+
+.loading-completed,
+.no-internet,
+.sidebar-hidden {
+  width: 0;
+  height: 0;
+  visibility: collapse;
+}
+
+#loadingbox {
+  display: flex;
+  width: 100vw;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar {
   /* This allows the bot-info DIVs to be aligned horizontally */
   display: flex;
   flex-wrap: nowrap;
@@ -63,36 +67,9 @@ body {
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-  
-  .bot-info {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-  }
-  
-  .bot-info h4 {
-    margin: 0;
-    padding: 0;
-    font-size: 14px;
-  }
-  
-  .bot-info p {
-    margin: 5px 0;
-    font-size: 12px;
-  }
-  .navbar {
-    padding-left: 1%;
-  }
-  
-
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-
 .bot-info {
   margin: 10px;
+  margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
   background-color: #fff;
