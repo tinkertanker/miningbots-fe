@@ -65,6 +65,15 @@
         } else if(event.ctrlKey && event.altKey && event.key=="d") {
           toggle_settings_button();
           event.preventDefault();
+        } else if(event.ctrlKey && event.key=="h") {
+          alert(
+            `Keyboard shortcuts:
+                 
+             Control-Alt-D: Show/Hide Settings button
+             Control-Alt-C: Open Settings panel
+             Control-H:     Open this help`
+          );
+          event.preventDefault();
         }
       });
     }
