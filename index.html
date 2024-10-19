@@ -56,8 +56,10 @@
   <script src="cookies.js"></script>
   <script src="game.js"></script>
   <script>//attachBeforeUnload();
-    window.addEventListener("keydown",toggle_settings_button);
-    update_settings_button_visibility();
+    if(navigator.onLine){
+      update_settings_button_visibility();
+      window.addEventListener("keydown",toggle_settings_button);
+    }
   </script>
 </body>
 
