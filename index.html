@@ -55,7 +55,10 @@
   <script src="socketnames.js"></script>
   <script src="cookies.js"></script>
   <script src="game.js"></script>
-  <script>//attachBeforeUnload();</script>
+  <script>//attachBeforeUnload();
+    window.addEventListener("keydown",toggle_settings_button);
+    update_settings_button_visibility();
+  </script>
 </body>
 
 </html>

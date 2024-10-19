@@ -45,3 +45,20 @@ function attachBeforeUnload(){
         return false;
     });
 }
+
+function update_settings_button_visibility(){
+    let displayed=getCookie("settings_button_displayed")=="true";
+    document.querySelector("#settings-button").style.visibility=displayed?"visible":"collapse";
+}
+
+function toggle_settings_button(event){
+    if (event.ctrlKey && event.altKey && event.key === 'd'){
+        //invert the boolean in the settings_button_displayed cookie
+        let displayed=getCookie("settings_button_displayed")=="true";
+        let new_displayed=!displayed;
+        setCookie("settings_button_displayed",new_displayed.toString(),"Fri, 31 Dec 9999 23:59:59 GMT");
+
+        document.querySelector("#settings-button").style.visibility=new_displayed?"visible":"collapse";
+        event.preventDefault();
+    }
+}
