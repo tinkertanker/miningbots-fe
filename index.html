@@ -58,7 +58,15 @@
   <script>//attachBeforeUnload();
     if(navigator.onLine){
       update_settings_button_visibility();
-      window.addEventListener("keydown",toggle_settings_button);
+      window.addEventListener("keydown",(event)=>{
+        if(event.ctrlKey && event.altKey && event.key=="c") {
+          settings_window=open_popup(); // weird browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
+          event.preventDefault();
+        } else if(event.ctrlKey && event.altKey && event.key=="d") {
+          toggle_settings_button();
+          event.preventDefault();
+        }
+      });
     }
   </script>
 </body>
