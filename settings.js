@@ -27,6 +27,9 @@ function initialize(){
     let json_settings=read_settings_cookie();
     document.querySelector("#secure-protocols-setting-value").checked=json_settings["enable_security"];
     document.querySelector("#localhost-port-setting-value").value=json_settings["localhost_port"].toString();
+    window.addEventListener("keydown",(event)=>{
+        if(event.key=="Escape")cancel_clicked();
+    })
 }
 function open_popup(){
     // Position of popup
