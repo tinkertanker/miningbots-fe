@@ -58,21 +58,7 @@
   <script src="cookies.js"></script>
   <script src="game.js"></script>
   <script>//attachBeforeUnload();
-    if(navigator.onLine){
-      update_settings_button_visibility();
-      window.addEventListener("keydown",(event)=>{
-        if(event.ctrlKey && event.altKey && event.key=="c") {
-          settings_window=open_popup(); // weird browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
-          event.preventDefault();
-        } else if(event.ctrlKey && event.altKey && event.key=="d") {
-          toggle_settings_button();
-          event.preventDefault();
-        } else if(event.ctrlKey && event.key=="h") {
-          show_help();
-          event.preventDefault();
-        }
-      });
-    }
+    initialize_main();
   </script>
 </body>
 

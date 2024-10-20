@@ -29,13 +29,30 @@ function read_settings_cookie(){
     if(cookie_value)return JSON.parse(decodeURI(cookie_value));
     else return default_settings;
 }
-function initialize(){
+function initialize_popup(){
     let json_settings=read_settings_cookie();
     document.querySelector("#secure-protocols-setting-value").checked=json_settings["enable_security"];
     document.querySelector("#localhost-port-setting-value").value=json_settings["localhost_port"].toString();
     window.addEventListener("keydown",(event)=>{
         if(event.key=="Escape")cancel_clicked();
     })
+}
+function initialize_main(){
+    if(navigator.onLine){
+      update_settings_button_visibility();
+      window.addEventListener("keydown",(event)=>{
+        if(event.ctrlKey && event.altKey && event.key=="c") {
+          settings_window=open_popup(); // weird browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
+          event.preventDefault();
+        } else if(event.ctrlKey && event.altKey && event.key=="d") {
+          toggle_settings_button();
+          event.preventDefault();
+        } else if(event.ctrlKey && event.key=="h") {
+          show_help();
+          event.preventDefault();
+        }
+      });
+    }
 }
 function open_popup(){
     // Position of popup
