@@ -4,7 +4,7 @@ body {
 }
 
 .sidebar-container {
-  width: auto;
+  width: 520px;
   position: relative;
   right: 0;
 }
@@ -54,31 +54,27 @@ body {
   justify-content: center;
 }
 
-.h4 {
-  font-size: 0.8vw;
-}
-
 .sidebar {
   /* This allows the bot-info DIVs to be aligned horizontally */
-  display: block;
-  /* flex-wrap: nowrap; */
-  /* flex-direction: row; */
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
 
   /* In theory, the automatic width would adapt based on the size of the game canvas */
   /* And auto height should help with > 1 player -> hopefully evenly distributed height */
   width: auto;
-  height: 20%;
+  height: auto;
 
   background-color: #f1f1f1;
-  padding: 0.1vw;
+  padding: 7px;
   overflow-x: auto;
-  overflow-y:hidden;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .bot-info {
-  margin: 2px;
-  padding: 2px;
+  margin: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
   border: 1px solid #ccc;
   background-color: #fff;
 }
@@ -86,12 +82,12 @@ body {
 .bot-info h4 {
   margin: 0;
   padding: 0;
-  font-size: 0.55vw;
+  font-size: 14px;
 }
 
 .bot-info p {
   margin: 5px 0;
-  font-size: 0.55vw;
+  font-size: 12px;
 }
 
 .navbar {
