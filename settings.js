@@ -1,4 +1,8 @@
 var settings_window;
+const default_settings={
+    "enable_security":false,
+    "localhost_port":9003
+}
 function write_settings(){
     let json_settings={
         "enable_security":document.querySelector("#secure-protocols-setting-value").checked,
@@ -21,7 +25,9 @@ function ok_clicked(){
 	window.close();
 }
 function read_settings_cookie(){
-    return JSON.parse(decodeURI(getCookie("settings")));
+    let cookie_value=getCookie("settings");
+    if(cookie_value)return JSON.parse(decodeURI(cookie_value));
+    else return default_settings;
 }
 function initialize(){
     let json_settings=read_settings_cookie();
