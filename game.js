@@ -1,19 +1,19 @@
 console.log("script started");
+
 if(!navigator.onLine){
     document.querySelector(".navbar").classList.add("no-internet");
     document.querySelector("#game-info-container").classList.add("no-internet");
 }
 function activateNoServer(){document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";}
 // Get hostname from cookie, otherwise leave as null
-
-
 const server = getCookie("lastServer");
 
 //Probably some default values for original testing:
 // var hostname = "miningbots-api.dev.tk.sg";
 // var port = 443;
 //var hostname = "localhost";
-const CONFIG = read_settings_cookie()
+const CONFIG = read_settings_cookie();
+
 var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
 var gameId;
@@ -110,7 +110,7 @@ var servers = {
     },
     "localhost": {
         name: "Testing",
-        url: `localhost:${port}`,
+        url: "localhost:${port}",
     },
     "miningbots-api.dev.tk.sg": {
         name: "Development",
@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Player Name fetch code 
 async function fetchPlayerNames(gameId, playerIds) {
-    const url = `${http_type}://${servers[hostname].url}/players`;
+    const url = `${http_type}://${hostname}:${port}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
 
     try {
@@ -211,13 +211,13 @@ function drawGame(hostname, port) {
     terrainImages.mountain.src = 'assets/mountain.jpg';
 
     //Likely connecting to the server and retrieving initial game state
-    fetch(`${http_type}://${servers[hostname].url}/games`, {
+    fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
     })
         .then(response => {
+            // console.log(response);
             if(navigator.onLine)document.querySelector("#loadingbox").classList.add("loading-completed");
             document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
-            // console.log(response);
             if (response.ok) {
                 // console.log('games:', response);
                 return response.json();
@@ -233,7 +233,7 @@ function drawGame(hostname, port) {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
-            let fetch_map_config = fetch(`${http_type}://${servers[hostname].url}/map_config?game_id=${gameId}`, {
+            let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
                 method: 'GET'
             });
 
@@ -377,7 +377,7 @@ function drawGame(hostname, port) {
             // randomState();
             render();
 
-            const ws = new WebSocket(`${ws_type}://${servers[hostname].url}/observer`);
+            const ws = new WebSocket(`${ws_type}://${hostname}:${port}/observer`);
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
@@ -438,7 +438,7 @@ function drawGame(hostname, port) {
             //Sidebars has to be dynamically added if in the future you want >2 players
             const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
             //Possibly add more colours for >2 players too
-            const colors = ['blue', 'red'];
+            const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
             //Updates the bot's position and its job?
             function updateBot(botUpdate, playerId) {
@@ -534,7 +534,7 @@ function drawGame(hostname, port) {
             }
 
             function nextGame() {
-                fetch(`${http_type}://${servers[hostname].url}/games`, {
+                fetch(`${http_type}://${hostname}:${port}/games`, {
                     method: 'GET'
                 })
             }
@@ -588,7 +588,7 @@ function drawGame(hostname, port) {
 
 
                 // Player names code: 
-                var playerInfo = await fetchPlayerNames(gameId, [player_id]);
+                let playerInfo = await fetchPlayerNames(gameId, [player_id]);
                 console.log(playerInfo);
                 // var name = playerInfo[0].name;
 
@@ -605,33 +605,40 @@ function drawGame(hostname, port) {
                 const header = document.createElement('h4');
                 header.textContent = `Player: ${player_id}`;
                 header.style.color = color;
+                header.style.fontSize = "0.8vw"; 
+                header.style.margin = "0vw";
+                header.style.padding = "0.05vw";
                 sidebar.appendChild(header);
 
+                const botBox = document.createElement('div');
+                botBox.style = "display: flex; gap: 0vw; padding: 0vw, margin: 0.1vw; height: 100%; width: 100%; overflow-y: auto";
+                sidebar.appendChild(botBox);
                 for (const [id, [position, variant, current_energy, job, cargo, botPlayerIndex]] of botMap.entries()) {
                     if (playerIndex == botPlayerIndex) { //THIS MIGHT NOT WORK
                         const botDiv = document.createElement('div');
                         console.log('cargo: ', cargo);
                         botDiv.classList.add('bot-info');
-
+                        botDiv.style = "width: 14%, height: 24%";
                         botDiv.innerHTML = `
-                <h4 style="margin: 2px 0; padding: 0;"><b>Bot ID:</b> ${variant}, ${id}</h4>
+                <h4 style="margin: 2px 0; padding: 0;"><b>${variant}</b> ${id}</h4>
                 <hr style="margin: 2px 0;">
-                <p style="margin: 2px 0; padding: 0;"><b>Position:</b> (${position.x}, ${position.y})</p>
+                <p style="margin: 2px 0; padding: 0;"><b>Position:</b> ${position.x}, ${position.y}</p>
                 <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
-                <p style="margin: 2px 0; padding: 0;"><b>Job Info:</b> ${job.action}, ${job.status}</p>
+                <p style="margin: 2px 0; padding: 0;"><b>Job:</b> ${job.action}</p> 
                 <hr style="margin: 2px 0;">
             `;
-
+// , ${job.status}
                         const cargoContainer = document.createElement('div');
 
                         //Creating a grid: left side will be image of mineral, right side will be count of mineral
-                        cargoContainer.style = "display: grid; grid-template-columns: auto auto; grid-gap: 0.5vw; padding: 0.5vw"
+                        cargoContainer.style = "display: grid; grid-template-columns: auto auto; grid-gap: 0.05vw; padding: 0.1vw"
 
                         // Add each cargo item as a new paragraph
                         cargo.forEach(item => {
                             //Image of the mineral
                             let mineralImage = document.createElement('img')
                             mineralImage.src = "./assets/" + String(resources[item.id]) + ".png"
+                            mineralImage.style = "width: 1vw; height: 1vw"
                             cargoContainer.appendChild(mineralImage);
 
                             //Text describing how much of the mineral there is
@@ -644,7 +651,7 @@ function drawGame(hostname, port) {
                         botDiv.appendChild(cargoContainer);
 
                         // Append the botDiv to the sidebar
-                        sidebar.appendChild(botDiv);
+                        botBox.appendChild(botDiv);
                     }
                 }
             }
@@ -652,16 +659,9 @@ function drawGame(hostname, port) {
 
         })
         .catch((error) => {
-            activateNoServer();
             console.error("Error:", error);
-            setTimeout(function(){if(server!=undefined){
-            alert(`Error fetching ${http_type}://${servers[hostname].url}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-            setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
-      }},400);	
         });
 }
 console.log(servers["localhost"].name);
-if (navigator.onLine && !hostname)document.querySelector("#loadingbox").classList.add("loading-completed");
-else if (!navigator.onLine)document.querySelector("#loadingbox").innerHTML="Please connect to the Internet and refresh";
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 drawGame(hostname, port);
