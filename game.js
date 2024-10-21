@@ -456,11 +456,11 @@ function drawGame(hostname, port) {
                 }
                 var job;
                 if (current_job_id == 0) {
-                    job = { action: 'kNoAction', status: 'kNotStarted' };
+                    job = { action: 'None', status: 'Not started' };
                 } else if (jobMap.has(current_job_id)) {
                     job = jobMap.get(current_job_id);
                 } else {
-                    job = { action: 'kNoAction', status: 'kNotStarted' };
+                    job = { action: 'None', status: 'Not started' };
                 }
                 botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
                 var newRow = ROWS - position.y - 1;
@@ -479,7 +479,7 @@ function drawGame(hostname, port) {
             //?
             function updateJob(data) {
                 const { id, action, status } = data;
-                var job = { action: action, status: status }
+                var job = { action: actionMap[action], status: statusMap[status] }
                 jobMap.set(id, job);
             }
 
@@ -619,8 +619,9 @@ function drawGame(hostname, port) {
                         console.log('cargo: ', cargo);
                         botDiv.classList.add('bot-info');
                         botDiv.style = "width: 14%, height: 24%";
+                        let variantLabel=variantMap[variant];
                         botDiv.innerHTML = `
-                <h4 style="margin: 2px 0; padding: 0;"><b>${variant}</b> ${id}</h4>
+                <h4 style="margin: 2px 0; padding: 0;"><b>${variantLabel}</b> ${id}</h4>
                 <hr style="margin: 2px 0;">
                 <p style="margin: 2px 0; padding: 0;"><b>Position:</b> ${position.x}, ${position.y}</p>
                 <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
