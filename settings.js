@@ -1,12 +1,14 @@
 var settings_window;
 const default_settings={
     "enable_security":false,
-    "localhost_port":9003
+    "localhost_port":9003,
+    "show_player_names":true
 }
 function write_settings(){
     let json_settings={
         "enable_security":document.querySelector("#secure-protocols-setting-value").checked,
-        "localhost_port":parseInt(document.querySelector("#localhost-port-setting-value").value)
+        "localhost_port":parseInt(document.querySelector("#localhost-port-setting-value").value),
+        "show_player_names":document.querySelector("#name-display-setting-value").checked
     };
     let cookie_value=encodeURI(JSON.stringify(json_settings));
     setCookie("settings",cookie_value,"Fri, 31 Dec 9999 23:59:59 GMT");
@@ -33,6 +35,7 @@ function initialize_popup(){
     let json_settings=read_settings_cookie();
     document.querySelector("#secure-protocols-setting-value").checked=json_settings["enable_security"];
     document.querySelector("#localhost-port-setting-value").value=json_settings["localhost_port"].toString();
+    document.querySelector("#name-display-setting-value").checked=json_settings["show_player_names"];
     window.addEventListener("keydown",(event)=>{
         if(event.key=="Escape")cancel_clicked();
     })

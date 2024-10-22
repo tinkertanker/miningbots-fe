@@ -17,6 +17,7 @@ const CONFIG = read_settings_cookie();
 var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
 var gameId;
+var playername_cache={};
 
 if(CONFIG["enable_security"]){
     var http_type = "https";
@@ -25,6 +26,8 @@ if(CONFIG["enable_security"]){
     var http_type = "http";
     var ws_type = "ws";
 }
+
+var gameId;
 
 //Dictionary of servers and respective names, urls
 var servers = {
@@ -162,7 +165,7 @@ async function fetchPlayerNames(gameId, playerIds) {
     try {
         const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+            //headers: { 'Content-Type': 'application/json' }
         });
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -227,7 +230,7 @@ function drawGame(hostname, port) {
         })
         .then(games => {
             console.log('games:', games);
-            let gameId = games[0].game_id;
+            gameId = games[0].game_id;
             let gameStatus = games[0].game_status;
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
@@ -550,7 +553,8 @@ function drawGame(hostname, port) {
                 winnerDiv.style.backgroundColor = 'white';
                 winnerDiv.style.border = '2px solid black';
                 winnerDiv.style.zIndex = '1000';
-                winnerDiv.innerHTML = `<h1>Player ${playerId} Won!</h1>`;
+                let name_insert=CONFIG["show_player_names"]?` (${playername_cache[playerId]})`:"";
+                winnerDiv.innerHTML = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
 
                 const closeButton = document.createElement('button');
                 closeButton.innerText = 'X';
@@ -587,10 +591,13 @@ function drawGame(hostname, port) {
                 console.log('Current player ID:', player_id);
 
 
-                // Player names code: 
+                // Player names code:
+                console.log(gameId);
                 let playerInfo = await fetchPlayerNames(gameId, [player_id]);
                 console.log(playerInfo);
-                // var name = playerInfo[0].name;
+                var name = playerInfo[0].name;
+                playername_cache[player_id]=name; // Store names in hash table. Used by showWinner
+                let name_insert=CONFIG["show_player_names"]?` (${name})`:"";
 
                 const playerIndex = players[player_id];
                 console.log('playerIndex:', playerIndex);
@@ -603,7 +610,7 @@ function drawGame(hostname, port) {
                 sidebar.innerHTML = ''; // Clear the existing sidebar content
 
                 const header = document.createElement('h4');
-                header.textContent = `Player: ${player_id}`;
+                header.textContent = `Player: ${player_id}${name_insert}`;
                 header.style.color = color;
                 header.style.fontSize = "0.8vw"; 
                 header.style.margin = "0vw";
