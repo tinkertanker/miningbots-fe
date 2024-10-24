@@ -3,6 +3,10 @@ console.log("script started");
 if(!navigator.onLine){
     document.querySelector(".navbar").classList.add("no-internet");
     document.querySelector("#game-info-container").classList.add("no-internet");
+    document.querySelector("#loadingbox").innerHTML="Please connect to the Internet to use this application.";
+    window.addEventListener("online", (e) => {
+        location.reload();
+    });
 }
 function activateNoServer(){document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";}
 // Get hostname from cookie, otherwise leave as null
@@ -668,6 +672,13 @@ function drawGame(hostname, port) {
         })
         .catch((error) => {
             console.error("Error:", error);
+            if(navigator.onLine){
+                document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";
+                setTimeout(function(){if(server!=undefined){
+                        alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                        setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
+                }},400);
+            }
         });
 }
 console.log(servers["localhost"].name);
