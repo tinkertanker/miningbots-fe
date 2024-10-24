@@ -4,17 +4,31 @@ const default_settings={
     "localhost_port":9003,
     "show_player_names":true
 }
-function write_settings(){
+function write_settings(json_settings){
+    let cookie_value=encodeURI(JSON.stringify(json_settings));
+    setCookie("settings",cookie_value,"Fri, 31 Dec 9999 23:59:59 GMT");
+}
+function write_displayed_settings(){
     let json_settings={
         "enable_security":document.querySelector("#secure-protocols-setting-value").checked,
         "localhost_port":parseInt(document.querySelector("#localhost-port-setting-value").value),
         "show_player_names":document.querySelector("#name-display-setting-value").checked
     };
-    let cookie_value=encodeURI(JSON.stringify(json_settings));
-    setCookie("settings",cookie_value,"Fri, 31 Dec 9999 23:59:59 GMT");
+    write_settings(json_settings);
+}
+function write_default_settings(){
+    write_settings(default_settings);
+    window.opener.location.reload();
+    display_settings(default_settings);
+}
+function reset_settings_clicked(){
+    if(confirm(`Are you sure you want to reset the settings?
+             This cannot be undone!`)){
+                write_default_settings();
+             }
 }
 function apply_clicked(){
-	write_settings();
+	write_displayed_settings();
 	window.opener.location.reload();
 }
 
@@ -31,11 +45,14 @@ function read_settings_cookie(){
     if(cookie_value)return JSON.parse(decodeURI(cookie_value));
     else return default_settings;
 }
-function initialize_popup(){
-    let json_settings=read_settings_cookie();
+function display_settings(json_settings){
     document.querySelector("#secure-protocols-setting-value").checked=json_settings["enable_security"];
     document.querySelector("#localhost-port-setting-value").value=json_settings["localhost_port"].toString();
     document.querySelector("#name-display-setting-value").checked=json_settings["show_player_names"];
+}
+function initialize_popup(){
+    let json_settings=read_settings_cookie();
+    display_settings(json_settings)
     window.addEventListener("keydown",(event)=>{
         if(event.key=="Escape")cancel_clicked();
     })
