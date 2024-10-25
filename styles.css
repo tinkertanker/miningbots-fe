@@ -57,6 +57,11 @@ body {
   visibility: collapse;
 }
 
+.production-hidden {
+  visibility: collapse;
+  display: none;
+}
+
 #loadingbox {
   display: flex;
   width: 100vw;

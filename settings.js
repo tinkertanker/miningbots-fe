@@ -60,14 +60,16 @@ function initialize_popup(){
         if(event.key=="Escape")cancel_clicked();
     })
 }
-function initialize_main(){
-    if(navigator.onLine){
+function initialize_main(production_status){
+    if(navigator.onLine && !production_status){
+      //Is this needed?
       update_settings_button_visibility();
       window.addEventListener("keydown",(event)=>{
         if(event.ctrlKey && event.altKey && event.key=="c") {
           settings_window=open_popup(); // weird browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
           event.preventDefault();
         } else if(event.ctrlKey && event.altKey && event.key=="d") {
+          //Is this needed?
           toggle_settings_button();
           event.preventDefault();
         } else if(event.ctrlKey && event.key=="h") {

@@ -33,7 +33,7 @@
       </ul>
     </div>
     <div id="gameID"></div>
-    <a href="javascript:show_help();"><img src="assets/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
+    <a href="javascript:show_help();" id="help"><img src="assets/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
     <button onclick="settings_window=open_popup();" id="settings-button" title="This can also be triggered by pressing Control-Alt-C">Settings</button>
   </nav>
 
@@ -54,12 +54,20 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+  <script src="browsersettings.js"></script>
   <script src="socketnames.js"></script>
   <script src="cookies.js"></script>
   <script src="human_readable_names.js"></script>
   <script src="game.js"></script>
   <script>//attachBeforeUnload();
-    initialize_main();
+    is_production().then((production_mode)=>{
+      initialize_main(production_mode);
+      if(production_mode){
+          document.querySelector("nav").classList.add("production-hidden");
+      }
+    },()=>{
+      initialize_main(false);
+    })
   </script>
 </body>
 
