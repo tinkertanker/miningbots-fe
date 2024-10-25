@@ -31,8 +31,6 @@ if(CONFIG["enable_security"]){
     var ws_type = "ws";
 }
 
-var gameId;
-
 //Dictionary of servers and respective names, urls
 var servers = {
     "p1.bootcamp.tk.sg": {
@@ -244,7 +242,8 @@ function drawGame(hostname, port) {
                 method: 'GET'
             });
 
-            document.getElementById("gameID").innerHTML="Game ID: "+gameId;
+            if(CONFIG["show_gameid"])
+                document.getElementById("gameID").innerHTML="Game ID: "+gameId;
             return { response: fetch_map_config, game_id: gameId };
         })
         .then(async result => {
