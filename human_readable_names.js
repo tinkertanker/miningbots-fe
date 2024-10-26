@@ -23,3 +23,9 @@ const variantMap={
     "kMiningBot": "Mining Bot",
     "kFactoryBot": "Factory Bot"
 }
+const gameStatusMap={
+    "kNotStarted": "Not Started",
+    "kOpen": "Running",
+    "kFull": "Running (Full)",
+    "kEnded": "Finished"
+}

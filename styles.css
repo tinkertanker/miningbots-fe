@@ -70,6 +70,10 @@ body {
   justify-content: center;
 }
 
+#gameStatus {
+  margin-right: 10px;
+}
+
 .sidebar {
   /* This allows the bot-info DIVs to be aligned horizontally */
   display: flex;
