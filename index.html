@@ -13,7 +13,7 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Server Selector</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,7 @@
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Select a server
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <!-- Dropdown items will be dynamically populated -->
           </div>
         </li>
@@ -64,7 +64,7 @@
     is_production().then((production_mode)=>{
       initialize_main(production_mode);
       if(production_mode){
-          document.querySelector("nav").classList.add("production-hidden");
+          document.getElementById("navbar").classList.add("production-hidden");
       }
     },()=>{
       initialize_main(false);

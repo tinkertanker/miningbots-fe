@@ -1,14 +1,14 @@
 console.log("script started");
 
 if(!navigator.onLine){
-    document.querySelector(".navbar").classList.add("no-internet");
-    document.querySelector("#game-info-container").classList.add("no-internet");
-    document.querySelector("#loadingbox").innerHTML="Please connect to the Internet to use this application.";
+    document.getElementById("navbar").classList.add("no-internet");
+    document.getElementById("game-info-container").classList.add("no-internet");
+    document.getElementById("loadingbox").innerHTML="Please connect to the Internet to use this application.";
     window.addEventListener("online", (e) => {
         location.reload();
     });
 }
-function activateNoServer(){document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";}
+function activateNoServer(){document.getElementById("loadingbox").innerHTML="Please select a server from the menu above.";}
 // Get hostname from cookie, otherwise leave as null
 const server = getCookie("lastServer");
 
@@ -128,7 +128,7 @@ let selectedServerUrl = null;
 
 // Function to populate the dropdown menu
 function populateDropdown() {
-    let dropdownMenu = document.querySelector(".dropdown-menu");
+    let dropdownMenu = document.getElementById("dropdown-menu");
     Object.keys(servers).forEach(function (key) {
         let server = servers[key];
         let menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
@@ -140,7 +140,8 @@ function populateDropdown() {
 document.addEventListener("DOMContentLoaded", function () {
     populateDropdown();
 
-    let dropdownItems = document.querySelectorAll(".dropdown-item");
+    //convert to array to make it possible to use forEach
+    let dropdownItems = Array.from(document.getElementsByClassName("dropdown-item"));
     dropdownItems.forEach(function (item) {
         item.addEventListener("click", function (event) {
             event.preventDefault();
@@ -219,8 +220,8 @@ function drawGame(hostname, port) {
     })
         .then(response => {
             // console.log(response);
-            if(navigator.onLine)document.querySelector("#loadingbox").classList.add("loading-completed");
-            document.querySelector(".sidebar-container").classList.remove("sidebar-hidden");
+            if(navigator.onLine)document.getElementById("loadingbox").classList.add("loading-completed");
+            document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
             if (response.ok) {
                 // console.log('games:', response);
                 return response.json();
@@ -232,7 +233,7 @@ function drawGame(hostname, port) {
             console.log('games:', games);
             gameId = games[0].game_id;
             let gameStatus = games[0].game_status;
-            document.querySelector("#gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
+            document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
                 return;
@@ -423,7 +424,7 @@ function drawGame(hostname, port) {
                             }
                             let gameStatus = data.game_status;
                             console.log("raw game status: "+gameStatus)
-                            document.querySelector("#gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
+                            document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
                             updateUI(data.player_id);
                             render();
                             break;
@@ -674,10 +675,10 @@ function drawGame(hostname, port) {
         .catch((error) => {
             console.error("Error:", error);
             if(navigator.onLine){
-                document.querySelector("#loadingbox").innerHTML="Please select a server from the menu above.";
+                document.getElementById("loadingbox").innerHTML="Please select a server from the menu above.";
                 setTimeout(function(){if(server!=undefined){
                         alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                        setTimeout(function(){document.querySelector("#navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
+                        setTimeout(function(){document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
                 }},400);
             }
         });

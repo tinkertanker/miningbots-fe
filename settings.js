@@ -11,10 +11,10 @@ function write_settings(json_settings){
 }
 function write_displayed_settings(){
     let json_settings={
-        "enable_security":document.querySelector("#secure-protocols-setting-value").checked,
-        "localhost_port":parseInt(document.querySelector("#localhost-port-setting-value").value),
-        "show_player_names":document.querySelector("#name-display-setting-value").checked,
-        "show_gameid":document.querySelector("#gameid-display-setting-value").checked
+        "enable_security":document.getElementById("secure-protocols-setting-value").checked,
+        "localhost_port":parseInt(document.getElementById("localhost-port-setting-value").value),
+        "show_player_names":document.getElementById("name-display-setting-value").checked,
+        "show_gameid":document.getElementById("gameid-display-setting-value").checked
     };
     write_settings(json_settings);
 }
@@ -48,10 +48,10 @@ function read_settings_cookie(){
     else return default_settings;
 }
 function display_settings(json_settings){
-    document.querySelector("#secure-protocols-setting-value").checked=json_settings["enable_security"];
-    document.querySelector("#localhost-port-setting-value").value=json_settings["localhost_port"].toString();
-    document.querySelector("#name-display-setting-value").checked=json_settings["show_player_names"];
-    document.querySelector("#gameid-display-setting-value").checked=json_settings["show_gameid"];
+    document.getElementById("secure-protocols-setting-value").checked=json_settings["enable_security"];
+    document.getElementById("localhost-port-setting-value").value=json_settings["localhost_port"].toString();
+    document.getElementById("name-display-setting-value").checked=json_settings["show_player_names"];
+    document.getElementById("gameid-display-setting-value").checked=json_settings["show_gameid"];
 }
 function initialize_popup(){
     let json_settings=read_settings_cookie();
@@ -108,7 +108,7 @@ function update_settings_button_visibility(){
 }
 
 function set_settings_button_visibility(displayed){
-    document.querySelector("#settings-button").style.visibility=displayed?"visible":"collapse";
+    document.getElementById("settings-button").style.visibility=displayed?"visible":"collapse";
 }
 
 function toggle_settings_button(){
