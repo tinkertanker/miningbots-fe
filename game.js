@@ -150,9 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("navbarDropdownMenuLink").textContent =
                 selectedServerName;
             // Save to cookie first
-            var today=new Date();
-            var tomorrow=new Date(today.getTime()+24*60*60*1000);
-            setCookie("lastServer",getNameOfSocket(selectedServerUrl),createExpiryDate(tomorrow),"/");
+            setCookie("lastServer",getNameOfSocket(selectedServerUrl),"Fri, 31 Dec 9999 23:59:59 GMT","/");
             location.reload();
             // drawGame(selectedServerUrl, port);
         });
