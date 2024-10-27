@@ -3,7 +3,8 @@ const default_settings={
     "enable_security":false,
     "localhost_port":9003,
     "show_player_names":true,
-    "show_gameid":true
+    "show_gameid":true,
+    "show_game_status":true
 }
 function write_settings(json_settings){
     let cookie_value=encodeURI(JSON.stringify(json_settings));
@@ -14,7 +15,8 @@ function write_displayed_settings(){
         "enable_security":document.getElementById("secure-protocols-setting-value").checked,
         "localhost_port":parseInt(document.getElementById("localhost-port-setting-value").value),
         "show_player_names":document.getElementById("name-display-setting-value").checked,
-        "show_gameid":document.getElementById("gameid-display-setting-value").checked
+        "show_gameid":document.getElementById("gameid-display-setting-value").checked,
+        "show_game_status":document.getElementById("game-status-display-setting-value").checked
     };
     write_settings(json_settings);
 }
@@ -52,6 +54,7 @@ function display_settings(json_settings){
     document.getElementById("localhost-port-setting-value").value=json_settings["localhost_port"].toString();
     document.getElementById("name-display-setting-value").checked=json_settings["show_player_names"];
     document.getElementById("gameid-display-setting-value").checked=json_settings["show_gameid"];
+    document.getElementById("game-status-display-setting-value").checked=json_settings["show_game_status"];
 }
 function initialize_popup(){
     let json_settings=read_settings_cookie();

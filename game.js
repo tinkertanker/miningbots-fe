@@ -233,7 +233,7 @@ function drawGame(hostname, port) {
             console.log('games:', games);
             gameId = games[0].game_id;
             let gameStatus = games[0].game_status;
-            document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
+            if(CONFIG["show_game_status"])document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
                 return;
@@ -423,8 +423,8 @@ function drawGame(hostname, port) {
                                 })
                             }
                             let gameStatus = data.game_status;
-                            console.log("raw game status: "+gameStatus)
-                            document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
+                            console.log("raw game status: "+gameStatus);
+                            if(CONFIG["show_game_status"])document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
                             updateUI(data.player_id);
                             render();
                             break;
