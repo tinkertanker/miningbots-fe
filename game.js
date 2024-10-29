@@ -650,9 +650,11 @@ function drawGame(hostname, port) {
                         // Add each cargo item as a new paragraph
                         cargo.forEach(item => {
                             //Image of the mineral
-                            let mineralImage = document.createElement('img')
-                            mineralImage.src = "./assets/" + String(resources[item.id]) + ".png"
+                            let mineralImage = document.createElement('img');
+                            let resource = String(resources[item.id]);
+                            mineralImage.src = "./assets/" + resource + ".png"
                             mineralImage.style = "width: 1vw; height: 1vw"
+                            mineralImage.alt = mineralImage.title = resource;
                             cargoContainer.appendChild(mineralImage);
 
                             //Text describing how much of the mineral there is
