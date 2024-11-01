@@ -1,14 +1,16 @@
 console.log("script started");
 
+initializeLoadingBox();
 if(!navigator.onLine){
     document.getElementById("navbar").classList.add("no-internet");
     document.getElementById("game-info-container").classList.add("no-internet");
-    document.getElementById("loadingbox").innerHTML="Please connect to the Internet to use this application.";
+    setLoadingBoxStatus(LB_NO_INTERNET);
     window.addEventListener("online", (e) => {
         location.reload();
     });
+} else {
+    setLoadingBoxStatus(LB_LOADING);
 }
-function activateNoServer(){document.getElementById("loadingbox").innerHTML="Please select a server from the menu above.";}
 // Get hostname from cookie, otherwise leave as null
 const server = getCookie("lastServer");
 
@@ -220,7 +222,7 @@ function drawGame(hostname, port) {
     })
         .then(response => {
             // console.log(response);
-            if(navigator.onLine)document.getElementById("loadingbox").classList.add("loading-completed");
+            if(navigator.onLine)setLoadingBoxStatus(LB_LOADING_COMPLETED);
             document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
             if (response.ok) {
                 // console.log('games:', response);
@@ -677,7 +679,7 @@ function drawGame(hostname, port) {
         .catch((error) => {
             console.error("Error:", error);
             if(navigator.onLine){
-                document.getElementById("loadingbox").innerHTML="Please select a server from the menu above.";
+                setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
                 setTimeout(function(){if(server!=undefined){
                         alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
                         setTimeout(function(){document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
