@@ -12,7 +12,7 @@
   <script src="ui.js"></script>
 </head>
 
-<body>
+<body onbeforeunload="let value=(navigator.onLine && onunload());if(value==true)return true;">
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Server Selector</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"

@@ -24,6 +24,14 @@ var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
 var gameId;
 var playername_cache={};
+var gameStatus="kNotStarted";
+setInterval(()=>{
+    //console.log("Status: ",gameStatus);
+},2000);
+function onunload(){
+    console.log(gameStatus);
+    return gameStatus!=="kNotStarted";
+}
 
 if(CONFIG["enable_security"]){
     var http_type = "https";
@@ -234,7 +242,7 @@ function drawGame(hostname, port) {
         .then(games => {
             console.log('games:', games);
             gameId = games[0].game_id;
-            let gameStatus = games[0].game_status;
+            gameStatus = games[0].game_status;
             if(CONFIG["show_game_status"])document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
@@ -436,7 +444,7 @@ function drawGame(hostname, port) {
                                     updateLand(landUpdate);
                                 })
                             }
-                            let gameStatus = data.game_status;
+                            gameStatus = data.game_status;
                             console.log("raw game status: "+gameStatus);
                             if(CONFIG["show_game_status"])document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap[gameStatus];
                             updateUI(data.player_id);
