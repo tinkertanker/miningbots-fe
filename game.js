@@ -445,16 +445,16 @@ function drawGame(hostname, port) {
                     console.error('Error parsing message:', error);
                 }
             }
-
-            //Sidebars has to be dynamically added if in the future you want >2 players
-            const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
+            //Sidebars will be dynamically populated
+            if(!sidebars)var sidebars=[];
             //Possibly add more colours for >2 players too
             const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
             //Updates the bot's position and its job?
             function updateBot(botUpdate, playerId) {
-                if (!players.hasOwnProperty(playerId) && Object.keys(players).length < 2) {
+                if (!players.hasOwnProperty(playerId)) {
                     players[playerId] = Object.keys(players).length;
+                    updateSidebars(playerId);
                 }
                 const playerIndex = players[playerId];
 
@@ -591,8 +591,10 @@ function drawGame(hostname, port) {
             }
             //shows a row for each player showing each bot and their data
             async function updateUI(player_id) {
-                if (!players.hasOwnProperty(player_id) && Object.keys(players).length < 2) {
+                if (!players.hasOwnProperty(player_id)) {
+                    console.log("caching player "+player_id);
                     players[player_id] = Object.keys(players).length;
+                    updateSidebars(player_id);
                 }
 
                 console.log('Players object:', players);
@@ -610,7 +612,7 @@ function drawGame(hostname, port) {
                 const playerIndex = players[player_id];
                 console.log('playerIndex:', playerIndex);
 
-                const sidebar = sidebars[playerIndex];
+                const sidebar = getSidebar(playerIndex);
                 console.log('sidebar:', sidebar);
 
                 const color = colors[playerIndex];
@@ -672,9 +674,23 @@ function drawGame(hostname, port) {
                         botBox.appendChild(botDiv);
                     }
                 }
+
+                function getSidebar(sidebar_number) {
+                    return document.getElementById("bot-sidebar-" + sidebar_number);
+                }
             }
 
 
+
+            function updateSidebars(player_id) {
+                let sidebar = document.createElement("div");
+                sidebar.classList.add("sidebar");
+                sidebar.id = "bot-sidebar-" + players[player_id];
+                document.getElementById("bot-info-megacontainer").appendChild(sidebar);
+                //Sidebars has to be dynamically added if in the future you want >2 players
+                // Refresh the list of sidebars
+                sidebars = Array.from(document.querySelectorAll(".sidebar"));
+            }
         })
         .catch((error) => {
             console.error("Error:", error);
