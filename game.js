@@ -270,6 +270,8 @@ function drawGame(hostname, port) {
             const MAX_WHITE_HEIGHT = 60;
             const borderWidth = 1;
             const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+            //Possibly add more colours for >2 players too
+            const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
             console.log(COLS);
 
@@ -287,10 +289,10 @@ function drawGame(hostname, port) {
             let resource_configs = map_config.resource_configs;
 
             const elements = {
-                kMiningBotOne: 0,
+                /*kMiningBotOne: 0,
                 kFactoryBotOne: 1,
                 kMiningBotTwo: 2,
-                kFactoryBotTwo: 3,
+                kFactoryBotTwo: 3,*/
                 unknown: 4,
                 traversable: 5,
                 resource: 6,
@@ -335,7 +337,7 @@ function drawGame(hostname, port) {
                         const element = gameState[row][col];
                         const terrain = terrains[row][col];
                         switch (element) {
-                            case elements.kFactoryBotOne: // Blue
+                            /*case elements.kFactoryBotOne: // Blue
                                 drawABot(col, row, '#25537b', images.kFactoryBot);
                                 //drawASquare(col, row, terrain, images.kFactoryBot);
                                 break;
@@ -350,7 +352,7 @@ function drawGame(hostname, port) {
                             case elements.kMiningBotTwo: // Red
                                 drawABot(col, row, '#AA4344', images.kMiningBot);
                                 //drawASquare(col, row, terrain, images.kMiningBot);
-                                break;
+                                break;*/
                             case elements.unknown:
                                 drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
                                 break;
@@ -372,7 +374,17 @@ function drawGame(hostname, port) {
                             case elements.unobtanium:
                                 drawASquare(col, row, terrain, images.unobtanium);
                                 break;
+                            default: // draw the bot
+                                console.log("EIN: ",element);
+                                let element_=element-20;
+                                const variant=(element_%2)?"kFactoryBot":"kMiningBot";
+                                const botImage=images[variant];
+                                const playerIndex=Math.floor(element_/2);
+                                const color=colors[playerIndex];
+                                console.log(color," ",variant);
+                                drawABot(col,row,color,botImage);
                         }
+                        //console.log("EIN OoS: ",gameState);
                         if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
                             ctx.strokeStyle = 'white'; // set border color to white
                             ctx.lineWidth = 1; // set border width
@@ -447,8 +459,6 @@ function drawGame(hostname, port) {
             }
             //Sidebars will be dynamically populated
             if(!sidebars)var sidebars=[];
-            //Possibly add more colours for >2 players too
-            const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
             //Updates the bot's position and its job?
             function updateBot(botUpdate, playerId) {
@@ -476,14 +486,12 @@ function drawGame(hostname, port) {
                 botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
                 var newRow = ROWS - position.y - 1;
                 var newCol = position.x;
-                var playerNum = '';
-                if (playerIndex == 0) {
-                    playerNum = 'One';
-                } else {
-                    playerNum = 'Two';
-                }
-                var element = String(variant) + playerNum;
-                gameState[newRow][newCol] = elements[element];
+                //var playerNum = ''+(playerIndex+1);
+                //var element = String(variant) + playerNum;
+                //console.log("element "+element);
+                gameState[newRow][newCol]=20+(playerIndex*2)+((variant=="kFactoryBot")?1:0);
+                console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
+                console.log(gameState);
                 renderBots();
             }
 
@@ -586,7 +594,7 @@ function drawGame(hostname, port) {
                         playerNum = 'Two';
                     }
                     var element = String(variant) + playerNum;
-                    gameState[ROWS - position.y - 1][position.x] = elements[element];
+                    //gameState[ROWS - position.y - 1][position.x] = elements[element];
                 }
             }
             //shows a row for each player showing each bot and their data
