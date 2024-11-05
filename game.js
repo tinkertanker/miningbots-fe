@@ -125,7 +125,7 @@ var servers = {
     },
     "localhost": {
         name: "Testing",
-        url: "localhost:${port}",
+        url: `localhost:${port}`,
     },
     "miningbots-api.dev.tk.sg": {
         name: "Development",
@@ -134,7 +134,7 @@ var servers = {
 };
 
 // Variable to hold the selected server URL
-let selectedServerUrl = null;
+let selectedServerUrl = servers[hostname].url;
 
 // Function to populate the dropdown menu
 function populateDropdown() {
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Player Name fetch code 
 async function fetchPlayerNames(gameId, playerIds) {
-    const url = `${http_type}://${hostname}:${port}/players`;
+    const url = `${http_type}://${selectedServerUrl}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
 
     try {
@@ -225,7 +225,7 @@ function drawGame(hostname, port) {
     terrainImages.mountain.src = 'assets/mountain.jpg';
 
     //Likely connecting to the server and retrieving initial game state
-    fetch(`${http_type}://${hostname}:${port}/games`, {
+    fetch(`${http_type}://${selectedServerUrl}/games`, {
         method: 'GET'
     })
         .then(response => {
@@ -248,7 +248,7 @@ function drawGame(hostname, port) {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
-            let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
+            let fetch_map_config = fetch(`${http_type}://${selectedServerUrl}/map_config?game_id=${gameId}`, {
                 method: 'GET'
             });
 
@@ -405,7 +405,7 @@ function drawGame(hostname, port) {
             // randomState();
             render();
 
-            const ws = new WebSocket(`${ws_type}://${hostname}:${port}/observer`);
+            const ws = new WebSocket(`${ws_type}://${selectedServerUrl}/observer`);
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
@@ -561,7 +561,7 @@ function drawGame(hostname, port) {
             }
 
             function nextGame() {
-                fetch(`${http_type}://${hostname}:${port}/games`, {
+                fetch(`${http_type}://${selectedServerUrl}/games`, {
                     method: 'GET'
                 })
             }
@@ -713,7 +713,7 @@ function drawGame(hostname, port) {
             if(navigator.onLine){
                 setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
                 setTimeout(function(){if(server!=undefined){
-                        alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                        alert(`Error fetching ${http_type}://${selectedServerUrl}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
                         setTimeout(function(){document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
                 }},400);
             }
