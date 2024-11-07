@@ -622,8 +622,13 @@ function drawGame(hostname, port) {
                 let playerInfo = await fetchPlayerNames(gameId, [player_id]);
                 console.log(playerInfo);
                 var name = playerInfo[0].name;
-                playername_cache[player_id]=name; // Store names in hash table. Used by showWinner
                 let name_insert=CONFIG["show_player_names"]?` (${name})`:"";
+                if(!playername_cache[player_id]){ // make sure player isn't already cached
+		            playername_cache[player_id]=name; // Store names in hash table. Used by showWinner
+		            console.log("before call");
+		            if(CONFIG["show_notifications"] && !PRODUCTION_MODE)
+		                sendNotification(`Player ${player_id}${name_insert} joined.`,"","favicon.ico");
+                }
 
                 const playerIndex = players[player_id];
                 console.log('playerIndex:', playerIndex);

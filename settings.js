@@ -4,7 +4,8 @@ const default_settings={
     "localhost_port":9003,
     "show_player_names":true,
     "show_gameid":true,
-    "show_game_status":true
+    "show_game_status":true,
+    "show_notifications":true
 }
 function write_settings(json_settings){
     let cookie_value=encodeURI(JSON.stringify(json_settings));
@@ -16,7 +17,8 @@ function write_displayed_settings(){
         "localhost_port":parseInt(document.getElementById("localhost-port-setting-value").value),
         "show_player_names":document.getElementById("name-display-setting-value").checked,
         "show_gameid":document.getElementById("gameid-display-setting-value").checked,
-        "show_game_status":document.getElementById("game-status-display-setting-value").checked
+        "show_game_status":document.getElementById("game-status-display-setting-value").checked,
+        "show_notifications":document.getElementById("show-notifications-setting-value").checked
     };
     write_settings(json_settings);
 }
@@ -55,6 +57,7 @@ function display_settings(json_settings){
     document.getElementById("name-display-setting-value").checked=json_settings["show_player_names"];
     document.getElementById("gameid-display-setting-value").checked=json_settings["show_gameid"];
     document.getElementById("game-status-display-setting-value").checked=json_settings["show_game_status"];
+    document.getElementById("show-notifications-setting-value").checked=json_settings["show_notifications"];
 }
 function initialize_popup(){
     let json_settings=read_settings_cookie();
