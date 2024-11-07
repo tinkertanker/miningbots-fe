@@ -1,3 +1,4 @@
+// Convert a Date object into a cookie-styled expiry date
 function createExpiryDate(date) {
    var day = date.toLocaleString('default', { weekday: 'short' });
    var dd = String(date.getDate()).padStart(2, '0');

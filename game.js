@@ -210,7 +210,7 @@ function drawGame() {
         mountain: new Image()
     };
 
-    //Assigns images
+    //Assigns images (preload images)
     images.kFactoryBot.src = 'assets/Factory_Bot.png';
     images.kMiningBot.src = 'assets/Mining_Bot.png';
     images.mixed_ore.src = 'assets/Mixed_Ore.png';
@@ -252,6 +252,7 @@ function drawGame() {
                 method: 'GET'
             });
 
+            //show the game ID in the navbar
             if (CONFIG["show_gameid"])
                 document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
             return { response: fetch_map_config, game_id: gameId };
@@ -270,10 +271,15 @@ function drawGame() {
         .then(async result => {
             let map_config = await result.map_config;
             console.log('map_config:', map_config);
+            // rendring information
+
+            // browser window dimensions
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
+            // map dimensions
             const COLS = map_config.max_x;
             const ROWS = map_config.max_y;
+            // rendring preferences
             const MAX_WHITE_WIDTH = 60;
             const MAX_WHITE_HEIGHT = 60;
             const borderWidth = 1;
@@ -321,8 +327,9 @@ function drawGame() {
             });
 
             let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
-            let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at teh start
+            let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at the start
 
+            // Draw an image on top of a background image
             function drawASquare(c, r, background, image) {
                 ctx.drawImage(background, c * GRID_SIZE - borderWidth, r * GRID_SIZE - borderWidth, GRID_SIZE + borderWidth, GRID_SIZE + borderWidth);
                 if (image) { //if an element image was given
@@ -330,6 +337,7 @@ function drawGame() {
                 }
             }
 
+            // Draw a bot image on a coloured background
             //this exists because the bots have a background colour that indicates the player they are attached to, instead of the terrain
             //can remove this if the background is also changed to an image 
             function drawABot(c, r, colour, image) {
@@ -338,7 +346,9 @@ function drawGame() {
                 ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
             }
 
+            // Refresh the game canvas
             function render() {
+                // Erase the whole game canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 for (let row = 0; row < ROWS; row++) {
                     for (let col = 0; col < COLS; col++) {
@@ -394,7 +404,7 @@ function drawGame() {
                         }
                         //console.log("EIN OoS: ",gameState);
                         if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
-                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.strokeStyle = 'white'; // set border color to white. this will become the separators between the positions
                             ctx.lineWidth = 1; // set border width
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                         }
