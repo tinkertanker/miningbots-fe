@@ -16,21 +16,27 @@ setting_lines=list(\
 )
 setting_lines_out=[]
 settings.close()
-for i in range(len(setting_lines)):
-    setting=setting_lines[i]
+setting_pairs={}
+for setting in setting_lines:
     # parse the setting
     # remove all the wrapping and quotes
     # TODO: handle errors properly. Currently just ignores errorneous lines and treats them as if they weren't there
     if matches:=re.match(r'user_pref\("([A-Za-z\.]+)",(.+)\)$',setting):
-        for update in sys.argv[1:]: # for each name=value pair,
-            name, value = tuple(update.split('=')) # get the name and value.
-            if matches.group(1)==name: # IF the current setting being inspected matches with the name,
-                print("Updating %s (%s -> %s)"%(name,matches.group(2),value))
-                setting="user_pref(\"%s\",%s)"%(name,value) # update it with the expected format.
-        setting_lines_out.append(setting)
+       setting_pairs[matches.group(1)]=matches.group(2)
     else:
         raise ValueError("Parsing failed")
-
+for update in sys.argv[1:]:
+    name,value=update.split("=")
+    if name in setting_pairs:
+        print(f"Updating {name} ({setting_pairs[name]} -> {value})")
+    else:
+        print(f"Adding {name}={value}")
+    setting_pairs[name]=value
+for name in setting_pairs:
+    value=setting_pairs[name]
+    setting_lines_out.append(\
+        f'user_pref(\"{name}\",{value})'
+    )
 #write the settings back to the file
 settings=open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"firefox-chrome","user.js"),'w')
 settings.write(\
