@@ -16,64 +16,70 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Settings</a>
     <div id="action-container">
-      <button onclick="ok_clicked();" title="This can also be triggered by pressing Alt-Shift-S" accesskey="s" id="ok-button">OK</button>
-      <button onclick="cancel_clicked();" title="This can also be trigger by pressing Escape or closing the window" id="cancel-button">Cancel</button> 
-      <button onclick="apply_clicked();" title="This can also be triggered by pressing Alt-Shift-A" accesskey="a" id="apply-button">Apply</button>
+      <button onclick="ok_clicked();" title="This can also be triggered by pressing Alt-Shift-S" accesskey="s"
+        id="ok-button">OK</button>
+      <button onclick="cancel_clicked();" title="This can also be trigger by pressing Escape or closing the window"
+        id="cancel-button">Cancel</button>
+      <button onclick="apply_clicked();" title="This can also be triggered by pressing Alt-Shift-A" accesskey="a"
+        id="apply-button">Apply</button>
     </div>
   </nav>
 
 
   <div id="settings-megacontainer">
     <div id="secure-protocols-settings" class="setting-container">
-        <div id="secure-protocols-setting-text" class="setting-text-container">
-            <h6 class="setting-text-name">Use secure protocols</h6>
-            <p class="setting-text-description">Use HTTPS and WSS over HTTP and WS</p>
-        </div>
-        <input type="checkbox" id="secure-protocols-setting-value" class="setting-value">
+      <div id="secure-protocols-setting-text" class="setting-text-container">
+        <h6 class="setting-text-name">Use secure protocols</h6>
+        <p class="setting-text-description">Use HTTPS and WSS over HTTP and WS</p>
+      </div>
+      <input type="checkbox" id="secure-protocols-setting-value" class="setting-value">
     </div>
     <div id="localhost-port-settings" class="setting-container">
       <div id="localhost-port-setting-text" class="setting-text-container">
-          <h6 class="setting-text-name">Port number</h6>
-          <p class="setting-text-description">Port number used when connecting to the &quot;Testing&quot; server</p>
+        <h6 class="setting-text-name">Port number</h6>
+        <p class="setting-text-description">Port number used when connecting to the &quot;Testing&quot; server</p>
       </div>
-      <input type="number" id="localhost-port-setting-value" class="setting-value" style="height:20px;" min="1" max="65535">
+      <input type="number" id="localhost-port-setting-value" class="setting-value" style="height:20px;" min="1"
+        max="65535">
     </div>
     <div id="name-display-settings" class="setting-container">
       <div id="name-display-setting-text" class="setting-text-container">
-          <h6 class="setting-text-name">Show player names</h6>
-          <p class="setting-text-description">Show player names next to the player IDs in the sidebars and Winner Display Dialog.<br>
-                                              When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
-                                              When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;
-          </p>
+        <h6 class="setting-text-name">Show player names</h6>
+        <p class="setting-text-description">Show player names next to the player IDs in the sidebars and Winner Display
+          Dialog.<br>
+          When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
+          When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;
+        </p>
       </div>
       <input type="checkbox" id="name-display-setting-value" class="setting-value">
     </div>
     <!-- Is this needed? -->
     <div id="gameid-display-settings" class="setting-container">
       <div id="gameid-display-setting-text" class="setting-text-container">
-          <h6 class="setting-text-name">Debugging: Display Game ID</h6>
-          <p class="setting-text-description">Display the Game ID in the top right corner.<br>
-            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.
-          </p>
+        <h6 class="setting-text-name">Debugging: Display Game ID</h6>
+        <p class="setting-text-description">Display the Game ID in the top right corner.<br>
+          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.
+        </p>
       </div>
       <input type="checkbox" id="gameid-display-setting-value" class="setting-value">
     </div>
     <!-- Is this needed? -->
     <div id="game-status-display-settings" class="setting-container">
       <div id="game-status-display-setting-text" class="setting-text-container">
-          <h6 class="setting-text-name">Debugging: Display Game Status</h6>
-          <p class="setting-text-description">Display the Game Status in the top right corner.<br>
-            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.
-          </p>
+        <h6 class="setting-text-name">Debugging: Display Game Status</h6>
+        <p class="setting-text-description">Display the Game Status in the top right corner.<br>
+          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.
+        </p>
       </div>
       <input type="checkbox" id="game-status-display-setting-value" class="setting-value">
     </div>
     <div id="show-notifications-settings" class="setting-container">
       <div id="show-notifications-setting-text" class="setting-text-container">
-          <h6 class="setting-text-name">Debugging: Enable push notifications</h6>
-          <p class="setting-text-description">Enable push notifications when certain events happen (e.g. player joined)<br>
-            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.
-          </p>
+        <h6 class="setting-text-name">Debugging: Enable push notifications</h6>
+        <p class="setting-text-description">Enable push notifications when certain events happen (e.g. player
+          joined)<br>
+          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.
+        </p>
       </div>
       <input type="checkbox" id="show-notifications-setting-value" class="setting-value">
     </div>

@@ -15,7 +15,7 @@ const sendRequest = (path, method, params) => {
         'Content-Type': 'application/json'
       }
     };
- 
+
     const req = http.request(options, (res) => {
       let data = '';
 
@@ -44,7 +44,7 @@ const main = async () => {
   var factoryPosition;
   var factoryId;
   const miningBots = [];
-  try{   
+  try {
     // Fetch game information
     let response = await sendRequest('/games', 'GET', {});
     const games = response;

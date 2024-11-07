@@ -34,14 +34,16 @@
     </div>
     <div id="gameStatus"></div>
     <div id="gameID"></div>
-    <a href="javascript:show_help();" id="help"><img src="assets/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
-    <button onclick="settings_window=open_popup();" id="settings-button" title="This can also be triggered by pressing Control-Alt-C">Settings</button>
+    <a href="javascript:show_help();" id="help"><img src="assets/help.png" id="help-icon" title="Help (Ctrl-H)"
+        alt="help icon"></a>
+    <button onclick="settings_window=open_popup();" id="settings-button"
+      title="This can also be triggered by pressing Control-Alt-C">Settings</button>
     <script src="browsersettings.js"></script>
     <script>
-    	var PRODUCTION_MODE=false;
-    	is_production().then((production_mode)=>{
-            PRODUCTION_MODE=production_mode;
-    	});
+      var PRODUCTION_MODE = false;
+      is_production().then((production_mode) => {
+        PRODUCTION_MODE = production_mode;
+      });
     </script>
   </nav>
 
@@ -58,7 +60,7 @@
       <div class="sidebar" id="bot-sidebar-three"></div> -->
     </div>
   </div>
-  
+
   <div id="loadingbox"></div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -70,12 +72,12 @@
   <script src="notifications.js"></script>
   <script src="game.js"></script>
   <script>//attachBeforeUnload();
-  setTimeout(()=>{
+    setTimeout(() => {
       initialize_main(PRODUCTION_MODE);
-      if(PRODUCTION_MODE){
-          document.getElementById("navbar").classList.add("production-hidden");
+      if (PRODUCTION_MODE) {
+        document.getElementById("navbar").classList.add("production-hidden");
       }
-  },400);
+    }, 400);
   </script>
 </body>
 

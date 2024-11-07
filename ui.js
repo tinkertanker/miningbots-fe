@@ -1,4 +1,4 @@
-function show_help(){
+function show_help() {
     alert(
         `Keyboard shortcuts:
             

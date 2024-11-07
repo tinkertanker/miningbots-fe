@@ -1,13 +1,23 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-#TabsToolbar,#urlbar-container,#save-to-pocket-button,#fxa-toolbar-menu-button,#PanelUI-button,#unified-extensions-button {
-    visibility:collapse;
+
+#TabsToolbar,
+#urlbar-container,
+#save-to-pocket-button,
+#fxa-toolbar-menu-button,
+#PanelUI-button,
+#unified-extensions-button {
+    visibility: collapse;
 }
-#back-button{
+
+#back-button {
     padding-inline-start: 0px;
     padding-left: 2px;
     margin-left: -72px;
     transform: translateX(50vw);
 }
-#forward-button, #stop-reload-button, #home-button {
+
+#forward-button,
+#stop-reload-button,
+#home-button {
     transform: translateX(50vw);
 }

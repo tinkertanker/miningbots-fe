@@ -1,3 +1,3 @@
-function getNameOfSocket(socket){
-    return socket.split(":",1)[0];
+function getNameOfSocket(socket) {
+    return socket.split(":", 1)[0];
 }
