@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Save to cookie first
             setCookie("lastServer",getNameOfSocket(selectedServerUrl),"Fri, 31 Dec 9999 23:59:59 GMT","/");
             location.reload();
-            // drawGame(selectedServerUrl, port);
+            // drawGame();
         });
     });
 });
@@ -188,7 +188,7 @@ async function fetchPlayerNames(gameId, playerIds) {
     }
 }
 
-function drawGame(hostname, port) {
+function drawGame() {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -409,7 +409,6 @@ function drawGame(hostname, port) {
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
-            const playerNames = {};
 
             ws.onopen = function () {
                 console.log('Connected to WebSocket server');
@@ -558,12 +557,6 @@ function drawGame(hostname, port) {
                     }
                 }
                 renderBots();
-            }
-
-            function nextGame() {
-                fetch(`${http_type}://${selectedServerUrl}/games`, {
-                    method: 'GET'
-                })
             }
 
             //Just the win screen
@@ -726,4 +719,4 @@ function drawGame(hostname, port) {
 }
 console.log(servers["localhost"].name);
 document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
-drawGame(hostname, port);
+drawGame();
