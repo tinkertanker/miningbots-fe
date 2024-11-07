@@ -14,6 +14,7 @@ setting_lines=list(\
         )
     )
 )
+setting_lines_out=[]
 settings.close()
 for i in range(len(setting_lines)):
     setting=setting_lines[i]
@@ -25,13 +26,16 @@ for i in range(len(setting_lines)):
             name, value = tuple(update.split('=')) # get the name and value.
             if matches.group(1)==name: # IF the current setting being inspected matches with the name,
                 print("Updating %s (%s -> %s)"%(name,matches.group(2),value))
-                setting=setting_lines[i]="user_pref(\"%s\",%s)"%(name,value) # update it with the expected format.
+                setting="user_pref(\"%s\",%s)"%(name,value) # update it with the expected format.
+        setting_lines_out.append(setting)
+    else:
+        raise ValueError("Parsing failed")
 
 #write the settings back to the file
 settings=open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"firefox-chrome","user.js"),'w')
 settings.write(\
     # use reduce to join with semicolons.
     # NOTE: We didn't use ';\n'.join(setting_lines) as that would cause the semicolon after the last setting to be missing
-    functools.reduce(lambda a,b:a+b+';\n',setting_lines,'').strip()\
+    functools.reduce(lambda a,b:a+b+';\n',setting_lines_out,'').strip()\
 )
 
