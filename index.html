@@ -34,8 +34,13 @@
     </div>
     <div id="gameStatus"></div>
     <div id="gameID"></div>
-    <a href="javascript:show_help();" id="help"><img src="assets/help.png" id="help-icon" title="Help (Ctrl-H)"
-        alt="help icon"></a>
+    <a href="javascript:show_help();" id="help">
+      <img 
+      onmouseenter="document.getElementById('help-icon').src='assets/helphover.png'" 
+      onmouseleave="document.getElementById('help-icon').src='assets/help.png'" 
+      onmousedown="document.getElementById('help-icon').src='assets/helprollover.png'"
+      onmouseup="document.getElementById('help-icon').src='assets/helphover.png'";
+      src="assets/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
     <button onclick="settings_window=open_popup();" id="settings-button"
       title="This can also be triggered by pressing Control-Alt-C">Settings</button>
     <script src="browsersettings.js"></script>
