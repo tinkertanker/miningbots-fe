@@ -125,7 +125,7 @@ var servers = {
     },
     "localhost": {
         name: "Testing",
-        url: `localhost:${port}`,
+        url: "localhost:${port}",
     },
     "miningbots-api.dev.tk.sg": {
         name: "Development",
@@ -134,7 +134,7 @@ var servers = {
 };
 
 // Variable to hold the selected server URL
-let selectedServerUrl = servers[hostname].url;
+let selectedServerUrl = null;
 
 // Function to populate the dropdown menu
 function populateDropdown() {
@@ -170,7 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Player Name fetch code 
 async function fetchPlayerNames(gameId, playerIds) {
-    const url = `${http_type}://${selectedServerUrl}/players`;
+    const url = `${http_type}://${hostname}:${port}/players`;
     const playerRequest = { game_id: gameId, player_ids: playerIds };
 
     try {
@@ -225,7 +225,7 @@ function drawGame() {
     terrainImages.mountain.src = 'assets/mountain.jpg';
 
     //Likely connecting to the server and retrieving initial game state
-    fetch(`${http_type}://${selectedServerUrl}/games`, {
+    fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
     })
         .then(response => {
@@ -248,7 +248,7 @@ function drawGame() {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
-            let fetch_map_config = fetch(`${http_type}://${selectedServerUrl}/map_config?game_id=${gameId}`, {
+            let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
                 method: 'GET'
             });
 
@@ -415,7 +415,7 @@ function drawGame() {
             // randomState();
             render();
 
-            const ws = new WebSocket(`${ws_type}://${selectedServerUrl}/observer`);
+            const ws = new WebSocket(`${ws_type}://${hostname}:${port}/observer`);
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
@@ -723,12 +723,10 @@ function drawGame() {
             console.error("Error:", error);
             if (navigator.onLine) {
                 setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
-                setTimeout(function () {
-                    if (server != undefined) {
-                        alert(`Error fetching ${http_type}://${selectedServerUrl}/games: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                        setTimeout(function () { document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click")); }, 400); // auto show the dropdown menu
-                    }
-                }, 400);
+                setTimeout(function(){if(server!=undefined){
+                        alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                        setTimeout(function(){document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
+                }},400);
             }
         });
 }
