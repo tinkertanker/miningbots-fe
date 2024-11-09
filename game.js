@@ -22,6 +22,7 @@ const CONFIG = read_settings_cookie();
 
 var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
+console.log('host name: '+hostname);
 var gameId;
 var playername_cache = {};
 var gameStatus = "kNotStarted";
@@ -125,13 +126,19 @@ var servers = {
     },
     "localhost": {
         name: "Testing",
-        url: "localhost:${port}",
+        url: `localhost:${port}`,
     },
     "miningbots-api.dev.tk.sg": {
         name: "Development",
         url: "miningbots-api.dev.tk.sg",
     },
 };
+if(hostname){
+    console.log("URL: "+servers[hostname].url);
+    port=getPortNumber(http_type,servers[hostname].url);
+} else {
+    setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
+}
 
 // Variable to hold the selected server URL
 let selectedServerUrl = null;

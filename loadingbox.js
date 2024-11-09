@@ -1,4 +1,5 @@
 const LB_LOADING_COMPLETED = 0
+const LB_SERVER_NO_SELECTION = 4;
 const LB_LOADING = 1
 const LB_SERVER_UNAVAILABLE = 2
 const LB_NO_INTERNET = 3
@@ -9,6 +10,7 @@ function initializeLoadingBox() {
 function setLoadingBoxStatus(status) {
     switch (status) {
         case LB_LOADING_COMPLETED:
+        case LB_SERVER_NO_SELECTION:
             LB_OBJECT.classList.add("loading-completed");
             break;
 
@@ -22,6 +24,7 @@ function setLoadingBoxStatus(status) {
 
         case LB_NO_INTERNET:
             LB_OBJECT.innerHTML = "Please connect to the Internet";
+        
 
         default:
             break;
