@@ -540,6 +540,7 @@ function drawGame() {
                     gameState[ROWS - y - 1][x] = elements.traversable;
                 } else {
                     if (Array.isArray(resources)) {
+                        // Fetch highest resource ID at that location
                         var highestId = -1;
                         resources.forEach(resource => {
                             if (resource.id > highestId) {
@@ -547,6 +548,7 @@ function drawGame() {
                             }
                         })
 
+                        // Place the appropriate element
                         switch (highestId) {
                             case 0:
                                 gameState[ROWS - y - 1][x] = elements.granite;
@@ -560,6 +562,7 @@ function drawGame() {
                             case 3:
                                 gameState[ROWS - y - 1][x] = elements.unobtanium;
                                 break;
+                            // If element unknown place elements.resource (displayed as Mixed_Ore.png)
                             default:
                                 gameState[ROWS - y - 1][x] = elements.resource;
                                 break;
