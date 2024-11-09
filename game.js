@@ -179,7 +179,7 @@ async function fetchPlayerNames(gameId, playerIds) {
             //headers: { 'Content-Type': 'application/json' }
         });
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP not-good response from /players: status: ${response.status}`);
 
         const playerUpdates = await response.json();
         return playerUpdates;
