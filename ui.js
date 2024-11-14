@@ -1,5 +1,6 @@
 function show_help() {
-    alert(
+    document.getElementById("help-icon").src="assets/help.png";
+    setTimeout(alert,200,
         `Keyboard shortcuts:
             
         Control-Alt-D: Show/Hide Settings button
