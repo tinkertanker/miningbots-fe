@@ -27,5 +27,6 @@ const gameStatusMap = {
     "kNotStarted": "Not Started",
     "kOpen": "Running",
     "kFull": "Running (Full)",
-    "kEnded": "Finished"
+    "kEnded": "Finished",
+    undefined: "Unknown"
 }
