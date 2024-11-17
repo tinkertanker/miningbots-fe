@@ -21,6 +21,10 @@ function write_displayed_settings() {
         "show_notifications": document.getElementById("show-notifications-setting-value").checked
     };
     write_settings(json_settings);
+    if(json_settings["show_notifications"] && Notification.permission!="granted"){
+        askForNotificationPermission();
+        alert("To enable notifications completely, allow notifications.");
+    }
 }
 function write_default_settings() {
     write_settings(default_settings);

@@ -1,6 +1,8 @@
 function notificationPermissionGranted() {
     return (Notification.permission == "granted");
 }
+
+askForNotificationPermission=Notification.requestPermission;
 function sendNotification__(title, content, icon) {
     if (notificationPermissionGranted()) {
         let notification = new Notification(title, { body: content, icon: icon });
