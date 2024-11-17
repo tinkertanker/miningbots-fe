@@ -1,6 +1,7 @@
 #!/bin/bash
 function server_is_running(){
-        pidof abyssws-x64 >/dev/null || pidof abyssws-x86
+	source browsersettings.conf
+        ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep
 }
 function start_browser(){
     source browsersettings.conf # simple way to load a name=value pairs config file
@@ -23,20 +24,22 @@ if server_is_running; then # if the frontend server is already running, only sta
      start_browser
      exit
 fi
-echo "Server starting at $(date)" >> webserver/log/startup.log
-./webserver/abyssws &
-TIME=0
-while ! server_is_running; do # wait for the frontend server to start before loading the the browser
-    echo -en "\rWaiting for frontend server to start... ($TIME seconds elapsed)"
-    sleep 1
-    ((TIME++))
-    if [ $TIME -gt 20 ]; then
-        echo -e "\rFailed to start frontend server.                            "
-        exit
-    fi
-done
-echo -e "\rFrontend server started successfully.                                "
 source browsersettings.conf
+if $START_WEB_SERVER; then
+	echo "Server starting at $(date)" >> webserver/log/startup.log
+	./$REL_WEB_SERVER_PATH &
+	TIME=0
+	while ! server_is_running; do # wait for the frontend server to start before loading the the browser
+	    echo -en "\rWaiting for frontend server to start... ($TIME seconds elapsed)"
+	    sleep 1
+	    ((TIME++))
+	    if [ $TIME -gt 20 ]; then
+		echo -e "\rFailed to start frontend server.                            "
+		exit
+	    fi
+	done
+	echo -e "\rFrontend server started successfully.                                "
+fi
 TEST_MB_SERVER_DIR=$(dirname $TEST_MB_SERVER_PATH)
 TEST_MB_SERVER_NAME=$(basename $TEST_MB_SERVER_PATH)
 if $TEST_MODE; then
