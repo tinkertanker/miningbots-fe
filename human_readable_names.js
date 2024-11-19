@@ -16,7 +16,7 @@ const statusMap = {
     "kCompleted": "Complete",
     "kCancelledInsufficientEnergy": "Failed -- Insufficient energy",
     "kCancelledPathBlocked": "Failed -- Destination position unreachable",
-    "kCancelledBotMovedTooFar": "Failed -- Bot too far from destination",
+    "kCancelledBotMovedTooFar": "Failed -- Bot too far from target",
     "kCancelled": "Cancelled"
 }
 const variantMap = {
