@@ -23,7 +23,7 @@ function write_displayed_settings() {
     write_settings(json_settings);
     if(json_settings["show_notifications"] && Notification.permission!="granted"){
         askForNotificationPermission();
-        alert("To enable notifications completely, allow notifications.");
+        alert("To enable notifications completely, allow notifications.");z
     }
 }
 function write_default_settings() {
@@ -76,7 +76,7 @@ function initialize_main(production_status) {
         update_settings_button_visibility();
         window.addEventListener("keydown", (event) => {
             if (event.ctrlKey && event.altKey && event.key == "c") {
-                settings_window = open_popup(); // weird browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
+                settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
             } else if (event.ctrlKey && event.altKey && event.key == "d") {
                 //Is this needed?
