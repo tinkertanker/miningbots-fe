@@ -1,7 +1,7 @@
 #!/bin/bash
 function server_is_running(){
 	source browsersettings.conf
-        ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep
+        ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep > /dev/null
 }
 function start_browser(){
     source browsersettings.conf # simple way to load a name=value pairs config file
