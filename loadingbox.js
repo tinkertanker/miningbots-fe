@@ -5,13 +5,14 @@ const LB_SERVER_UNAVAILABLE = 2
 const LB_NO_INTERNET = 3
 let LB_OBJECT = null;
 function initializeLoadingBox() {
-    LB_OBJECT = document.getElementById("loadingbox");
+    LB_OBJECT = document.querySelector(".loadingbox");
 }
 function setLoadingBoxStatus(status) {
     switch (status) {
         case LB_LOADING_COMPLETED:
         case LB_SERVER_NO_SELECTION:
             LB_OBJECT.classList.add("loading-completed");
+            LB_OBJECT.innerHTML="";
             break;
 
         case LB_LOADING:

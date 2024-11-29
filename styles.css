@@ -49,25 +49,25 @@ body {
   margin: 5px 5px;
 }
 
+.production-hidden {
+  visibility: collapse;
+  display: none;
+}
+
+.loadingbox {
+  display: flex;
+  width: 100vw;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
 .loading-completed,
 .no-internet,
 .sidebar-hidden {
   width: 0;
   height: 0;
   visibility: collapse;
-}
-
-.production-hidden {
-  visibility: collapse;
-  display: none;
-}
-
-#loadingbox {
-  display: flex;
-  width: 100vw;
-  height: 24px;
-  align-items: center;
-  justify-content: center;
 }
 
 #gameStatus {
