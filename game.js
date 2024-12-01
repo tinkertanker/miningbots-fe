@@ -22,7 +22,8 @@ const CONFIG = read_settings_cookie();
 
 var port = CONFIG["localhost_port"];
 if (server !== null) hostname = server;
-console.log('host name: '+hostname);
+var custom_server = false;
+console.log('host name: ' + hostname);
 var gameId;
 var playername_cache = {};
 var gameStatus = "kNotStarted";
@@ -132,10 +133,25 @@ var servers = {
         name: "Development",
         url: "miningbots-api.dev.tk.sg",
     },
+    "custom.invalid": { // invalid special domain by IANA
+        name: "Custom...",
+        url: "custom.invalid",
+    }
 };
-if(hostname && servers.hasOwnProperty(hostname)){
-    console.log("URL: "+servers[hostname].url);
-    port=getPortNumber(http_type,servers[hostname].url);
+if (hostname && servers.hasOwnProperty(hostname)) {
+    if (hostname == "custom.invalid") {
+        document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
+        servers["custom.invalid"].url = prompt("Enter socket of server:");
+        if (servers["custom.invalid"].url) {
+            hostname = getNameOfSocket(servers["custom.invalid"].url);
+            console.log("URL: " + servers["custom.invalid"].url);
+            port = getPortNumber(http_type, servers["custom.invalid"].url);
+            custom_server = true;
+        }
+    } else {
+        console.log("URL: " + servers[hostname].url);
+        port = getPortNumber(http_type, servers[hostname].url);
+    }
 } else {
     setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
 }
@@ -148,7 +164,11 @@ function populateDropdown() {
     let dropdownMenu = document.getElementById("dropdown-menu");
     Object.keys(servers).forEach(function (key) {
         let server = servers[key];
-        let menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
+        let menuItem;
+        if(key=="custom.invalid")
+            menuItem = `<a class="dropdown-item" href="#" data-url="custom.invalid">${server.name}</a>`;
+        else
+            menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
         dropdownMenu.innerHTML += menuItem;
     });
 }
@@ -730,13 +750,17 @@ function drawGame() {
             console.error("Error:", error);
             if (navigator.onLine) {
                 setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
-                setTimeout(function(){if(server!=undefined){
-                        alert(`Error fetching ${http_type}://${hostname}:${port}/games: `+error+"\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                        setTimeout(function(){document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click"));},400); // auto show the dropdown menu
-                }},400);
+                setTimeout(function () {
+                    if (server != undefined) {
+                        if (hostname != "custom.invalid")
+                            alert(`Error fetching ${http_type}://${hostname}:${port}/games: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                        setTimeout(function () { document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click")); }, 400); // auto show the dropdown menu
+                    }
+                }, 400);
             }
         });
 }
 console.log(servers["localhost"].name);
-document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
+if (!custom_server)
+    document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 drawGame();
