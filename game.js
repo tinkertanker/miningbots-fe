@@ -133,7 +133,7 @@ var servers = {
         url: "miningbots-api.dev.tk.sg",
     },
 };
-if(hostname){
+if(hostname && servers.hasOwnProperty(hostname)){
     console.log("URL: "+servers[hostname].url);
     port=getPortNumber(http_type,servers[hostname].url);
 } else {
