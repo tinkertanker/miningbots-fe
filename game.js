@@ -141,7 +141,14 @@ var servers = {
 if (hostname && servers.hasOwnProperty(hostname)) {
     if (hostname == "custom.invalid") {
         document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
-        servers["custom.invalid"].url = prompt("Enter socket of server:");
+        let socket=null;
+        while (socket==null){
+            socket = cleanupURL(prompt("Enter socket of server:"));
+            if(socket==null){
+                alert("Invalid socket");
+            }
+        }
+        servers["custom.invalid"].url=socket;
         if (servers["custom.invalid"].url) {
             hostname = getNameOfSocket(servers["custom.invalid"].url);
             console.log("URL: " + servers["custom.invalid"].url);
