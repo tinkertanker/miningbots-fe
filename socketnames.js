@@ -17,6 +17,7 @@ function getPortNumber(protocol,socket){
 }
 
 function cleanupURL(url){
+    if(!url)return "";
     if(/^[A-Za-z]+:/.test(url)){
         if(url.startsWith('http:')||url.startsWith('https:')){
             let slash_count=0;
