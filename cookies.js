@@ -24,3 +24,11 @@ function getCookie(name) {
    return document.cookie.split("; ").find((row) => row.startsWith(`${name}=`))
       ?.split("=")[1];
 }
+
+function hasCookie(name){
+   return getCookie(name)!=undefined;
+}
+
+function deleteCookie(name){
+   setCookie(name,"deleted",'Thu, 1 Jan 1970 00:00:00','/');
+}

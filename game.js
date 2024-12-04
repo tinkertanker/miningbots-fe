@@ -141,7 +141,7 @@ var servers = {
 if (hostname && servers.hasOwnProperty(hostname)) {
     if (hostname == "custom.invalid") {
         document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
-        let socket=null;
+        let socket=hasCookie("custom_server")?getCookie("custom_server"):null;
         while (socket==null){
             socket = cleanupURL(prompt("Enter socket of server:"));
             if(socket==null){
@@ -151,6 +151,7 @@ if (hostname && servers.hasOwnProperty(hostname)) {
         servers["custom.invalid"].url=socket;
         if (servers["custom.invalid"].url) {
             hostname = getNameOfSocket(servers["custom.invalid"].url);
+            setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
             console.log("URL: " + servers["custom.invalid"].url);
             port = getPortNumber(http_type, servers["custom.invalid"].url);
             custom_server = true;
@@ -194,6 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let selectedServerName = this.textContent;
             document.getElementById("navbarDropdownMenuLink").textContent =
                 selectedServerName;
+            deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
             // Save to cookie first
             setCookie("lastServer", getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
             location.reload();
