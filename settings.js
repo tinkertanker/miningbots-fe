@@ -33,7 +33,7 @@ function write_default_settings() {
 }
 function reset_settings_clicked() {
     if (confirm(`Are you sure you want to reset the settings?
-             This cannot be undone!`)) {
+This cannot be undone!`)) {
         write_default_settings();
     }
 }
