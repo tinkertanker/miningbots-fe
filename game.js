@@ -765,7 +765,11 @@ function drawGame() {
                     if (server != undefined) {
                         if (hostname != "custom.invalid")
                             alert(`Error fetching ${http_type}://${hostname}:${port}/games: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                        setTimeout(function () { document.getElementById("navbarDropdownMenuLink").dispatchEvent(new Event("click")); }, 400); // auto show the dropdown menu
+                        // auto show the dropdown menu
+                        setTimeout(function () {
+                            let link=document.getElementById("navbarDropdownMenuLink");
+                            if(link.ariaExpanded=="false")link.dispatchEvent(new Event("click")); 
+                        }, 400);
                     }
                 }, 400);
             }
