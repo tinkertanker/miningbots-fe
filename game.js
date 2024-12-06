@@ -497,12 +497,16 @@ function drawGame() {
                             break;
                         case 'kEndInWin':
                             console.log(`game ended player id ${data.player_id} won`);
-                            if(CONFIG["show_game_status"])document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap["kEnded"];
+                            gameStatus = data.game_status;
+                            console.log("raw game status: " + gameStatus);
+                            if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
                             showWinner(data.player_id);
                             break;
                         case 'kEndInDraw':
                             console.log('game ended in draw');
-                            if(CONFIG["show_game_status"])document.getElementById("gameStatus").innerHTML="Game Status: "+gameStatusMap["kEnded"];
+                            gameStatus = data.game_status;
+                            console.log("raw game status: " + gameStatus);
+                            if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
                             break;
                         default:
                             console.log(data.UpdateType);
