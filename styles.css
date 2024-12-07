@@ -67,6 +67,11 @@ body {
   display: none;
 }
 
+#game-info-container {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
 .loadingbox {
   display: flex;
   width: 100vw;
