@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 import sys,os,re,functools
 # if no name=value pairs specified, show a usage
 if len(sys.argv)-1==0: print("Usage: ./update_ffconfig.py (${NAME}=${VALUE})*")
