@@ -11,6 +11,10 @@ const default_settings = {
 function write_settings(json_settings) {
     let cookie_value = encodeURI(JSON.stringify(json_settings));
     setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
+    if(json_settings["show_notifications"] && Notification.permission!="granted"){
+        askForNotificationPermission();
+        alert("To enable notifications completely, allow notifications.");
+    }
     return false;
 }
 function write_displayed_settings() {
@@ -24,10 +28,6 @@ function write_displayed_settings() {
         "show_notifications": document.getElementById("show-notifications-setting-value").checked
     };
     let error=write_settings(json_settings);
-    if(json_settings["show_notifications"] && Notification.permission!="granted"){
-        askForNotificationPermission();
-        alert("To enable notifications completely, allow notifications.");
-    }
     return error;
 }
 function write_default_settings() {
