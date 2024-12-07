@@ -1,5 +1,6 @@
 //Name maps for human readable names
 const actionMap = {
+    "kNoAction": "None",
     "kMove": "Moving",
     "kScan": "Scanning for nearby resources",
     "kMine": "Mining resources",

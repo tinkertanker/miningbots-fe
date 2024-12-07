@@ -536,11 +536,11 @@ function drawGame() {
                 }
                 var job;
                 if (current_job_id == 0) {
-                    job = { action: 'None', status: 'Not started' };
+                    job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
                 } else if (jobMap.has(current_job_id)) {
                     job = jobMap.get(current_job_id);
                 } else {
-                    job = { action: 'None', status: 'Not started' };
+                    job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
                 }
                 botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
                 var newRow = ROWS - position.y - 1;
