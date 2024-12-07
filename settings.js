@@ -1,6 +1,7 @@
 var settings_window;
 const default_settings = {
     "enable_security": false,
+    "game_port": 9001,
     "localhost_port": 9003,
     "show_player_names": true,
     "show_gameid": true,
@@ -10,21 +11,24 @@ const default_settings = {
 function write_settings(json_settings) {
     let cookie_value = encodeURI(JSON.stringify(json_settings));
     setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
+    return false;
 }
 function write_displayed_settings() {
     let json_settings = {
         "enable_security": document.getElementById("secure-protocols-setting-value").checked,
+        "game_port": parseInt(document.getElementById('game-port-setting-value').value),
         "localhost_port": parseInt(document.getElementById("localhost-port-setting-value").value),
         "show_player_names": document.getElementById("name-display-setting-value").checked,
         "show_gameid": document.getElementById("gameid-display-setting-value").checked,
         "show_game_status": document.getElementById("game-status-display-setting-value").checked,
         "show_notifications": document.getElementById("show-notifications-setting-value").checked
     };
-    write_settings(json_settings);
+    let error=write_settings(json_settings);
     if(json_settings["show_notifications"] && Notification.permission!="granted"){
         askForNotificationPermission();
-        alert("To enable notifications completely, allow notifications.");z
+        alert("To enable notifications completely, allow notifications.");
     }
+    return error;
 }
 function write_default_settings() {
     write_settings(default_settings);
@@ -38,8 +42,10 @@ This cannot be undone!`)) {
     }
 }
 function apply_clicked() {
-    write_displayed_settings();
+    let error=write_displayed_settings();
     window.opener.location.reload();
+    if(error)alert("Error occured. Check for mistakes in the settings and try again.");
+    return error;
 }
 
 function cancel_clicked() {
@@ -47,8 +53,8 @@ function cancel_clicked() {
 }
 
 function ok_clicked() {
-    apply_clicked();
-    window.close();
+    let error=apply_clicked();
+    if(!error)window.close();
 }
 function read_settings_cookie() {
     let cookie_value = getCookie("settings");
@@ -57,6 +63,7 @@ function read_settings_cookie() {
 }
 function display_settings(json_settings) {
     document.getElementById("secure-protocols-setting-value").checked = json_settings["enable_security"];
+    document.getElementById("game-port-setting-value").value = json_settings["game_port"].toString();
     document.getElementById("localhost-port-setting-value").value = json_settings["localhost_port"].toString();
     document.getElementById("name-display-setting-value").checked = json_settings["show_player_names"];
     document.getElementById("gameid-display-setting-value").checked = json_settings["show_gameid"];
