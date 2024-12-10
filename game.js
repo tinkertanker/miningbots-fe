@@ -554,8 +554,7 @@ function drawGame() {
                 //var element = String(variant) + playerNum;
                 //console.log("element "+element);
                 gameState[newRow][newCol] = 20 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
-                console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
-                console.log(gameState);
+
                 renderBots();
             }
 
