@@ -367,6 +367,8 @@ function drawGame() {
             let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at the start
 
             // Draw an image on top of a background image
+            // c = column
+            // r = row
             function drawASquare(c, r, background, image) {
                 ctx.drawImage(background, c * GRID_SIZE - borderWidth, r * GRID_SIZE - borderWidth, GRID_SIZE + borderWidth, GRID_SIZE + borderWidth);
                 if (image) { //if an element image was given
@@ -375,6 +377,8 @@ function drawGame() {
             }
 
             // Draw a bot image on a coloured background
+            // c = column
+            // r = row
             //this exists because the bots have a background colour that indicates the player they are attached to, instead of the terrain
             //can remove this if the background is also changed to an image 
             function drawABot(c, r, colour, image) {
@@ -555,7 +559,7 @@ function drawGame() {
                 renderBots();
             }
 
-            //?
+            //save the display text of a job
             function updateJob(data) {
                 const { id, action, status } = data;
                 var job = { action: actionMap[action], status: statusMap[status] }
