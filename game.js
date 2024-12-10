@@ -554,7 +554,7 @@ function drawGame() {
                 //var element = String(variant) + playerNum;
                 //console.log("element "+element);
                 gameState[newRow][newCol] = 20 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
-
+                console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
                 renderBots();
             }
 
@@ -756,11 +756,11 @@ function drawGame() {
 
 
             function updateSidebars(player_id) {
+                // Dynamically add sidebars
                 let sidebar = document.createElement("div");
                 sidebar.classList.add("sidebar");
                 sidebar.id = "bot-sidebar-" + players[player_id];
                 document.getElementById("bot-info-megacontainer").appendChild(sidebar);
-                //Sidebars has to be dynamically added if in the future you want >2 players
                 // Refresh the list of sidebars
                 sidebars = Array.from(document.querySelectorAll(".sidebar"));
             }
