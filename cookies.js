@@ -20,6 +20,7 @@ function setCookie(name, value, expiry, path) {
    }
    document.cookie = cookie;
 }
+
 function getCookie(name) {
    return document.cookie.split("; ").find((row) => row.startsWith(`${name}=`))
       ?.split("=")[1];
