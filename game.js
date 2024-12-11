@@ -261,6 +261,12 @@ function drawGame() {
     terrainImages.hills.src = 'assets/hills.jpg';
     terrainImages.mountain.src = 'assets/mountain.jpg';
 
+    // display the value of the gameStatus on the webpage
+    function updateGameState() {
+        console.log("raw game status: " + gameStatus);
+        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+    }
+
     //Likely connecting to the server and retrieving initial game state
     fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
@@ -280,7 +286,7 @@ function drawGame() {
             console.log('games:', games);
             gameId = games[0].game_id;
             gameStatus = games[0].game_status;
-            if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+            updateGameState();
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
                 return;
@@ -495,23 +501,20 @@ function drawGame() {
                                 })
                             }
                             gameStatus = data.game_status;
-                            console.log("raw game status: " + gameStatus);
-                            if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+                            updateGameState();
                             updateUI(data.player_id);
                             render();
                             break;
                         case 'kEndInWin':
                             console.log(`game ended player id ${data.player_id} won`);
                             gameStatus = data.game_status;
-                            console.log("raw game status: " + gameStatus);
-                            if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+                            updateGameState();
                             showWinner(data.player_id);
                             break;
                         case 'kEndInDraw':
                             console.log('game ended in draw');
                             gameStatus = data.game_status;
-                            console.log("raw game status: " + gameStatus);
-                            if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+                            updateGameState();
                             break;
                         default:
                             console.log(data.UpdateType);
