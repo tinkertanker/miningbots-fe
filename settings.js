@@ -11,9 +11,28 @@ const default_settings = {
 function write_settings(json_settings) {
     let cookie_value = encodeURI(JSON.stringify(json_settings));
     setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
-    if(json_settings["show_notifications"] && Notification.permission!="granted"){
-        askForNotificationPermission();
-        alert("To enable notifications completely, allow notifications.");
+    if(json_settings["show_notifications"]){
+        switch(Notification.permission){
+            case "default":
+                // code from https://riptutorial.com/javascript/example/2305/requesting-permission-to-send-notifications
+                askForNotificationPermission().then((permission)=>{
+                    if (!('permission' in Notification)) {
+                        Notification.permission = permission;
+                    }
+                    if(!notificationPermissionGranted()){
+                        alert("Notifications are unavailable");
+                    }
+                },()=>{
+                    alert("Notifications are unavailable");
+                });
+                alert("To enable notifications completely, allow notifications.");
+                break;
+            case "denied":
+                alert("Notifications disabled from browser. Please clear notification permission and try again.");
+                break;
+            case "granted":
+                ; // Permission allowed! Do nothing.
+        }
     }
     return false;
 }
@@ -68,7 +87,7 @@ function display_settings(json_settings) {
     document.getElementById("name-display-setting-value").checked = json_settings["show_player_names"];
     document.getElementById("gameid-display-setting-value").checked = json_settings["show_gameid"];
     document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
-    document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"];
+    document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
 }
 function initialize_popup() {
     let json_settings = read_settings_cookie();
