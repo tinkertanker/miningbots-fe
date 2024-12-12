@@ -527,7 +527,7 @@ function drawGame() {
             //Sidebars will be dynamically populated
             if (!sidebars) var sidebars = [];
 
-            //Updates the bot's position and its job?
+            //Updates the bot information in the botMap
             function updateBot(botUpdate, playerId) {
                 if (!players.hasOwnProperty(playerId)) {
                     players[playerId] = Object.keys(players).length;
@@ -543,6 +543,8 @@ function drawGame() {
                     gameState[oldRow][oldCol] = elements.traversable;
                 }
                 var job;
+                // update the displayed job information
+                // It won't be displayed yet however
                 if (current_job_id == 0) {
                     job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
                 } else if (jobMap.has(current_job_id)) {
@@ -621,7 +623,7 @@ function drawGame() {
                 renderBots();
             }
 
-            //Just the win screen
+            //Display a dialog box in the middle of the screen indicating the winner
             function showWinner(playerId) {
                 const winnerDiv = document.createElement('div');
                 winnerDiv.style.position = 'absolute';
