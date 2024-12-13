@@ -144,10 +144,7 @@ if (hostname && servers.hasOwnProperty(hostname)) {
         document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
         let socket=hasCookie("custom_server")?getCookie("custom_server"):null;
         while (socket==null){
-            socket = cleanupURL(prompt("Enter socket of server:"));
-            if(socket==null){
-                alert("Invalid socket");
-            }
+            socket = prompt("Enter socket of server:");
         }
         servers["custom.invalid"].url=socket;
         if (servers["custom.invalid"].url) {
