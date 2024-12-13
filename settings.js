@@ -21,9 +21,11 @@ function write_settings(json_settings) {
                     }
                     if(!notificationPermissionGranted()){
                         alert("Notifications are unavailable");
+                        document.getElementById("show-notifications-setting-value").checked=false;
                     }
                 },()=>{
                     alert("Notifications are unavailable");
+                    document.getElementById("show-notifications-setting-value").checked=false;
                 });
                 alert("To enable notifications completely, allow notifications.");
                 break;
