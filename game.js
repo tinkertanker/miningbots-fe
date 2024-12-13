@@ -629,21 +629,38 @@ function drawGame() {
                 winnerDiv.style.transform = 'translate(-50%, -50%)';
                 winnerDiv.style.padding = '20px';
                 winnerDiv.style.backgroundColor = 'white';
-                winnerDiv.style.border = '2px solid black';
+                winnerDiv.style.border = '2px solid silver';
+                winnerDiv.style.borderTop = '40px solid silver';
                 winnerDiv.style.zIndex = '1000';
                 let name_insert = CONFIG["show_player_names"] ? ` (${playername_cache[playerId]})` : "";
                 winnerDiv.innerHTML = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
 
                 const closeButton = document.createElement('button');
-                closeButton.innerText = 'X';
+                const x = document.createElement('p');
+                x.innerHTML="x";
+                x.style.top="-4px";
+                x.style.position="relative";
+                closeButton.appendChild(x);
                 closeButton.style.position = 'absolute';
-                closeButton.style.top = '-1px';
-                closeButton.style.right = '-1px';
+                closeButton.style.top = `-30px`;
+                closeButton.style.left = '3px';
+                closeButton.style.width=closeButton.style.height="20px";
+                closeButton.style.backgroundColor="red";
+                closeButton.style.borderRadius="50%";
+                closeButton.style.border="none";
                 closeButton.addEventListener('click', () => {
                     document.body.removeChild(winnerDiv);
                 });
 
+                const dialogTitle=document.createElement("h3");
+                dialogTitle.innerText="Game Won";
+                dialogTitle.style.position="absolute";
+                dialogTitle.style.top="-38px";
+                dialogTitle.style.left="50%";
+                dialogTitle.style.transform="translateX(-50%)";
+
                 winnerDiv.appendChild(closeButton);
+                winnerDiv.appendChild(dialogTitle);
                 document.body.appendChild(winnerDiv);
             }
 
