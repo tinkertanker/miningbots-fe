@@ -15,7 +15,10 @@ def split_semicolons(file_contents):
 # if no name=value pairs specified, show a usage
 if len(sys.argv)-1==0: print("Usage: ./update_ffconfig.py (${NAME}=${VALUE})*")
 # read the current config
-settings=open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"firefox-chrome","user.js"))
+try:
+    settings=open(os.path.join(os.path.dirname(os.path.realpath(__file__)),"firefox-chrome","user.js"))
+except:
+    settings=open(os.devnull)
 setting_lines=list(\
     # remove any blank lines
     filter(lambda setting: len(setting)>0,\
