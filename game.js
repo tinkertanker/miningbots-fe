@@ -631,8 +631,7 @@ function drawGame() {
                 winnerDiv.style.backgroundColor = 'white';
                 winnerDiv.style.border = '2px solid silver';
                 winnerDiv.style.borderTop = '40px solid silver';
-                winnerDiv.style.borderTopLeftRadius="5px";
-                winnerDiv.style.borderTopRightRadius="5px";
+                winnerDiv.style.borderRadius="5px";
                 winnerDiv.style.zIndex = '1000';
                 let name_insert = CONFIG["show_player_names"] ? ` (${playername_cache[playerId]})` : "";
                 winnerDiv.innerHTML = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
