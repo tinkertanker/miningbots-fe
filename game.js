@@ -557,7 +557,6 @@ function drawGame() {
                 //console.log("element "+element);
                 gameState[newRow][newCol] = 20 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
                 console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
-                renderBots();
             }
 
             //save the display text of a job
@@ -677,18 +676,6 @@ function drawGame() {
                 document.body.appendChild(winnerDiv);
             }
 
-            function renderBots() {
-                for (const [id, [position, variant, current_energy, job, cargo, playerIndex]] of botMap.entries()) {
-                    var playerNum = '';
-                    if (playerIndex == 0) {
-                        playerNum = 'One';
-                    } else {
-                        playerNum = 'Two';
-                    }
-                    var element = String(variant) + playerNum;
-                    //gameState[ROWS - position.y - 1][position.x] = elements[element];
-                }
-            }
             //shows a row for each player showing each bot and their data
             async function updateUI(player_id) {
                 if (!players.hasOwnProperty(player_id)) {
