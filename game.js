@@ -656,6 +656,7 @@ function drawGame() {
 
                 const dialogTitle=document.createElement("h3");
                 dialogTitle.innerText="Game Won";
+                dialogTitle.style.userSelect="none";
                 dialogTitle.style.position="absolute";
                 dialogTitle.style.top="-38px";
                 dialogTitle.style.left="50%";
