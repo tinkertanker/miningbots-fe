@@ -239,9 +239,9 @@ function drawGame() {
     };
     const terrainImages = {
         unknown: new Image(),
-        grassland: new Image(),
+        grasslands: new Image(),
         hills: new Image(),
-        mountain: new Image()
+        mountains: new Image()
     };
 
     //Assigns images (preload images)
@@ -254,9 +254,9 @@ function drawGame() {
     images.unobtanium.src = 'assets/Unobtanium.png';
 
     terrainImages.unknown.src = 'assets/unknown.jpg';
-    terrainImages.grassland.src = 'assets/grassland.jpg';
+    terrainImages.grasslands.src = 'assets/grassland.jpg';
     terrainImages.hills.src = 'assets/hills.jpg';
-    terrainImages.mountain.src = 'assets/mountain.jpg';
+    terrainImages.mountains.src = 'assets/mountain.jpg';
 
     // display the value of the gameStatus on the webpage
     function updateGameState() {
@@ -569,19 +569,24 @@ function drawGame() {
             //Updates the state of a tile on the map
             function updateLand(data) {
                 const { position: { x, y }, is_traversable, resources, terrain_id } = data;
-                switch (terrain_id) {
+                /*switch (terrain_id) {
                     case 0:
-                        terrains[ROWS - y - 1][x] = terrainImages.grassland;
+                        terrains[ROWS - y - 1][x] = terrainImages.grasslands;
                         break;
                     case 1:
                         terrains[ROWS - y - 1][x] = terrainImages.hills;
                         break
                     case 2:
-                        terrains[ROWS - y - 1][x] = terrainImages.mountain;
+                        terrains[ROWS - y - 1][x] = terrainImages.mountains;
                         break;
                     default:
                         terrains[ROWS - y - 1][x] = terrainImages.unknown;
-                }
+                }*/
+               let landType=map_config.terrain_configs[terrain_id].name.toLowerCase();
+               var image;
+               if(terrainImages[landType])image=terrainImages[landType];
+               else image=terrainImages.unknown;
+               terrains[ROWS - y -1][x] = image;
 
                 if (is_traversable) {
                     gameState[ROWS - y - 1][x] = elements.traversable;
