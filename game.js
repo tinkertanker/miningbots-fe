@@ -616,7 +616,7 @@ function drawGame() {
                         }
                     }
                 }
-                renderBots();
+                //renderBots();
             }
 
             //Display a dialog box in the middle of the screen indicating the winner
