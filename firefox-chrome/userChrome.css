@@ -9,15 +9,14 @@
     visibility: collapse;
 }
 
-#back-button {
+/*#back-button {
     padding-inline-start: 0px;
     padding-left: 2px;
     margin-left: -72px;
     transform: translateX(50vw);
-}
+}*/
 
-#forward-button,
-#stop-reload-button,
-#home-button {
-    transform: translateX(50vw);
+#back-button,#forward-button,#stop-reload-button,#home-button
+{
+    transform: translateX(-75px) translateX(50vw) !important;
 }
