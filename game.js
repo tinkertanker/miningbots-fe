@@ -601,7 +601,7 @@ function drawGame() {
                         })
 
                         // Place the appropriate element
-                        switch (highestId) {
+                        /*switch (highestId) {
                             case 0:
                                 gameState[ROWS - y - 1][x] = elements.granite;
                                 break;
@@ -618,7 +618,12 @@ function drawGame() {
                             default:
                                 gameState[ROWS - y - 1][x] = elements.resource;
                                 break;
-                        }
+                        }*/
+                        let resourceType=map_config.resource_configs[highestId].name.toLowerCase();
+                        var element;
+                        if(elements[resourceType])element=elements[resourceType];
+                        else element=elements.resource;
+                        gameState[ROWS - y -1][x] = element;
                     }
                 }
                 //renderBots();
