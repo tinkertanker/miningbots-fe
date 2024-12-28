@@ -631,6 +631,7 @@ function drawGame() {
 
             //Display a dialog box in the middle of the screen indicating the winner
             function showWinner(playerId) {
+                //create the winner box
                 const winnerDiv = document.createElement('div');
                 winnerDiv.style.position = 'absolute';
                 winnerDiv.style.top = '50%';
@@ -642,9 +643,11 @@ function drawGame() {
                 winnerDiv.style.borderTop = '40px solid silver';
                 winnerDiv.style.borderRadius="5px";
                 winnerDiv.style.zIndex = '1000';
+                //place the text in the box
                 let name_insert = CONFIG["show_player_names"] ? ` (${playername_cache[playerId]})` : "";
                 winnerDiv.innerHTML = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
 
+                //create the cover board to prevent clicking outside the winner box while it is open
                 const coverBoard = document.createElement('div');
                 coverBoard.style.position='fixed';
                 coverBoard.style.top='0';
@@ -654,6 +657,7 @@ function drawGame() {
                 coverBoard.style.height="100vh";
 
 
+                //create the close button
                 const closeButton = document.createElement('button');
                 const x = document.createElement('p');
                 x.innerHTML="x";
@@ -672,6 +676,7 @@ function drawGame() {
                     document.body.removeChild(coverBoard);
                 });
 
+                //create the dialog title
                 const dialogTitle=document.createElement("h3");
                 dialogTitle.innerText="Game Won";
                 dialogTitle.style.userSelect="none";
@@ -680,6 +685,7 @@ function drawGame() {
                 dialogTitle.style.left="50%";
                 dialogTitle.style.transform="translateX(-50%)";
 
+                //add the elements
                 winnerDiv.appendChild(closeButton);
                 winnerDiv.appendChild(dialogTitle);
                 document.body.appendChild(coverBoard);
