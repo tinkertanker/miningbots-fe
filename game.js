@@ -633,7 +633,7 @@ function drawGame() {
             function showWinner(playerId) {
                 //create the winner box
                 const winnerDiv = document.createElement('div');
-                winnerDiv.style.position = 'absolute';
+                winnerDiv.style.position = 'fixed';
                 winnerDiv.style.top = '50%';
                 winnerDiv.style.left = '50%';
                 winnerDiv.style.transform = 'translate(-50%, -50%)';
