@@ -228,35 +228,58 @@ function drawGame() {
 
     //Maybe adjust this to dynamically adapt such that the whole canvas will be shown regardless of map aspect ratio?
     const GRID_SIZE = 32;
-    const images = {
-        kFactoryBot: new Image(),
-        kMiningBot: new Image(),
-        mixed_ore: new Image(),
-        granite: new Image(),
-        vibranium: new Image(),
-        adamantite: new Image(),
-        unobtanium: new Image(),
-    };
-    const terrainImages = {
-        unknown: new Image(),
-        grasslands: new Image(),
-        hills: new Image(),
-        mountains: new Image()
-    };
+    const elementTypes=["kFactoryBot","kMiningBot"
+                       ,"mixed_ore","granite","vibranium","adamantite","unobtanium"];  
+    let images = {};
+    elementTypes.forEach((elementType)=>{
+        images[elementType]=new Image();
+    })
+    const terrains=["grassslands","hills","mountains"];
+    let terrainImages={"unknown":new Image()};
+    terrains.forEach((terrain)=>{
+        terrainImages[terrain]=new Image();
+    });
 
     //Assigns images (preload images)
-    images.kFactoryBot.src = 'assets/Factory_Bot.png';
-    images.kMiningBot.src = 'assets/Mining_Bot.png';
-    images.mixed_ore.src = 'assets/Mixed_Ore.png';
-    images.granite.src = 'assets/Granite.png';
-    images.vibranium.src = 'assets/Vibranium.png';
-    images.adamantite.src = 'assets/Adamantite.png';
-    images.unobtanium.src = 'assets/Unobtanium.png';
+    function transliterateElementType(elementType){
+        if(elementType.charAt(0)=="k")elementType=elementType.substring(1);
+        let upper=0;
+        let out="";
+        if(elementType.indexOf('_')!=-1){ // snake case
+            let words=elementType.split('_');
+            for (let index = 0; index < words.length; index++) {
+                let word = words[index];
+                word=word[0].toUpperCase()+word.substring(1);
+                words[index]=word;
+            }
+            out=words.join('_');
+        } else { // camel case
+            for (let index = 0; index < elementType.length; index++) {
+                const element = elementType[index];
+                if(/[A-Z]/.test(element)){ // if capital letter
+                    upper++;
+                    if(upper>1){ // second or later cap letter
+                        out+='_';
+                    }
+                }
+                out+=element;
+            }
+        }
+        return out;
+    }
+    Object.keys(images).forEach((key)=>{
+        let imageName=transliterateElementType(key);
+        images[key]=`assets/${imageName}.png`;
+    })
 
-    terrainImages.unknown.src = 'assets/unknown.jpg';
+    //iterate over the keys (land types) and set the sources
+    Object.keys(terrainImages).forEach((key)=>{
+        terrainImages[key]=`assets/${key}.jpg`;
+    });
+    /*terrainImages.unknown.src = 'assets/unknown.jpg';
     terrainImages.grasslands.src = 'assets/grassland.jpg';
     terrainImages.hills.src = 'assets/hills.jpg';
-    terrainImages.mountains.src = 'assets/mountain.jpg';
+    terrainImages.mountains.src = 'assets/mountain.jpg';*/
 
     // display the value of the gameStatus on the webpage
     function updateGameState() {
