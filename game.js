@@ -674,6 +674,7 @@ function drawGame() {
                 closeButton.addEventListener('click', () => {
                     document.body.removeChild(winnerDiv);
                     document.body.removeChild(coverBoard);
+                    document.body.style.overflow="";
                 });
 
                 //create the dialog title
@@ -690,6 +691,7 @@ function drawGame() {
                 winnerDiv.appendChild(dialogTitle);
                 document.body.appendChild(coverBoard);
                 document.body.appendChild(winnerDiv);
+                document.body.style.overflow="hidden";
             }
 
             //shows a row for each player showing each bot and their data
