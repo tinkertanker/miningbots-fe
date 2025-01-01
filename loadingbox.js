@@ -5,7 +5,7 @@ const LB_SERVER_UNAVAILABLE = 2;
 const LB_NO_INTERNET = 3;
 let LB_OBJECT = null;
 function initializeLoadingBox() {
-    LB_OBJECT = document.querySelector(".loadingbox");
+    LB_OBJECT = document.getElementById("loadingbox");
 }
 function setLoadingBoxStatus(status) {
     switch (status) {
