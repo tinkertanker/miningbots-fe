@@ -4,10 +4,10 @@ const LB_LOADING = 1;
 const LB_SERVER_UNAVAILABLE = 2;
 const LB_NO_INTERNET = 3;
 let LB_OBJECT = null;
-function initializeLoadingBox() {
+document.addEventListener("DOMContentLoaded",()=>{
     LB_OBJECT = document.getElementById("loadingbox");
-}
-function setLoadingBoxStatus(status) {
+});
+function setLoadingBoxStatus_(status) {
     switch (status) {
         case LB_LOADING_COMPLETED:
         case LB_SERVER_NO_SELECTION:
@@ -29,5 +29,15 @@ function setLoadingBoxStatus(status) {
 
         default:
             break;
+    }
+}
+
+function setLoadingBoxStatus(status) {
+    if(LB_OBJECT){
+        setLoadingBoxStatus_(status);
+    } else {
+        document.addEventListener("DOMContentLoaded",()=>{
+            setLoadingBoxStatus_(status);
+        });
     }
 }

@@ -1,6 +1,5 @@
 console.log("script started");
 
-initializeLoadingBox();
 if (!navigator.onLine) {
     document.getElementById("navbar").classList.add("no-internet");
     document.getElementById("game-info-container").classList.add("no-internet");
