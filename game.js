@@ -233,9 +233,9 @@ function drawGame() {
     elementTypes.forEach((elementType)=>{
         images[elementType]=new Image();
     })
-    const terrains=["grassslands","hills","mountains"];
+    const terrainTypes=["grasslands","hills","mountains"];
     let terrainImages={"unknown":new Image()};
-    terrains.forEach((terrain)=>{
+    terrainTypes.forEach((terrain)=>{
         terrainImages[terrain]=new Image();
     });
 
@@ -268,12 +268,12 @@ function drawGame() {
     }
     Object.keys(images).forEach((key)=>{
         let imageName=transliterateElementType(key);
-        images[key]=`assets/${imageName}.png`;
-    })
+        images[key].src=`assets/${imageName}.png`;
+    });
 
     //iterate over the keys (land types) and set the sources
     Object.keys(terrainImages).forEach((key)=>{
-        terrainImages[key]=`assets/${key}.jpg`;
+        terrainImages[key].src=`assets/${key}.jpg`;
     });
     /*terrainImages.unknown.src = 'assets/unknown.jpg';
     terrainImages.grasslands.src = 'assets/grassland.jpg';
