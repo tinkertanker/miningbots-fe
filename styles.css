@@ -3,6 +3,42 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    filter:invert(100%);
+  }
+
+  #settings-button, #gameCanvas {
+    /* cancel out the inverts */
+    filter:invert(100%);
+  }
+
+  #bot-info-megacontainer {
+    background-color: darkgray;
+  }
+
+  .sidebar {
+    border-top: 6px solid darkgreen;
+  }
+
+  .bot-info {
+    background-color: darkkhaki !important;
+  }
+
+  #action-container {
+    filter:invert(100%);
+  }
+
+  #settings-page {
+    background-color: darkgray;
+  }
+
+  .setting-text-description {
+    color: lightblue !important;
+  }
+}
+
 #page-cover {
   position:fixed;
   width:100vw;
