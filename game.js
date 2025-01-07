@@ -336,8 +336,8 @@ function drawGame() {
             // rendring information
 
             // browser window dimensions
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
+            var screenWidth = window.innerWidth;
+            var screenHeight = window.innerHeight;
             // map dimensions
             const COLS = map_config.max_x;
             const ROWS = map_config.max_y;
@@ -345,7 +345,7 @@ function drawGame() {
             const MAX_WHITE_WIDTH = 60;
             const MAX_WHITE_HEIGHT = 60;
             const borderWidth = 1;
-            const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+            var GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
             //Possibly add more colours for >2 players too
             const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
@@ -355,12 +355,18 @@ function drawGame() {
             canvas.width = COLS * GRID_SIZE;
             canvas.height = ROWS * GRID_SIZE;
 
-            //Since final canvas dimensions are known, resize the container that holds canvas and DIV for bot-info DIVs
-            //This allows the bot-info DIVs to be directly right next to the game canvas without any ugly white space
-            document.getElementById("game-info-container").style.gridTemplateColumns = canvas.width + "px " + (screenWidth - canvas.width) + "px"
-
-            //Allows the bot-info container to take up as much remaining space as possible (on the right; not any space of game canvas)
-            document.getElementById("bot-info-megacontainer").style.width = screenWidth - canvas.width + "px"
+            updateSidebarDimensions();
+            window.addEventListener("resize",(e)=>{
+                // browser window dimensions
+                screenWidth = window.innerWidth;
+                screenHeight = window.innerHeight;
+                GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+                // Update canvas dimensions
+                canvas.width = COLS * GRID_SIZE;
+                canvas.height = ROWS * GRID_SIZE;
+                updateSidebarDimensions();
+                render(); // refresh the canvas
+            });
 
             let resource_configs = map_config.resource_configs;
 
@@ -390,6 +396,15 @@ function drawGame() {
 
             let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
             let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at the start
+
+            function updateSidebarDimensions() {
+                //Since final canvas dimensions are known, resize the container that holds canvas and DIV for bot-info DIVs
+                //This allows the bot-info DIVs to be directly right next to the game canvas without any ugly white space
+                document.getElementById("game-info-container").style.gridTemplateColumns = canvas.width + "px " + (screenWidth - canvas.width) + "px";
+
+                //Allows the bot-info container to take up as much remaining space as possible (on the right; not any space of game canvas)
+                document.getElementById("bot-info-megacontainer").style.width = screenWidth - canvas.width + "px";
+            }
 
             // Draw an image on top of a background image
             // c = column
