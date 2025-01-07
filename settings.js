@@ -91,9 +91,19 @@ function display_settings(json_settings) {
     document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
     document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
 }
+function setChecked(element){
+    if(element.checked)element.classList.add("checkbox-checked");
+    else element.classList.remove("checkbox-checked");
+}
 function initialize_popup() {
     let json_settings = read_settings_cookie();
-    display_settings(json_settings)
+    display_settings(json_settings);
+    document.querySelectorAll("input.setting-value[type='checkbox']").forEach((element)=>{
+        element.addEventListener("click",(e)=>{
+            setChecked(e.target);
+        });
+        setChecked(element);
+    });
     window.addEventListener("keydown", (event) => {
         if (event.key == "Escape") cancel_clicked();
     })

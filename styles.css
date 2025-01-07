@@ -40,7 +40,7 @@ body {
     color: rgb(170, 170, 170) ! important;
   }
 
-  .setting-value[type='checkbox'] {
+  .checkbox-checked {
     /* cancel out inversion on checkboxes */
     filter:invert(100%);
   }
