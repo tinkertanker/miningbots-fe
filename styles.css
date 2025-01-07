@@ -7,6 +7,7 @@ body {
 @media (prefers-color-scheme: dark) {
   body {
     filter:invert(100%);
+    background-color: rgb(86, 86, 86);
   }
 
   #settings-button, #gameCanvas {
@@ -31,11 +32,17 @@ body {
   }
 
   #settings-page {
-    background-color: darkgray;
+    background-color: rgb(86, 86, 86);
   }
 
   .setting-text-description {
-    color: lightblue !important;
+    filter: invert(100%);
+    color: rgb(170, 170, 170) ! important;
+  }
+
+  .setting-value[type='checkbox'] {
+    /* cancel out inversion on checkboxes */
+    filter:invert(100%);
   }
 }
 
