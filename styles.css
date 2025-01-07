@@ -44,6 +44,11 @@ body {
     /* cancel out inversion on checkboxes */
     filter:invert(100%);
   }
+
+  #reset_button {
+    /* don't invert (cancel it out) */
+    filter:invert(100%);
+  }
 }
 
 #page-cover {
