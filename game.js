@@ -241,7 +241,7 @@ function drawGame() {
 
     //Assigns images (preload images)
     function transliterateElementType(elementType){
-        if(elementType.charAt(0)=="k")elementType=elementType.substring(1);
+        if(elementType.charAt(0)=="k")elementType=elementType.substring(1); // example: kMiningBot -> MiningBot
         let upper=0;
         let out="";
         if(elementType.indexOf('_')!=-1){ // snake case
