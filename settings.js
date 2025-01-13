@@ -6,7 +6,8 @@ const default_settings = {
     "show_player_names": true,
     "show_gameid": true,
     "show_game_status": true,
-    "show_notifications": true
+    "show_notifications": true,
+    "theme": "auto"
 }
 function write_settings(json_settings) {
     let cookie_value = encodeURI(JSON.stringify(json_settings));
@@ -46,7 +47,8 @@ function write_displayed_settings() {
         "show_player_names": document.getElementById("name-display-setting-value").checked,
         "show_gameid": document.getElementById("gameid-display-setting-value").checked,
         "show_game_status": document.getElementById("game-status-display-setting-value").checked,
-        "show_notifications": document.getElementById("show-notifications-setting-value").checked
+        "show_notifications": document.getElementById("show-notifications-setting-value").checked,
+        "theme": document.getElementById("theme-setting-value").value
     };
     let error=write_settings(json_settings);
     return error;
@@ -90,6 +92,7 @@ function display_settings(json_settings) {
     document.getElementById("gameid-display-setting-value").checked = json_settings["show_gameid"];
     document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
     document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
+    document.getElementById("theme-setting-value").value = json_settings["theme"];
 }
 function setChecked(element){
     if(element.checked)element.classList.add("checkbox-checked");
@@ -98,6 +101,8 @@ function setChecked(element){
 function initialize_popup() {
     let json_settings = read_settings_cookie();
     display_settings(json_settings);
+    pairDarkMode(json_settings);
+    setDarkMode(darkModeEnabled(json_settings));
     document.querySelectorAll("input.setting-value[type='checkbox']").forEach((element)=>{
         element.addEventListener("click",(e)=>{
             setChecked(e.target);

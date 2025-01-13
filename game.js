@@ -199,6 +199,10 @@ document.addEventListener("DOMContentLoaded", function () {
             // drawGame();
         });
     });
+
+    // good time to set dark mode
+    pairDarkMode(CONFIG);
+    setDarkMode(darkModeEnabled(CONFIG));
 });
 
 // Player Name fetch code 

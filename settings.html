@@ -11,6 +11,7 @@
   <script src="cookies.js"></script>
   <script src="notifications.js"></script>
   <script src="settings.js"></script>
+  <script src="dark_mode.js"></script>
 </head>
 
 <body id="settings-page">
@@ -40,7 +41,7 @@
         <h6 class="setting-text-name">Game Port number</h6>
         <p class="setting-text-description">Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers</p>
       </div>
-      <input type="number" id="game-port-setting-value" class="setting-value" style="height:20px;" min="1"
+      <input type="number" id="game-port-setting-value" class="setting-value" min="1"
         max="65535">
     </div>
     <div id="localhost-port-setting" class="setting-container">
@@ -48,7 +49,7 @@
         <h6 class="setting-text-name">Testing Port number</h6>
         <p class="setting-text-description">Port number used when connecting to the &quot;Testing&quot; server</p>
       </div>
-      <input type="number" id="localhost-port-setting-value" class="setting-value" style="height:20px;" min="1"
+      <input type="number" id="localhost-port-setting-value" class="setting-value" min="1"
         max="65535">
     </div>
     <div id="name-display-setting" class="setting-container">
@@ -91,6 +92,17 @@
         </p>
       </div>
       <input type="checkbox" id="show-notifications-setting-value" class="setting-value">
+    </div>
+    <div id="theme-setting" class="setting-container">
+      <div class="setting-text-container">
+        <h6 class="setting-text-name">Theme</h6>
+        <p class="setting-text-description">Set the application theme</p>
+      </div>
+      <select id="theme-setting-value" class="setting-value" onchange="setDarkMode(darkModeEnabled({'theme':document.getElementById('theme-setting-value').value}));">
+        <option value="auto">Auto (follow browser theme)</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
     </div>
     <div id="reset_button_container">
       <button onclick="reset_settings_clicked();" id="reset_button">Reset settings</button>

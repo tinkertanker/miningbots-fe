@@ -1,0 +1,44 @@
+body {
+filter:invert(100%);
+background-color: rgb(86, 86, 86);
+}
+
+#settings-button, #gameCanvas {
+/* cancel out the inverts */
+filter:invert(100%);
+}
+
+#bot-info-megacontainer {
+background-color: darkgray;
+}
+
+.sidebar {
+border-top: 6px solid darkgreen;
+}
+
+.bot-info {
+background-color: darkkhaki !important;
+}
+
+#action-container {
+filter:invert(100%);
+}
+
+#settings-page {
+background-color: rgb(86, 86, 86);
+}
+
+.setting-text-description {
+filter: invert(100%);
+color: rgb(170, 170, 170) ! important;
+}
+
+.checkbox-checked {
+/* cancel out inversion on checkboxes */
+filter:invert(100%);
+}
+
+#reset_button {
+/* don't invert (cancel it out) */
+filter:invert(100%);
+}
