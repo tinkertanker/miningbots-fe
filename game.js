@@ -704,6 +704,7 @@ function drawGame() {
                 x.innerHTML="x";
                 x.style.top="-4px";
                 x.style.position="relative";
+                x.style.filter="invert(100%)"; // don't invert the X button; it makes it hard to see
                 closeButton.appendChild(x);
                 closeButton.style.position = 'absolute';
                 closeButton.style.top = `-30px`;
