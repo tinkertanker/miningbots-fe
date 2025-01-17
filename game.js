@@ -294,6 +294,7 @@ function drawGame() {
     fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
     })
+        // fetch the list of games
         .then(response => {
             // console.log(response);
             if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
@@ -307,6 +308,7 @@ function drawGame() {
         })
         .then(games => {
             console.log('games:', games);
+            // get the first available game
             gameId = games[0].game_id;
             gameStatus = games[0].game_status;
             updateGameState();
@@ -314,6 +316,7 @@ function drawGame() {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
+            //get the map_config
             let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
                 method: 'GET'
             });
@@ -323,6 +326,7 @@ function drawGame() {
                 document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
             return { response: fetch_map_config, game_id: gameId };
         })
+        // pass the map_config and game id to the next function
         .then(async result => {
             let response = await result.response;
 
@@ -505,6 +509,7 @@ function drawGame() {
             const jobMap = new Map();
             const players = {};
 
+            // subscribe to the websocket as soon as it connects
             ws.onopen = function () {
                 console.log('Connected to WebSocket server');
                 const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: 514525537, observer_name: 'Observer' });
@@ -834,6 +839,7 @@ function drawGame() {
 
 
 
+            //add a sidebar for a new player
             function updateSidebars(player_id) {
                 // Dynamically add sidebars
                 let sidebar = document.createElement("div");
@@ -844,12 +850,14 @@ function drawGame() {
                 sidebars = Array.from(document.querySelectorAll(".sidebar"));
             }
         })
+        // if an error occurs in any part to the above code
         .catch((error) => {
             console.error("Error:", error);
             if (navigator.onLine) {
                 setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
                 setTimeout(function () {
                     if (server != undefined) {
+                        // if the custom option is selected but the user canceled the selection, don't show an error dialog
                         if (hostname != "custom.invalid")
                             alert(`Error fetching ${http_type}://${hostname}:${port}/games: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
                         // auto show the dropdown menu
