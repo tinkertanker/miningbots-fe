@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedServerUrl = this.getAttribute("data-url");
             console.log(selectedServerUrl);
             let selectedServerName = this.textContent;
-            document.getElementById("navbarDropdownMenuLink").textContent =
+            //document.getElementById("navbarDropdownMenuLink").textContent =
                 selectedServerName;
             deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
             // Save to cookie first
