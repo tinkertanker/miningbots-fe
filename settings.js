@@ -136,8 +136,8 @@ function open_popup() {
     // Position of popup
     let width = 400;
     let height = 600;
-    let left = Math.floor((window.innerWidth / 2) - (width / 2));
-    let top = Math.floor((window.innerHeight / 2) - (height / 2));
+    let left = Math.floor((screen.width / 2) - (width / 2));
+    let top = Math.floor((screen.height / 2) - (height / 2));
     return window.open('/settings.html', '_blank', `popup=yes,width=${width},height=${height},left=${left},top=${top}`);
 }
 
