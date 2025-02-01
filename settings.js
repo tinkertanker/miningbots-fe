@@ -80,9 +80,17 @@ function ok_clicked() {
     if(!error)window.close();
 }
 function read_settings_cookie() {
+    settings=Object.assign({},default_settings);
     let cookie_value = getCookie("settings");
-    if (cookie_value) return JSON.parse(decodeURI(cookie_value));
-    else return default_settings;
+    if (cookie_value){
+        let cookie=JSON.parse(decodeURI(cookie_value));
+        Object.keys(cookie).forEach((key)=>{
+           if(default_settings.hasOwnProperty(key)){ // make sure key is valid
+             settings[key]=cookie[key];
+           } 
+        });
+    }
+    return settings;
 }
 function display_settings(json_settings) {
     document.getElementById("secure-protocols-setting-value").checked = json_settings["enable_security"];
