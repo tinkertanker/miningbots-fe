@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             selectedServerUrl = this.getAttribute("data-url");
             console.log(selectedServerUrl);
-            let selectedServerName = this.textContent;
+            //let selectedServerName = this.textContent;
             //document.getElementById("navbarDropdownMenuLink").textContent =
             //    selectedServerName;
             deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
@@ -290,15 +290,17 @@ function drawGame() {
         if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
     }
 
-    //Likely connecting to the server and retrieving initial game state
+    // connect to the server to fetch the list of games
     fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
     })
-        // fetch the list of games
         .then(response => {
             // console.log(response);
+            // make the UI ready
             if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
             document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
+
+            // return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
                 return response.json();
@@ -306,6 +308,7 @@ function drawGame() {
                 throw new Error(response.statusText);
             }
         })
+        // games= list of games, as a JS object
         .then(games => {
             console.log('games:', games);
             // get the first available game
@@ -324,20 +327,22 @@ function drawGame() {
             //show the game ID in the navbar
             if (CONFIG["show_gameid"])
                 document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+            
+            // pass the map_config and game id to the prepper
             return { response: fetch_map_config, game_id: gameId };
         })
-        // pass the map_config and game id to the next function
+        // prep the map_config for the next function
         .then(async result => {
             let response = await result.response;
 
             if (response.ok) {
-                console.log('Second fetch response:', response);
-                return { map_config: response.json(), game_id: result.game_id };
+                console.log('Map config fetch response:', response);
+                return { map_config: response.json(), game_id: result.game_id }; // pass down the game_id
             } else {
                 throw new Error(response.statusText);
             }
         })
-        //Map config taken from server data
+        //result= Map config and game ID taken from server data
         .then(async result => {
             let map_config = await result.map_config;
             console.log('map_config:', map_config);
