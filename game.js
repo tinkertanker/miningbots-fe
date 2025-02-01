@@ -312,8 +312,11 @@ function drawGame() {
         .then(games => {
             console.log('games:', games);
             // get the first available game
-            gameId = games[0].game_id;
-            gameStatus = games[0].game_status;
+            game_info=games[0];
+
+            // and retrieve info about it
+            gameId = game_info.game_id;
+            gameStatus = game_info.game_status;
             updateGameState();
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
