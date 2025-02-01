@@ -317,11 +317,16 @@ function drawGame() {
             // and retrieve info about it
             gameId = game_info.game_id;
             gameStatus = game_info.game_status;
+
+            //post the game status on the DOM
             updateGameState();
+
+            // make sure the game is running
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
+
             //get the map_config
             let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
                 method: 'GET'
@@ -330,7 +335,7 @@ function drawGame() {
             //show the game ID in the navbar
             if (CONFIG["show_gameid"])
                 document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
-            
+
             // pass the map_config and game id to the prepper
             return { response: fetch_map_config, game_id: gameId };
         })
