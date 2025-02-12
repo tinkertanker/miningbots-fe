@@ -164,7 +164,7 @@ if (hostname && servers.hasOwnProperty(hostname)) {
 // Variable to hold the selected server URL
 let selectedServerUrl = null;
 
-// Function to populate the dropdown menu
+// Function to populate the dropdown menu (server list)
 function populateDropdown() {
     let dropdownMenu = document.getElementById("dropdown-menu");
     Object.keys(servers).forEach(function (key) {
