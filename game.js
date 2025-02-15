@@ -1,129 +1,179 @@
 console.log("script started");
 
+if (!navigator.onLine) {
+    document.getElementById("navbar").classList.add("no-internet");
+    document.getElementById("game-info-container").classList.add("no-internet");
+    setLoadingBoxStatus(LB_NO_INTERNET);
+    window.addEventListener("online", (e) => {
+        location.reload();
+    });
+} else {
+    setLoadingBoxStatus(LB_LOADING);
+}
 // Get hostname from cookie, otherwise leave as null
-const server = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("lastServer="))
-    ?.split("=")[1];
+const server = getCookie("lastServer");
 
 //Probably some default values for original testing:
 // var hostname = "miningbots-api.dev.tk.sg";
 // var port = 443;
-var hostname = "localhost";
-var port = 9003;
-// if (server !== null) hostname = server; 
-var gameId;
+//var hostname = "localhost";
+const CONFIG = read_settings_cookie();
 
-var http_type = "http";
-var ws_type = "ws";
-// var http_type = "https";
-// var ws_type = "wss";
+var port = CONFIG["localhost_port"];
+if (server !== null) hostname = server;
+var custom_server = false;
+console.log('host name: ' + hostname);
+var gameId;
+var playername_cache = {};
+var gameStatus = "kNotStarted";
+setInterval(() => {
+    //console.log("Status: ",gameStatus);
+}, 2000);
+function onunload() {
+    console.log(gameStatus);
+    return gameStatus !== "kNotStarted";
+}
+
+if (CONFIG["enable_security"]) {
+    var http_type = "https";
+    var ws_type = "wss";
+} else {
+    var http_type = "http";
+    var ws_type = "ws";
+}
 
 //Dictionary of servers and respective names, urls
+var gport=CONFIG["game_port"];
 var servers = {
     "p1.bootcamp.tk.sg": {
         name: "Game 1",
-        url: "p1.bootcamp.tk.sg",
+        url: `p1.bootcamp.tk.sg:${gport}`,
     },
     "p2.bootcamp.tk.sg": {
         name: "Game 2",
-        url: "p2.bootcamp.tk.sg",
+        url: `p2.bootcamp.tk.sg:${gport}`,
     },
     "p3.bootcamp.tk.sg": {
         name: "Game 3",
-        url: "p3.bootcamp.tk.sg",
+        url: `p3.bootcamp.tk.sg:${gport}`,
     },
     "p4.bootcamp.tk.sg": {
         name: "Game 4",
-        url: "p4.bootcamp.tk.sg",
+        url: `p4.bootcamp.tk.sg:${gport}`,
     },
     "p5.bootcamp.tk.sg": {
         name: "Game 5",
-        url: "p5.bootcamp.tk.sg",
+        url: `p5.bootcamp.tk.sg:${gport}`,
     },
     "p6.bootcamp.tk.sg": {
         name: "Game 6",
-        url: "p6.bootcamp.tk.sg",
+        url: `p6.bootcamp.tk.sg:${gport}`,
     },
     "p7.bootcamp.tk.sg": {
         name: "Main Game",
-        url: "p7.bootcamp.tk.sg",
+        url: `p7.bootcamp.tk.sg:${gport}`,
     },
     "p8.bootcamp.tk.sg": {
         name: "Game 8",
-        url: "p8.bootcamp.tk.sg",
+        url: `p8.bootcamp.tk.sg:${gport}`,
     },
     "p9.bootcamp.tk.sg": {
         name: "Game 9",
-        url: "p9.bootcamp.tk.sg",
+        url: `p9.bootcamp.tk.sg:${gport}`,
     },
     "p10.bootcamp.tk.sg": {
         name: "Game 10",
-        url: "p10.bootcamp.tk.sg",
+        url: `p10.bootcamp.tk.sg:${gport}`,
     },
     "s1.bootcamp.tk.sg": {
         name: "Staging 1",
-        url: "s1.bootcamp.tk.sg",
+        url: `s1.bootcamp.tk.sg:${gport}`,
     },
     "s2.bootcamp.tk.sg": {
         name: "Staging 2",
-        url: "s2.bootcamp.tk.sg",
+        url: `s2.bootcamp.tk.sg:${gport}`,
     },
     "s3.bootcamp.tk.sg": {
         name: "Staging 3",
-        url: "s3.bootcamp.tk.sg",
+        url: `s3.bootcamp.tk.sg:${gport}`,
     },
     "s4.bootcamp.tk.sg": {
         name: "Staging 4",
-        url: "s4.bootcamp.tk.sg",
+        url: `s4.bootcamp.tk.sg:${gport}`,
     },
     "s5.bootcamp.tk.sg": {
         name: "Staging 5",
-        url: "s5.bootcamp.tk.sg",
+        url: `s5.bootcamp.tk.sg:${gport}`,
     },
     "s6.bootcamp.tk.sg": {
         name: "Staging 6",
-        url: "s6.bootcamp.tk.sg",
+        url: `s6.bootcamp.tk.sg:${gport}`,
     },
     "s7.bootcamp.tk.sg": {
         name: "Staging 7",
-        url: "s7.bootcamp.tk.sg",
+        url: `s7.bootcamp.tk.sg:${gport}`,
     },
     "s8.bootcamp.tk.sg": {
         name: "Staging 8",
-        url: "s8.bootcamp.tk.sg",
+        url: `s8.bootcamp.tk.sg:${gport}`,
     },
     "s9.bootcamp.tk.sg": {
         name: "Staging 9",
-        url: "s9.bootcamp.tk.sg",
+        url: `s9.bootcamp.tk.sg:${gport}`,
     },
     "s10.bootcamp.tk.sg": {
         name: "Staging 10",
-        url: "s10.bootcamp.tk.sg",
+        url: `s10.bootcamp.tk.sg:${gport}`,
     },
     "localhost": {
-        name: "localhost",
-        url: "localhost",
-    },
-    "localhost": {
-        name: "localhost",
-        url: "localhost",
+        name: "Testing",
+        url: `localhost:${port}`,
     },
     "miningbots-api.dev.tk.sg": {
-        name: "miningbots-api.dev.tk.sg",
+        name: "Development",
         url: "miningbots-api.dev.tk.sg",
     },
+    "custom.invalid": { // invalid special domain by IANA
+        name: "Custom...",
+        url: "custom.invalid",
+    }
 };
+if (hostname && servers.hasOwnProperty(hostname)) {
+    if (hostname == "custom.invalid") {
+        document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
+        let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
+        while (socket===undefined){
+            socket = prompt("Enter socket of server:");
+        }
+        servers["custom.invalid"].url=socket;
+        if (servers["custom.invalid"].url) {
+            hostname = getNameOfSocket(servers["custom.invalid"].url);
+            setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
+            console.log("URL: " + servers["custom.invalid"].url);
+            port = getPortNumber(http_type, servers["custom.invalid"].url);
+            custom_server = true;
+        }
+    } else {
+        console.log("URL: " + servers[hostname].url);
+        port = getPortNumber(http_type, servers[hostname].url);
+    }
+} else {
+    setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
+}
 
 // Variable to hold the selected server URL
 let selectedServerUrl = null;
 
-// Function to populate the dropdown menu
+// Function to populate the dropdown menu (server list)
 function populateDropdown() {
-    let dropdownMenu = document.querySelector(".dropdown-menu");
+    let dropdownMenu = document.getElementById("dropdown-menu");
     Object.keys(servers).forEach(function (key) {
         let server = servers[key];
-        let menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
+        let menuItem;
+        if(key=="custom.invalid")
+            menuItem = `<a class="dropdown-item" href="#" data-url="custom.invalid">${server.name}</a>`;
+        else
+            menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
         dropdownMenu.innerHTML += menuItem;
     });
 }
@@ -132,21 +182,27 @@ function populateDropdown() {
 document.addEventListener("DOMContentLoaded", function () {
     populateDropdown();
 
-    let dropdownItems = document.querySelectorAll(".dropdown-item");
+    //convert to array to make it possible to use forEach
+    let dropdownItems = Array.from(document.getElementsByClassName("dropdown-item"));
     dropdownItems.forEach(function (item) {
         item.addEventListener("click", function (event) {
             event.preventDefault();
             selectedServerUrl = this.getAttribute("data-url");
             console.log(selectedServerUrl);
-            let selectedServerName = this.textContent;
-            document.getElementById("navbarDropdownMenuLink").textContent =
-                selectedServerName;
+            //let selectedServerName = this.textContent;
+            //document.getElementById("navbarDropdownMenuLink").textContent =
+            //    selectedServerName;
+            deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
             // Save to cookie first
-            document.cookie = `lastServer=${selectedServerUrl}`;
+            setCookie("lastServer", getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
             location.reload();
-            // drawGame(selectedServerUrl, port);
+            // drawGame();
         });
     });
+
+    // good time to set dark mode
+    pairDarkMode(CONFIG);
+    setDarkMode(darkModeEnabled(CONFIG));
 });
 
 // Player Name fetch code 
@@ -157,10 +213,10 @@ async function fetchPlayerNames(gameId, playerIds) {
     try {
         const response = await fetch(`${url}?request=${encodeURIComponent(JSON.stringify(playerRequest))}`, {
             method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+            //headers: { 'Content-Type': 'application/json' }
         });
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP not-good response from /players: status: ${response.status}`);
 
         const playerUpdates = await response.json();
         return playerUpdates;
@@ -169,48 +225,82 @@ async function fetchPlayerNames(gameId, playerIds) {
     }
 }
 
-function drawGame(hostname, port) {
+function drawGame() {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
     //Maybe adjust this to dynamically adapt such that the whole canvas will be shown regardless of map aspect ratio?
     const GRID_SIZE = 32;
-    const images = {
-        kFactoryBot: new Image(),
-        kMiningBot: new Image(),
-        mixed_ore: new Image(),
-        granite: new Image(),
-        vibranium: new Image(),
-        adamantite: new Image(),
-        unobtanium: new Image(),
-    };
-    const terrainImages = {
-        unknown: new Image(),
-        grassland: new Image(),
-        hills: new Image(),
-        mountain: new Image()
-    };
+    const elementTypes=["kFactoryBot","kMiningBot"
+                       ,"mixed_ore","granite","vibranium","adamantite","unobtanium"];  
+    let images = {};
+    elementTypes.forEach((elementType)=>{
+        images[elementType]=new Image();
+    })
+    const terrainTypes=["grasslands","hills","mountains"];
+    let terrainImages={"unknown":new Image()};
+    terrainTypes.forEach((terrain)=>{
+        terrainImages[terrain]=new Image();
+    });
 
-    //Assigns images
-    images.kFactoryBot.src = 'assets/Factory_Bot.png';
-    images.kMiningBot.src = 'assets/Mining_Bot.png';
-    images.mixed_ore.src = 'assets/Mixed_Ore.png';
-    images.granite.src = 'assets/Granite.png';
-    images.vibranium.src = 'assets/Vibranium.png';
-    images.adamantite.src = 'assets/Adamantite.png';
-    images.unobtanium.src = 'assets/Unobtanium.png';
+    //Assigns images (preload images)
+    function transliterateElementType(elementType){
+        if(elementType.charAt(0)=="k")elementType=elementType.substring(1); // example: kMiningBot -> MiningBot
+        let upper=0;
+        let out="";
+        if(elementType.indexOf('_')!=-1){ // snake case
+            let words=elementType.split('_');
+            for (let index = 0; index < words.length; index++) {
+                let word = words[index];
+                word=word[0].toUpperCase()+word.substring(1);
+                words[index]=word;
+            }
+            out=words.join('_');
+        } else { // camel case
+            for (let index = 0; index < elementType.length; index++) {
+                const element = elementType[index];
+                if(/[A-Z]/.test(element)){ // if capital letter
+                    upper++;
+                    if(upper>1){ // second or later cap letter
+                        out+='_';
+                    }
+                }
+                out+=element;
+            }
+        }
+        return out;
+    }
+    Object.keys(images).forEach((key)=>{
+        let imageName=transliterateElementType(key);
+        images[key].src=`assets/${imageName}.png`;
+    });
 
-    terrainImages.unknown.src = 'assets/unknown.jpg';
-    terrainImages.grassland.src = 'assets/grassland.jpg';
+    //iterate over the keys (land types) and set the sources
+    Object.keys(terrainImages).forEach((key)=>{
+        terrainImages[key].src=`assets/${key}.jpg`;
+    });
+    /*terrainImages.unknown.src = 'assets/unknown.jpg';
+    terrainImages.grasslands.src = 'assets/grassland.jpg';
     terrainImages.hills.src = 'assets/hills.jpg';
-    terrainImages.mountain.src = 'assets/mountain.jpg';
+    terrainImages.mountains.src = 'assets/mountain.jpg';*/
 
-    //Likely connecting to the server and retrieving initial game state
+    // display the value of the gameStatus on the webpage
+    function updateGameState() {
+        console.log("raw game status: " + gameStatus);
+        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+    }
+
+    // connect to the server to fetch the list of games
     fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
     })
         .then(response => {
             // console.log(response);
+            // make the UI ready
+            if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
+            document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
+
+            // return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
                 return response.json();
@@ -218,42 +308,67 @@ function drawGame(hostname, port) {
                 throw new Error(response.statusText);
             }
         })
+        // games= list of games, as a JS object
         .then(games => {
             console.log('games:', games);
-            let gameId = games[0].game_id;
-            let gameStatus = games[0].game_status;
+            // get the first available game
+            game_info=games[0];
+
+            // and retrieve info about it
+            gameId = game_info.game_id;
+            gameStatus = game_info.game_status;
+
+            //post the game status on the DOM
+            updateGameState();
+
+            // make sure the game is running
             if (gameStatus == 'kEnded') {
                 console.log('failed to subscribe because game has ended');
                 return;
             }
+
+            //get the map_config
             let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
                 method: 'GET'
             });
 
+            //show the game ID in the navbar
+            if (CONFIG["show_gameid"])
+                document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+
+            // pass the map_config and game id to the prepper
             return { response: fetch_map_config, game_id: gameId };
         })
+        // prep the map_config for the next function
         .then(async result => {
             let response = await result.response;
 
             if (response.ok) {
-                console.log('Second fetch response:', response);
-                return { map_config: response.json(), game_id: result.game_id };
+                console.log('Map config fetch response:', response);
+                return { map_config: response.json(), game_id: result.game_id }; // pass down the game_id
             } else {
                 throw new Error(response.statusText);
             }
         })
-        //Map config taken from server data
+        //result= Map config and game ID taken from server data
         .then(async result => {
             let map_config = await result.map_config;
             console.log('map_config:', map_config);
-            const screenWidth = window.innerWidth;
-            const screenHeight = window.innerHeight;
+            // rendring information
+
+            // browser window dimensions
+            var screenWidth = window.innerWidth;
+            var screenHeight = window.innerHeight;
+            // map dimensions
             const COLS = map_config.max_x;
             const ROWS = map_config.max_y;
+            // rendring preferences
             const MAX_WHITE_WIDTH = 60;
             const MAX_WHITE_HEIGHT = 60;
             const borderWidth = 1;
-            const GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+            var GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+            //Possibly add more colours for >2 players too
+            const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
             console.log(COLS);
 
@@ -261,20 +376,26 @@ function drawGame(hostname, port) {
             canvas.width = COLS * GRID_SIZE;
             canvas.height = ROWS * GRID_SIZE;
 
-            //Since final canvas dimensions are known, resize the container that holds canvas and DIV for bot-info DIVs
-            //This allows the bot-info DIVs to be directly right next to the game canvas without any ugly white space
-            document.getElementById("game-info-container").style = "display: grid; grid-template-columns: " + canvas.width + "px " + (screenWidth - canvas.width) + "px"
-
-            //Allows the bot-info container to take up as much remaining space as possible (on the right; not any space of game canvas)
-            document.getElementById("bot-info-megacontainer").style.width = screenWidth - canvas.width + "px"
+            updateSidebarDimensions();
+            window.addEventListener("resize",(e)=>{
+                // browser window dimensions
+                screenWidth = window.innerWidth;
+                screenHeight = window.innerHeight;
+                GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+                // Update canvas dimensions
+                canvas.width = COLS * GRID_SIZE;
+                canvas.height = ROWS * GRID_SIZE;
+                updateSidebarDimensions();
+                render(); // refresh the canvas
+            });
 
             let resource_configs = map_config.resource_configs;
 
             const elements = {
-                kMiningBotOne: 0,
+                /*kMiningBotOne: 0,
                 kFactoryBotOne: 1,
                 kMiningBotTwo: 2,
-                kFactoryBotTwo: 3,
+                kFactoryBotTwo: 3,*/
                 unknown: 4,
                 traversable: 5,
                 resource: 6,
@@ -295,8 +416,20 @@ function drawGame(hostname, port) {
             });
 
             let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
-            let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at teh start
+            let terrains = Array.from({ length: ROWS }, () => Array(COLS).fill(terrainImages.unknown)); //all squares are unknown at the start
 
+            function updateSidebarDimensions() {
+                //Since final canvas dimensions are known, resize the container that holds canvas and DIV for bot-info DIVs
+                //This allows the bot-info DIVs to be directly right next to the game canvas without any ugly white space
+                document.getElementById("game-info-container").style.gridTemplateColumns = canvas.width + "px " + (screenWidth - canvas.width) + "px";
+
+                //Allows the bot-info container to take up as much remaining space as possible (on the right; not any space of game canvas)
+                document.getElementById("bot-info-megacontainer").style.width = screenWidth - canvas.width + "px";
+            }
+
+            // Draw an image on top of a background image
+            // c = column
+            // r = row
             function drawASquare(c, r, background, image) {
                 ctx.drawImage(background, c * GRID_SIZE - borderWidth, r * GRID_SIZE - borderWidth, GRID_SIZE + borderWidth, GRID_SIZE + borderWidth);
                 if (image) { //if an element image was given
@@ -304,6 +437,9 @@ function drawGame(hostname, port) {
                 }
             }
 
+            // Draw a bot image on a coloured background
+            // c = column
+            // r = row
             //this exists because the bots have a background colour that indicates the player they are attached to, instead of the terrain
             //can remove this if the background is also changed to an image 
             function drawABot(c, r, colour, image) {
@@ -312,14 +448,16 @@ function drawGame(hostname, port) {
                 ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
             }
 
+            // Refresh the game canvas
             function render() {
+                // Erase the whole game canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 for (let row = 0; row < ROWS; row++) {
                     for (let col = 0; col < COLS; col++) {
                         const element = gameState[row][col];
                         const terrain = terrains[row][col];
                         switch (element) {
-                            case elements.kFactoryBotOne: // Blue
+                            /*case elements.kFactoryBotOne: // Blue
                                 drawABot(col, row, '#25537b', images.kFactoryBot);
                                 //drawASquare(col, row, terrain, images.kFactoryBot);
                                 break;
@@ -334,7 +472,7 @@ function drawGame(hostname, port) {
                             case elements.kMiningBotTwo: // Red
                                 drawABot(col, row, '#AA4344', images.kMiningBot);
                                 //drawASquare(col, row, terrain, images.kMiningBot);
-                                break;
+                                break;*/
                             case elements.unknown:
                                 drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
                                 break;
@@ -356,9 +494,19 @@ function drawGame(hostname, port) {
                             case elements.unobtanium:
                                 drawASquare(col, row, terrain, images.unobtanium);
                                 break;
+                            default: // draw the bot
+                                console.log("EIN: ", element);
+                                let element_ = element - 20;
+                                const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
+                                const botImage = images[variant];
+                                const playerIndex = Math.floor(element_ / 2);
+                                const color = colors[playerIndex];
+                                console.log(color, " ", variant);
+                                drawABot(col, row, color, botImage);
                         }
+                        //console.log("EIN OoS: ",gameState);
                         if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
-                            ctx.strokeStyle = 'white'; // set border color to white
+                            ctx.strokeStyle = 'white'; // set border color to white. this will become the separators between the positions
                             ctx.lineWidth = 1; // set border width
                             ctx.strokeRect(col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                         }
@@ -373,8 +521,8 @@ function drawGame(hostname, port) {
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
-            const playerNames = {};
 
+            // subscribe to the websocket as soon as it connects
             ws.onopen = function () {
                 console.log('Connected to WebSocket server');
                 const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: CONFIG["observer_key"], observer_name: 'Observer' });
@@ -408,15 +556,21 @@ function drawGame(hostname, port) {
                                     updateLand(landUpdate);
                                 })
                             }
+                            gameStatus = data.game_status;
+                            updateGameState();
                             updateUI(data.player_id);
                             render();
                             break;
                         case 'kEndInWin':
                             console.log(`game ended player id ${data.player_id} won`);
+                            gameStatus = data.game_status;
+                            updateGameState();
                             showWinner(data.player_id);
                             break;
                         case 'kEndInDraw':
                             console.log('game ended in draw');
+                            gameStatus = data.game_status;
+                            updateGameState();
                             break;
                         default:
                             console.log(data.UpdateType);
@@ -426,16 +580,14 @@ function drawGame(hostname, port) {
                     console.error('Error parsing message:', error);
                 }
             }
+            //Sidebars will be dynamically populated
+            if (!sidebars) var sidebars = [];
 
-            //Sidebars has to be dynamically added if in the future you want >2 players
-            const sidebars = [document.getElementById('bot-sidebar-one'), document.getElementById('bot-sidebar-two')];
-            //Possibly add more colours for >2 players too
-            const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
-
-            //Updates the bot's position and its job?
+            //Updates the bot information in the botMap
             function updateBot(botUpdate, playerId) {
-                if (!players.hasOwnProperty(playerId) && Object.keys(players).length < 2) {
+                if (!players.hasOwnProperty(playerId)) {
                     players[playerId] = Object.keys(players).length;
+                    updateSidebars(playerId);
                 }
                 const playerIndex = players[playerId];
 
@@ -447,55 +599,59 @@ function drawGame(hostname, port) {
                     gameState[oldRow][oldCol] = elements.traversable;
                 }
                 var job;
+                // update the displayed job information
+                // It won't be displayed yet however
                 if (current_job_id == 0) {
-                    job = { action: 'kNoAction', status: 'kNotStarted' };
+                    job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
                 } else if (jobMap.has(current_job_id)) {
                     job = jobMap.get(current_job_id);
                 } else {
-                    job = { action: 'kNoAction', status: 'kNotStarted' };
+                    job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
                 }
                 botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
                 var newRow = ROWS - position.y - 1;
                 var newCol = position.x;
-                var playerNum = '';
-                if (playerIndex == 0) {
-                    playerNum = 'One';
-                } else {
-                    playerNum = 'Two';
-                }
-                var element = String(variant) + playerNum;
-                gameState[newRow][newCol] = elements[element];
-                renderBots();
+                //var playerNum = ''+(playerIndex+1);
+                //var element = String(variant) + playerNum;
+                //console.log("element "+element);
+                gameState[newRow][newCol] = 20 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
+                console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
             }
 
-            //?
+            //save the display text of a job
             function updateJob(data) {
                 const { id, action, status } = data;
-                var job = { action: action, status: status }
+                var job = { action: actionMap[action], status: statusMap[status] }
                 jobMap.set(id, job);
             }
 
             //Updates the state of a tile on the map
             function updateLand(data) {
                 const { position: { x, y }, is_traversable, resources, terrain_id } = data;
-                switch (terrain_id) {
+                /*switch (terrain_id) {
                     case 0:
-                        terrains[ROWS - y - 1][x] = terrainImages.grassland;
+                        terrains[ROWS - y - 1][x] = terrainImages.grasslands;
                         break;
                     case 1:
                         terrains[ROWS - y - 1][x] = terrainImages.hills;
                         break
                     case 2:
-                        terrains[ROWS - y - 1][x] = terrainImages.mountain;
+                        terrains[ROWS - y - 1][x] = terrainImages.mountains;
                         break;
                     default:
                         terrains[ROWS - y - 1][x] = terrainImages.unknown;
-                }
+                }*/
+               let landType=map_config.terrain_configs[terrain_id].name.toLowerCase();
+               var image;
+               if(terrainImages[landType])image=terrainImages[landType];
+               else image=terrainImages.unknown;
+               terrains[ROWS - y -1][x] = image;
 
                 if (is_traversable) {
                     gameState[ROWS - y - 1][x] = elements.traversable;
                 } else {
                     if (Array.isArray(resources)) {
+                        // Fetch highest resource ID at that location
                         var highestId = -1;
                         resources.forEach(resource => {
                             if (resource.id > highestId) {
@@ -503,7 +659,8 @@ function drawGame(hostname, port) {
                             }
                         })
 
-                        switch (highestId) {
+                        // Place the appropriate element
+                        /*switch (highestId) {
                             case 0:
                                 gameState[ROWS - y - 1][x] = elements.granite;
                                 break;
@@ -516,78 +673,116 @@ function drawGame(hostname, port) {
                             case 3:
                                 gameState[ROWS - y - 1][x] = elements.unobtanium;
                                 break;
+                            // If element unknown place elements.resource (displayed as Mixed_Ore.png)
                             default:
                                 gameState[ROWS - y - 1][x] = elements.resource;
                                 break;
-                        }
+                        }*/
+                        let resourceType=map_config.resource_configs[highestId].name.toLowerCase();
+                        var element;
+                        if(elements[resourceType])element=elements[resourceType];
+                        else element=elements.resource;
+                        gameState[ROWS - y -1][x] = element;
                     }
                 }
-                renderBots();
+                //renderBots();
             }
 
-            function nextGame() {
-                fetch(`${http_type}://${hostname}:${port}/games`, {
-                    method: 'GET'
-                })
-            }
-
-            //Just the win screen
+            //Display a dialog box in the middle of the screen indicating the winner
             function showWinner(playerId) {
+                //create the winner box
                 const winnerDiv = document.createElement('div');
-                winnerDiv.style.position = 'absolute';
+                winnerDiv.style.position = 'fixed';
                 winnerDiv.style.top = '50%';
                 winnerDiv.style.left = '50%';
                 winnerDiv.style.transform = 'translate(-50%, -50%)';
                 winnerDiv.style.padding = '20px';
                 winnerDiv.style.backgroundColor = 'white';
-                winnerDiv.style.border = '2px solid black';
+                winnerDiv.style.border = '2px solid silver';
+                winnerDiv.style.borderTop = '40px solid silver';
+                winnerDiv.style.borderRadius="5px";
                 winnerDiv.style.zIndex = '1000';
-                winnerDiv.innerHTML = `<h1>Player ${playerId} Won!</h1>`;
+                //place the text in the box
+                let name_insert = CONFIG["show_player_names"] ? ` (${playername_cache[playerId]})` : "";
+                winnerDiv.innerHTML = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
 
+                //create the cover board to prevent clicking outside the winner box while it is open
+                const coverBoard = document.createElement('div');
+                coverBoard.style.position='fixed';
+                coverBoard.style.top='0';
+                coverBoard.style.left='0';
+                coverBoard.style.backgroundColor='transparent';
+                coverBoard.style.width="100vw";
+                coverBoard.style.height="100vh";
+
+
+                //create the close button
                 const closeButton = document.createElement('button');
-                closeButton.innerText = 'X';
+                const x = document.createElement('p');
+                x.innerHTML="x";
+                x.style.top="-4px";
+                x.style.position="relative";
+                x.style.filter="invert(100%)"; // don't invert the X button; it makes it hard to see
+                closeButton.appendChild(x);
                 closeButton.style.position = 'absolute';
-                closeButton.style.top = '-1px';
-                closeButton.style.right = '-1px';
+                closeButton.style.top = `-30px`;
+                closeButton.style.left = '3px';
+                closeButton.style.width=closeButton.style.height="20px";
+                closeButton.style.backgroundColor="red";
+                closeButton.style.borderRadius="50%";
+                closeButton.style.border="none";
                 closeButton.addEventListener('click', () => {
                     document.body.removeChild(winnerDiv);
+                    document.body.removeChild(coverBoard);
+                    document.body.style.overflow="";
                 });
 
+                //create the dialog title
+                const dialogTitle=document.createElement("h3");
+                dialogTitle.innerText="Game Won";
+                dialogTitle.style.userSelect="none";
+                dialogTitle.style.position="absolute";
+                dialogTitle.style.top="-38px";
+                dialogTitle.style.left="50%";
+                dialogTitle.style.transform="translateX(-50%)";
+
+                //add the elements
                 winnerDiv.appendChild(closeButton);
+                winnerDiv.appendChild(dialogTitle);
+                document.body.appendChild(coverBoard);
                 document.body.appendChild(winnerDiv);
+                document.body.style.overflow="hidden";
             }
 
-            function renderBots() {
-                for (const [id, [position, variant, current_energy, job, cargo, playerIndex]] of botMap.entries()) {
-                    var playerNum = '';
-                    if (playerIndex == 0) {
-                        playerNum = 'One';
-                    } else {
-                        playerNum = 'Two';
-                    }
-                    var element = String(variant) + playerNum;
-                    gameState[ROWS - position.y - 1][position.x] = elements[element];
-                }
-            }
             //shows a row for each player showing each bot and their data
             async function updateUI(player_id) {
-                if (!players.hasOwnProperty(player_id) && Object.keys(players).length < 2) {
+                if (!players.hasOwnProperty(player_id)) {
+                    console.log("caching player " + player_id);
                     players[player_id] = Object.keys(players).length;
+                    updateSidebars(player_id);
                 }
 
                 console.log('Players object:', players);
                 console.log('Current player ID:', player_id);
 
 
-                // Player names code: 
+                // Player names code:
+                console.log(gameId);
                 let playerInfo = await fetchPlayerNames(gameId, [player_id]);
                 console.log(playerInfo);
-                // var name = playerInfo[0].name;
+                var name = playerInfo[0].name;
+                let name_insert = CONFIG["show_player_names"] ? ` (${name})` : "";
+                if (!playername_cache[player_id]) { // make sure player isn't already cached
+                    playername_cache[player_id] = name; // Store names in hash table. Used by showWinner
+                    console.log("before call");
+                    if (CONFIG["show_notifications"] && !PRODUCTION_MODE)
+                        sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
+                }
 
                 const playerIndex = players[player_id];
                 console.log('playerIndex:', playerIndex);
 
-                const sidebar = sidebars[playerIndex];
+                const sidebar = getSidebar(playerIndex);
                 console.log('sidebar:', sidebar);
 
                 const color = colors[playerIndex];
@@ -595,9 +790,9 @@ function drawGame(hostname, port) {
                 sidebar.innerHTML = ''; // Clear the existing sidebar content
 
                 const header = document.createElement('h4');
-                header.textContent = `Player: ${player_id}`;
+                header.textContent = `Player: ${player_id}${name_insert}`;
                 header.style.color = color;
-                header.style.fontSize = "0.8vw"; 
+                header.style.fontSize = "0.8vw";
                 header.style.margin = "0vw";
                 header.style.padding = "0.05vw";
                 sidebar.appendChild(header);
@@ -611,15 +806,16 @@ function drawGame(hostname, port) {
                         console.log('cargo: ', cargo);
                         botDiv.classList.add('bot-info');
                         botDiv.style = "width: 14%, height: 24%";
+                        let variantLabel = variantMap[variant];
                         botDiv.innerHTML = `
-                <h4 style="margin: 2px 0; padding: 0;"><b>${variant}</b> ${id}</h4>
-                <hr style="margin: 2px 0;">
-                <p style="margin: 2px 0; padding: 0;"><b>Position:</b> ${position.x}, ${position.y}</p>
-                <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
-                <p style="margin: 2px 0; padding: 0;"><b>Job:</b> ${job.action}</p> 
-                <hr style="margin: 2px 0;">
-            `;
-// , ${job.status}
+            <h4 style="margin: 2px 0; padding: 0;"><b>${variantLabel}</b> ${id}</h4>
+            <hr style="margin: 2px 0;">
+            <p style="margin: 2px 0; padding: 0;"><b>Position:</b> ${position.x}, ${position.y}</p>
+            <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
+            <p style="margin: 2px 0; padding: 0;"><b>Job:</b> ${job.action}</p> 
+            <hr style="margin: 2px 0;">
+        `;
+                        // , ${job.status}
                         const cargoContainer = document.createElement('div');
 
                         //Creating a grid: left side will be image of mineral, right side will be count of mineral
@@ -628,9 +824,11 @@ function drawGame(hostname, port) {
                         // Add each cargo item as a new paragraph
                         cargo.forEach(item => {
                             //Image of the mineral
-                            let mineralImage = document.createElement('img')
-                            mineralImage.src = "./assets/" + String(resources[item.id]) + ".png"
+                            let mineralImage = document.createElement('img');
+                            let resource = String(resources[item.id]);
+                            mineralImage.src = "./assets/" + resource + ".png"
                             mineralImage.style = "width: 1vw; height: 1vw"
+                            mineralImage.alt = mineralImage.title = resource;
                             cargoContainer.appendChild(mineralImage);
 
                             //Text describing how much of the mineral there is
@@ -646,14 +844,48 @@ function drawGame(hostname, port) {
                         botBox.appendChild(botDiv);
                     }
                 }
+
+                function getSidebar(sidebar_number) {
+                    return document.getElementById("bot-sidebar-" + sidebar_number);
+                }
             }
 
 
+
+            //add a sidebar for a new player
+            function updateSidebars(player_id) {
+                // Dynamically add sidebars
+                let sidebar = document.createElement("div");
+                sidebar.classList.add("sidebar");
+                sidebar.id = "bot-sidebar-" + players[player_id];
+                document.getElementById("bot-info-megacontainer").appendChild(sidebar);
+                // Refresh the list of sidebars
+                sidebars = Array.from(document.querySelectorAll(".sidebar"));
+            }
         })
+        // if an error occurs in any part to the above code
         .catch((error) => {
             console.error("Error:", error);
+            if (navigator.onLine) {
+                setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
+                setTimeout(function () {
+                    if (server != undefined) {
+                        // if the custom option is selected but the user canceled the selection, don't show an error dialog
+                        if (hostname != "custom.invalid")
+                            alert(`Error fetching ${http_type}://${hostname}:${port}/games: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                        // auto show the dropdown menu
+                        setTimeout(function () {
+                            let link=document.getElementById("navbarDropdownMenuLink");
+                            if(link.ariaExpanded=="false")link.dispatchEvent(new Event("click")); 
+                        }, 400);
+                    }
+                }, 400);
+            }
         });
 }
 console.log(servers["localhost"].name);
-document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
-drawGame(hostname, port);
+if (!custom_server)
+    document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
+else
+    document.getElementById("navbarDropdownMenuLink").textContent = "Custom";
+drawGame();

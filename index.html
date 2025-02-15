@@ -8,10 +8,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <link href="styles.css" rel="stylesheet" />
+  <script src="settings.js"></script>
+  <script src="dark_mode.js"></script>
+  <script src="ui.js"></script>
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<body onbeforeunload="let value=(navigator.onLine && onunload());if(value==true)return true;">
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Server Selector</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,31 +27,71 @@
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Select a server
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <!-- Dropdown items will be dynamically populated -->
           </div>
         </li>
       </ul>
     </div>
+    <div id="gameStatus"></div>
+    <div id="gameID"></div>
+    <a href="javascript:show_help();" id="help" role="button">
+      <img 
+      onmouseenter="document.getElementById('help-icon').src='assets/helphover.png'" 
+      onmouseleave="document.getElementById('help-icon').src='assets/help.png'" 
+      onmousedown="document.getElementById('help-icon').src='assets/helprollover.png'"
+      onmouseup="document.getElementById('help-icon').src='assets/helphover.png'";
+      src="assets/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
+    <button onclick="settings_window=open_popup();" id="settings-button"
+      title="This can also be triggered by pressing Control-Alt-C">Settings</button>
+    <script src="browsersettings.js"></script>
+    <script>
+      var PRODUCTION_MODE = false;
+      is_production().then((production_mode) => {
+        PRODUCTION_MODE = production_mode;
+      });
+    </script>
   </nav>
 
   <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
-  <div style="display: grid; grid-template-columns: auto auto" id="game-info-container">
+  <div id="game-info-container">
     <!--The drawing of the game-->
     <canvas id="gameCanvas"></canvas>
 
     <!--A DIV to hold all the player-bot info-->
-    <div class="sidebar-container" id="bot-info-megacontainer">
+    <div class="sidebar-container sidebar-hidden" id="bot-info-megacontainer">
       <!--For the purpose of allowing >2 players to be shown, probably best to also dynamically populate this-->
-      <div class="sidebar" id="bot-sidebar-one"></div>
+      <!-- <div class="sidebar" id="bot-sidebar-one"></div>
       <div class="sidebar" id="bot-sidebar-two"></div>
+      <div class="sidebar" id="bot-sidebar-three"></div> -->
     </div>
   </div>
 
+  <div class="loadingbox" id="loadingbox">
+    <noscript id="page-cover">
+      <p id="page-cover-content">
+        JavaScript must be enabled to open this page.<br>
+        Once enabled, refresh the page.
+      <p>
+    </noscript>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+  <script src="socketnames.js"></script>
+  <script src="cookies.js"></script>
+  <script src="human_readable_names.js"></script>
+  <script src="loadingbox.js"></script>
+  <script src="notifications.js"></script>
   <script src="game.js"></script>
+  <script>//attachBeforeUnload();
+    setTimeout(() => {
+      initialize_main(PRODUCTION_MODE);
+      if (PRODUCTION_MODE) {
+        document.getElementById("navbar").classList.add("production-hidden");
+      }
+    }, 400);
+  </script>
 </body>
 
 </html>

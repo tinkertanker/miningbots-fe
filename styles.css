@@ -3,37 +3,129 @@ body {
   font-family: Arial, sans-serif;
 }
 
+#page-cover {
+  position:fixed;
+  width:100vw;
+  height:100vh;
+  left:0;
+  top:0;
+  background-color:white;
+}
+
+#page-cover-content {
+  text-align:center;
+}
+
+.settings-top-bar {
+  position:sticky;
+  top:0;
+}
+
 .sidebar-container {
-  width: auto;
+  width: 520px;
   position: relative;
   right: 0;
 }
 
-.h4 {
-  font-size: 0.8vw;
+#settings-megacontainer {
+  margin-top: 1cm;
+  margin-left: 10px;
+}
+
+.setting-text-description {
+  font-size: 14px;
+  color: gray;
+}
+
+.setting-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.setting-value,
+#action-container {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+input[type=number].setting-value{
+  height:20px !important;
+}
+
+select {
+  height:30px;
+}
+
+#reset_button_container {
+  width: 100vw;
+}
+
+#reset_button {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 166px;
+}
+
+#help-icon {
+  margin-left: 5px;
+}
+
+#settings-button {
+  margin: 5px 5px;
+}
+
+.production-hidden {
+  visibility: collapse;
+  display: none;
+}
+
+#game-info-container {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.loadingbox {
+  display: flex;
+  width: 100vw;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-completed,
+.no-internet,
+.sidebar-hidden {
+  width: 0;
+  height: 0;
+  visibility: collapse;
+}
+
+#gameStatus {
+  margin-right: 10px;
 }
 
 .sidebar {
   /* This allows the bot-info DIVs to be aligned horizontally */
-  display: block;
-  /* flex-wrap: nowrap; */
-  /* flex-direction: row; */
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
 
   /* In theory, the automatic width would adapt based on the size of the game canvas */
   /* And auto height should help with > 1 player -> hopefully evenly distributed height */
   width: auto;
-  height: 20%;
+  height: auto;
 
   background-color: #f1f1f1;
-  padding: 0.1vw;
+  padding: 7px;
   overflow-x: auto;
-  overflow-y:hidden;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .bot-info {
-  margin: 2px;
-  padding: 2px;
+  margin: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
   border: 1px solid #ccc;
   background-color: #fff;
 }
@@ -41,14 +133,15 @@ body {
 .bot-info h4 {
   margin: 0;
   padding: 0;
-  font-size: 0.55vw;
+  font-size: 14px;
 }
 
 .bot-info p {
   margin: 5px 0;
-  font-size: 0.55vw;
+  font-size: 12px;
 }
 
 .navbar {
   padding-left: 1%;
+  z-index: 1000;
 }

@@ -35,3 +35,29 @@ p1.bootcamp.tk.sg {
 	}
 }
 ```
+
+## init.sh
+
+To use init.sh, the following software must be installed
+<table>
+	<tr>
+		<th>Software name</th>
+	    <th>APT package name(s)</th>
+		<th>YUM package name(s)</th>
+	</tr>
+	<tr>
+		<td>GNU Bash Shell</td>
+		<td>bash</td>
+		<td>bash</td>
+	</tr>
+	<tr>
+		<td>Firefox Browser</td>
+		<td>firefox</td>
+		<td>firefox</td>
+	</tr>
+	<tr>
+		<td>Python 3</td>
+		<td>python3</td>
+		<td>python3</td>
+	</tr>
+</table>
