@@ -377,7 +377,7 @@ function drawGame(hostname, port) {
 
             ws.onopen = function () {
                 console.log('Connected to WebSocket server');
-                const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: 514525537, observer_name: 'Observer' });
+                const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: CONFIG["observer_key"], observer_name: 'Observer' });
                 ws.send(subscribeRequest);
             };
 
