@@ -170,9 +170,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 });
 
-// Variable to hold the selected server URL
-let selectedServerUrl = null;
-
 // Function to populate the dropdown menu (server list)
 function populateDropdown() {
     let dropdownMenu = document.getElementById("dropdown-menu");
@@ -196,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
     dropdownItems.forEach(function (item) {
         item.addEventListener("click", function (event) {
             event.preventDefault();
-            selectedServerUrl = this.getAttribute("data-url");
+            let selectedServerUrl = this.getAttribute("data-url");
             console.log(selectedServerUrl);
             //let selectedServerName = this.textContent;
             //document.getElementById("navbarDropdownMenuLink").textContent =
