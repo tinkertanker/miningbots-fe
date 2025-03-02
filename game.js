@@ -44,101 +44,101 @@ document.addEventListener("DOMContentLoaded",()=>{
         ws_type = "ws";
     }
     //Dictionary of servers and respective names, urls
-var gport=CONFIG["game_port"];
-servers = {
-    "p1.bootcamp.tk.sg": {
-        name: "Game 1",
-        url: `p1.bootcamp.tk.sg:${gport}`,
-    },
-    "p2.bootcamp.tk.sg": {
-        name: "Game 2",
-        url: `p2.bootcamp.tk.sg:${gport}`,
-    },
-    "p3.bootcamp.tk.sg": {
-        name: "Game 3",
-        url: `p3.bootcamp.tk.sg:${gport}`,
-    },
-    "p4.bootcamp.tk.sg": {
-        name: "Game 4",
-        url: `p4.bootcamp.tk.sg:${gport}`,
-    },
-    "p5.bootcamp.tk.sg": {
-        name: "Game 5",
-        url: `p5.bootcamp.tk.sg:${gport}`,
-    },
-    "p6.bootcamp.tk.sg": {
-        name: "Game 6",
-        url: `p6.bootcamp.tk.sg:${gport}`,
-    },
-    "p7.bootcamp.tk.sg": {
-        name: "Main Game",
-        url: `p7.bootcamp.tk.sg:${gport}`,
-    },
-    "p8.bootcamp.tk.sg": {
-        name: "Game 8",
-        url: `p8.bootcamp.tk.sg:${gport}`,
-    },
-    "p9.bootcamp.tk.sg": {
-        name: "Game 9",
-        url: `p9.bootcamp.tk.sg:${gport}`,
-    },
-    "p10.bootcamp.tk.sg": {
-        name: "Game 10",
-        url: `p10.bootcamp.tk.sg:${gport}`,
-    },
-    "s1.bootcamp.tk.sg": {
-        name: "Staging 1",
-        url: `s1.bootcamp.tk.sg:${gport}`,
-    },
-    "s2.bootcamp.tk.sg": {
-        name: "Staging 2",
-        url: `s2.bootcamp.tk.sg:${gport}`,
-    },
-    "s3.bootcamp.tk.sg": {
-        name: "Staging 3",
-        url: `s3.bootcamp.tk.sg:${gport}`,
-    },
-    "s4.bootcamp.tk.sg": {
-        name: "Staging 4",
-        url: `s4.bootcamp.tk.sg:${gport}`,
-    },
-    "s5.bootcamp.tk.sg": {
-        name: "Staging 5",
-        url: `s5.bootcamp.tk.sg:${gport}`,
-    },
-    "s6.bootcamp.tk.sg": {
-        name: "Staging 6",
-        url: `s6.bootcamp.tk.sg:${gport}`,
-    },
-    "s7.bootcamp.tk.sg": {
-        name: "Staging 7",
-        url: `s7.bootcamp.tk.sg:${gport}`,
-    },
-    "s8.bootcamp.tk.sg": {
-        name: "Staging 8",
-        url: `s8.bootcamp.tk.sg:${gport}`,
-    },
-    "s9.bootcamp.tk.sg": {
-        name: "Staging 9",
-        url: `s9.bootcamp.tk.sg:${gport}`,
-    },
-    "s10.bootcamp.tk.sg": {
-        name: "Staging 10",
-        url: `s10.bootcamp.tk.sg:${gport}`,
-    },
-    "localhost": {
-        name: "Testing",
-        url: `localhost:${port}`,
-    },
-    "miningbots-api.dev.tk.sg": {
-        name: "Development",
-        url: "miningbots-api.dev.tk.sg",
-    },
-    "custom.invalid": { // invalid special domain by IANA
-        name: "Custom...",
-        url: "custom.invalid",
-    }
-};
+    var gport=CONFIG["game_port"];
+    servers = {
+        "p1.bootcamp.tk.sg": {
+            name: "Game 1",
+            url: `p1.bootcamp.tk.sg:${gport}`,
+        },
+        "p2.bootcamp.tk.sg": {
+            name: "Game 2",
+            url: `p2.bootcamp.tk.sg:${gport}`,
+        },
+        "p3.bootcamp.tk.sg": {
+            name: "Game 3",
+            url: `p3.bootcamp.tk.sg:${gport}`,
+        },
+        "p4.bootcamp.tk.sg": {
+            name: "Game 4",
+            url: `p4.bootcamp.tk.sg:${gport}`,
+        },
+        "p5.bootcamp.tk.sg": {
+            name: "Game 5",
+            url: `p5.bootcamp.tk.sg:${gport}`,
+        },
+        "p6.bootcamp.tk.sg": {
+            name: "Game 6",
+            url: `p6.bootcamp.tk.sg:${gport}`,
+        },
+        "p7.bootcamp.tk.sg": {
+            name: "Main Game",
+            url: `p7.bootcamp.tk.sg:${gport}`,
+        },
+        "p8.bootcamp.tk.sg": {
+            name: "Game 8",
+            url: `p8.bootcamp.tk.sg:${gport}`,
+        },
+        "p9.bootcamp.tk.sg": {
+            name: "Game 9",
+            url: `p9.bootcamp.tk.sg:${gport}`,
+        },
+        "p10.bootcamp.tk.sg": {
+            name: "Game 10",
+            url: `p10.bootcamp.tk.sg:${gport}`,
+        },
+        "s1.bootcamp.tk.sg": {
+            name: "Staging 1",
+            url: `s1.bootcamp.tk.sg:${gport}`,
+        },
+        "s2.bootcamp.tk.sg": {
+            name: "Staging 2",
+            url: `s2.bootcamp.tk.sg:${gport}`,
+        },
+        "s3.bootcamp.tk.sg": {
+            name: "Staging 3",
+            url: `s3.bootcamp.tk.sg:${gport}`,
+        },
+        "s4.bootcamp.tk.sg": {
+            name: "Staging 4",
+            url: `s4.bootcamp.tk.sg:${gport}`,
+        },
+        "s5.bootcamp.tk.sg": {
+            name: "Staging 5",
+            url: `s5.bootcamp.tk.sg:${gport}`,
+        },
+        "s6.bootcamp.tk.sg": {
+            name: "Staging 6",
+            url: `s6.bootcamp.tk.sg:${gport}`,
+        },
+        "s7.bootcamp.tk.sg": {
+            name: "Staging 7",
+            url: `s7.bootcamp.tk.sg:${gport}`,
+        },
+        "s8.bootcamp.tk.sg": {
+            name: "Staging 8",
+            url: `s8.bootcamp.tk.sg:${gport}`,
+        },
+        "s9.bootcamp.tk.sg": {
+            name: "Staging 9",
+            url: `s9.bootcamp.tk.sg:${gport}`,
+        },
+        "s10.bootcamp.tk.sg": {
+            name: "Staging 10",
+            url: `s10.bootcamp.tk.sg:${gport}`,
+        },
+        "localhost": {
+            name: "Testing",
+            url: `localhost:${port}`,
+        },
+        "miningbots-api.dev.tk.sg": {
+            name: "Development",
+            url: "miningbots-api.dev.tk.sg",
+        },
+        "custom.invalid": { // invalid special domain by IANA
+            name: "Custom...",
+            url: "custom.invalid",
+        }
+    };
 });
 function onunload() {
     console.log(gameStatus);
