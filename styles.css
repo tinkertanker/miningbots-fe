@@ -3,6 +3,20 @@ body {
   font-family: Arial, sans-serif;
 }
 
+@media (max-width: 992px) {
+  .collapse-if-minified {
+    display:none;
+  }
+}
+
+.dropdown-menu {
+  position: absolute !important;
+}
+
+.navbar-collapse {
+  flex-basis: auto;
+}
+
 #page-cover {
   position:fixed;
   width:100vw;

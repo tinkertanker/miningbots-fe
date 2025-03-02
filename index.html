@@ -11,19 +11,43 @@
   <script src="settings.js"></script>
   <script src="dark_mode.js"></script>
   <script src="ui.js"></script>
+  <script>
+    function toggleNavigation(){
+      let link=document.getElementById('navbarDropdownMenuLink');
+      // toggle show
+      if (link.classList.contains('show')){
+        link.classList.remove('show');
+      } else {
+        link.classList.add('show');
+      }
+      let dropdown=document.getElementById('dropdown-menu');
+      // toggle show
+      if (dropdown.classList.contains('show')){
+        dropdown.classList.remove('show');
+      } else {
+        dropdown.classList.add('show');
+      }
+      // toggle data-bs-popper
+      if (dropdown.getAttribute("data-bs-popper")){
+        dropdown.removeAttribute("data-bs-popper");
+      } else {
+        dropdown.setAttribute("data-bs-popper","static");
+      }
+    }
+  </script>
 </head>
 
 <body onbeforeunload="if(navigator.onLine && onunload())return true;">
   <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Server Selector</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleNavigation();">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <div class="navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+          <a class="nav-link dropdown-toggle collapse-if-minified" href="#" id="navbarDropdownMenuLink" role="button"
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Select a server
           </a>
