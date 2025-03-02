@@ -1,50 +1,51 @@
-console.log("script started");
-
-if (!navigator.onLine) {
-    document.getElementById("navbar").classList.add("no-internet");
-    document.getElementById("game-info-container").classList.add("no-internet");
-    setLoadingBoxStatus(LB_NO_INTERNET);
-    window.addEventListener("online", (e) => {
-        location.reload();
-    });
-} else {
-    setLoadingBoxStatus(LB_LOADING);
-}
-// Get hostname from cookie, otherwise leave as null
-const server = getCookie("lastServer");
+console.log("script loaded");
 
 //Probably some default values for original testing:
 // var hostname = "miningbots-api.dev.tk.sg";
 // var port = 443;
-//var hostname = "localhost";
-const CONFIG = read_settings_cookie();
+// var hostname = "localhost";
 
-var port = CONFIG["localhost_port"];
-if (server !== null) hostname = server;
+var server=null;
+var port;
+var CONFIG=default_settings;
+var http_type="http";var ws_type="ws";
 var custom_server = false;
-console.log('host name: ' + hostname);
 var gameId;
 var playername_cache = {};
 var gameStatus = "kNotStarted";
-setInterval(() => {
-    //console.log("Status: ",gameStatus);
-}, 2000);
-function onunload() {
-    console.log(gameStatus);
-    return gameStatus !== "kNotStarted";
-}
+var servers={};
+document.addEventListener("DOMContentLoaded",()=>{
+    console.log("script activated");
+    if (!navigator.onLine) {
+        document.getElementById("navbar").classList.add("no-internet");
+        document.getElementById("game-info-container").classList.add("no-internet");
+        setLoadingBoxStatus(LB_NO_INTERNET);
+        window.addEventListener("online", (e) => {
+            location.reload();
+        });
+    } else {
+        setLoadingBoxStatus(LB_LOADING);
+    }
 
-if (CONFIG["enable_security"]) {
-    var http_type = "https";
-    var ws_type = "wss";
-} else {
-    var http_type = "http";
-    var ws_type = "ws";
-}
+    // Get hostname from cookie, otherwise leave as null
+    server = getCookie("lastServer");
+    if (server !== null) hostname = server;
 
-//Dictionary of servers and respective names, urls
+    CONFIG = read_settings_cookie();
+    port = CONFIG["localhost_port"];
+
+    console.log('host name: ' + hostname);
+
+    if (CONFIG["enable_security"]) {
+        http_type = "https";
+        ws_type = "wss";
+    } else {
+        http_type = "http";
+        ws_type = "ws";
+    }
+    //Dictionary of servers and respective names, urls
 var gport=CONFIG["game_port"];
-var servers = {
+servers = {
     "p1.bootcamp.tk.sg": {
         name: "Game 1",
         url: `p1.bootcamp.tk.sg:${gport}`,
@@ -138,28 +139,39 @@ var servers = {
         url: "custom.invalid",
     }
 };
-if (hostname && servers.hasOwnProperty(hostname)) {
-    if (hostname == "custom.invalid") {
-        document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
-        let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
-        while (socket===undefined){
-            socket = prompt("Enter socket of server:");
-        }
-        servers["custom.invalid"].url=socket;
-        if (servers["custom.invalid"].url) {
-            hostname = getNameOfSocket(servers["custom.invalid"].url);
-            setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
-            console.log("URL: " + servers["custom.invalid"].url);
-            port = getPortNumber(http_type, servers["custom.invalid"].url);
-            custom_server = true;
+});
+setInterval(() => {
+    //console.log("Status: ",gameStatus);
+}, 2000);
+function onunload() {
+    console.log(gameStatus);
+    return gameStatus !== "kNotStarted";
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+    if (hostname && servers.hasOwnProperty(hostname)) {
+        if (hostname == "custom.invalid") {
+            document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
+            let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
+            while (socket===undefined){
+                socket = prompt("Enter socket of server:");
+            }
+            servers["custom.invalid"].url=socket;
+            if (servers["custom.invalid"].url) {
+                hostname = getNameOfSocket(servers["custom.invalid"].url);
+                setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
+                console.log("URL: " + servers["custom.invalid"].url);
+                port = getPortNumber(http_type, servers["custom.invalid"].url);
+                custom_server = true;
+            }
+        } else {
+            console.log("URL: " + servers[hostname].url);
+            port = getPortNumber(http_type, servers[hostname].url);
         }
     } else {
-        console.log("URL: " + servers[hostname].url);
-        port = getPortNumber(http_type, servers[hostname].url);
+        setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
     }
-} else {
-    setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
-}
+});
 
 // Variable to hold the selected server URL
 let selectedServerUrl = null;
@@ -883,9 +895,11 @@ function drawGame() {
             }
         });
 }
+document.addEventListener("DOMContentLoaded", (_e) => {
 console.log(servers["localhost"].name);
 if (!custom_server)
     document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 else
     document.getElementById("navbarDropdownMenuLink").textContent = "Custom";
 drawGame();
+});
