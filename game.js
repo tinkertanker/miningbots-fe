@@ -140,9 +140,6 @@ servers = {
     }
 };
 });
-setInterval(() => {
-    //console.log("Status: ",gameStatus);
-}, 2000);
 function onunload() {
     console.log(gameStatus);
     return gameStatus !== "kNotStarted";
