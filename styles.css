@@ -24,6 +24,7 @@ body {
   left:0;
   top:0;
   background-color:white;
+  z-index: 10000000000;
 }
 
 #page-cover-content {
