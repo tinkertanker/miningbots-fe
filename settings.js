@@ -132,11 +132,7 @@ function initialize_main(production_status) {
             if (event.ctrlKey && event.altKey && event.key == "c") {
                 settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
-            } else if (event.ctrlKey && event.altKey && event.key == "d") {
-                //Is this needed?
-                toggle_settings_button();
-                event.preventDefault();
-            } else if (event.ctrlKey && event.key == "h") {
+            }  else if (event.ctrlKey && event.key == "h") {
                 show_help();
                 event.preventDefault();
             }
