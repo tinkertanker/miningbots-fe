@@ -107,7 +107,6 @@
     is_production().then((production_mode) => {
       PRODUCTION_MODE = production_mode;
     });
-    //attachBeforeUnload();
     setTimeout(() => {
       initialize_main(PRODUCTION_MODE);
       if (PRODUCTION_MODE) {

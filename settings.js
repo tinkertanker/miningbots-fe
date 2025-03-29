@@ -148,15 +148,6 @@ function open_popup() {
     return window.open('/settings.html', '_blank', `popup=yes,width=${width},height=${height},left=${left},top=${top}`);
 }
 
-function attachBeforeUnload() {
-    addEventListener("beforeunload", (event) => {
-        if (!settings_window.closed) {
-            settings_window.close();
-        }
-        return false;
-    });
-}
-
 function read_settings_button_visibility_cookie() {
     let displayed = getCookie("settings_button_displayed");
     if (!displayed) return true;//if cookie value is falsy (cookie cannot be read), assume value is true
