@@ -8,10 +8,10 @@ function start_browser(){
     # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ $UI_MODE == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
-      ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit
+      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
       CLASS="Mining Bots"
-      ./update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=true browser.tabs.inTitlebar=0 || exit
+      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=true browser.tabs.inTitlebar=0 || exit
     else
       echo "Invalid UI mode" 1>&2
       return

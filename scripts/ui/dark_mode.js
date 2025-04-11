@@ -15,7 +15,7 @@ function darkModeEnabled(settings){
 function setDarkMode(enabled){
     if(enabled==DM_ENABLED)return;
     if(enabled){
-        document.head.innerHTML+="<link href=\"/dark-mode.css\" rel=\"stylesheet\" id=\"set-dark-mode\">";
+        document.head.innerHTML+="<link href=\"/styles/dark-mode-patch.css\" rel=\"stylesheet\" id=\"set-dark-mode\">";
     } else {
         document.head.removeChild(document.getElementById("set-dark-mode"));
     }
