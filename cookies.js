@@ -31,5 +31,5 @@ function hasCookie(name){
 }
 
 function deleteCookie(name){
-   setCookie(name,"deleted",'Thu, 1 Jan 1970 00:00:00','/');
+   setCookie(name,"deleted",'Thu, 1 Jan 1970 00:00:00');
 }
