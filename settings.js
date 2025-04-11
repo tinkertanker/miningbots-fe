@@ -126,8 +126,6 @@ function initialize_popup() {
 }
 function initialize_main(production_status) {
     if (navigator.onLine && !production_status) {
-        //Is this needed?
-        update_settings_button_visibility();
         window.addEventListener("keydown", (event) => {
             if (event.ctrlKey && event.altKey && event.key == "c") {
                 settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
@@ -146,26 +144,4 @@ function open_popup() {
     let left = Math.floor((screen.width / 2) - (width / 2));
     let top = Math.floor((screen.height / 2) - (height / 2));
     return window.open('/settings.html', '_blank', `popup=yes,width=${width},height=${height},left=${left},top=${top}`);
-}
-
-function read_settings_button_visibility_cookie() {
-    let displayed = getCookie("settings_button_displayed");
-    if (!displayed) return true;//if cookie value is falsy (cookie cannot be read), assume value is true
-    return displayed == "true";
-}
-
-function update_settings_button_visibility() {
-    set_settings_button_visibility(read_settings_button_visibility_cookie());
-}
-
-function set_settings_button_visibility(displayed) {
-    document.getElementById("settings-button").style.visibility = displayed ? "visible" : "collapse";
-}
-
-function toggle_settings_button() {
-    //invert the boolean in the settings_button_displayed cookie
-    let displayed = read_settings_button_visibility_cookie();
-    let new_displayed = !displayed;
-    setCookie("settings_button_displayed", new_displayed.toString(), "Fri, 31 Dec 9999 23:59:59 GMT");
-    set_settings_button_visibility(new_displayed);
 }
