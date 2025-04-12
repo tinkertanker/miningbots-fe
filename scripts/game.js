@@ -278,17 +278,17 @@ function drawGame() {
     }
     Object.keys(images).forEach((key)=>{
         let imageName=transliterateElementType(key);
-        images[key].src=`assets/${imageName}.png`;
+        images[key].src=`images/${imageName}.png`;
     });
 
     //iterate over the keys (land types) and set the sources
     Object.keys(terrainImages).forEach((key)=>{
-        terrainImages[key].src=`assets/${key}.jpg`;
+        terrainImages[key].src=`images/${key}.jpg`;
     });
-    /*terrainImages.unknown.src = 'assets/unknown.jpg';
-    terrainImages.grasslands.src = 'assets/grassland.jpg';
-    terrainImages.hills.src = 'assets/hills.jpg';
-    terrainImages.mountains.src = 'assets/mountain.jpg';*/
+    /*terrainImages.unknown.src = 'images/unknown.jpg';
+    terrainImages.grasslands.src = 'images/grassland.jpg';
+    terrainImages.hills.src = 'images/hills.jpg';
+    terrainImages.mountains.src = 'images/mountain.jpg';*/
 
     // display the value of the gameStatus on the webpage
     function updateGameState() {
@@ -832,7 +832,7 @@ function drawGame() {
                             //Image of the mineral
                             let mineralImage = document.createElement('img');
                             let resource = String(resources[item.id]);
-                            mineralImage.src = "./assets/" + resource + ".png"
+                            mineralImage.src = "./images/" + resource + ".png"
                             mineralImage.style = "width: 1vw; height: 1vw"
                             mineralImage.alt = mineralImage.title = resource;
                             cargoContainer.appendChild(mineralImage);
