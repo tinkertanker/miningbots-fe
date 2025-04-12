@@ -14,6 +14,12 @@ var gameId;
 var playername_cache = {};
 var gameStatus = "kNotStarted";
 var servers={};
+
+// NOTE: not so secure
+function mapName(name,key){
+    return eval(`typeof ${name} != 'undefined' ? ${name}['${key}'] : '${key}'`);
+}
+
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
     if (!navigator.onLine) {
@@ -293,7 +299,7 @@ function drawGame() {
     // display the value of the gameStatus on the webpage
     function updateGameState() {
         console.log("raw game status: " + gameStatus);
-        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + gameStatusMap[gameStatus];
+        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + mapName("gameStatusMap",gameStatus);
     }
 
     // connect to the server to fetch the list of games
@@ -608,11 +614,11 @@ function drawGame() {
                 // update the displayed job information
                 // It won't be displayed yet however
                 if (current_job_id == 0) {
-                    job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
+                    job = { action: mapName('actionMap','kNoAction'), status: mapName('statusMap','kNotStarted') };
                 } else if (jobMap.has(current_job_id)) {
                     job = jobMap.get(current_job_id);
                 } else {
-                    job = { action: actionMap['kNoAction'], status: statusMap['kNotStarted'] };
+                    job = { action: mapName('actionMap','kNoAction'), status: mapName('statusMap','kNotStarted') };
                 }
                 botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
                 var newRow = ROWS - position.y - 1;
@@ -627,7 +633,7 @@ function drawGame() {
             //save the display text of a job
             function updateJob(data) {
                 const { id, action, status } = data;
-                var job = { action: actionMap[action], status: statusMap[status] }
+                var job = { action: mapName('actionMap',action), status: mapName('statusMap',status) }
                 jobMap.set(id, job);
             }
 
@@ -812,7 +818,7 @@ function drawGame() {
                         console.log('cargo: ', cargo);
                         botDiv.classList.add('bot-info');
                         botDiv.style = "width: 14%, height: 24%";
-                        let variantLabel = variantMap[variant];
+                        let variantLabel = mapName('variantMap',variant);
                         botDiv.innerHTML = `
             <h4 style="margin: 2px 0; padding: 0;"><b>${variantLabel}</b> ${id}</h4>
             <hr style="margin: 2px 0;">
