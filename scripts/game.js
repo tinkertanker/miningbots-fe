@@ -17,6 +17,7 @@ var servers={};
 
 // NOTE: not so secure
 function mapName(name,key){
+    //HACK: pass a variable as a string so the reading is deferred
     return eval(`typeof ${name} != 'undefined' ? ${name}['${key}'] : '${key}'`);
 }
 
