@@ -284,6 +284,7 @@ function reset_setting(setting_key){
     let update={};
     update[setting_key]=settings[setting_key]["default"];
     display_settings(update);
+    onChange({"key":setting_key,"value":update[setting_key]});
 }
 
 function initialize_popup() {
@@ -319,6 +320,11 @@ function initialize_main(production_status) {
 function onChange(setting_update){
     if(setting_update["key"]=="theme"){
         setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
+    }
+
+    if(settings[setting_update["key"]]["type"]=="boolean"){ // call setChecked only on boolean options
+        console.log("is boolean");
+        setChecked(document.getElementById(setting_update["key"]+'_input'));
     }
 
     update_reset_button(setting_update);
