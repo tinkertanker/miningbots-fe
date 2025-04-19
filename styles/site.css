@@ -65,6 +65,11 @@ body {
   margin-right: 20px;
 }
 
+.setting-value {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 input[type=number].setting-value{
   height:20px !important;
 }
