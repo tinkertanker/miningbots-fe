@@ -59,15 +59,21 @@ body {
   border-top: 5px solid transparent;
 }
 
-.setting-value,
-#action-container {
+#action-container,
+.settings-right-box {
   margin-left: auto;
   margin-right: 20px;
 }
 
-.setting-value {
+.setting-value,
+.settings-right-box {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.settings-right-box {
+  display: flex;
+  flex-direction: row;
 }
 
 input[type=number].setting-value{

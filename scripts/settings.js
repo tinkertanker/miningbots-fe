@@ -215,6 +215,8 @@ function populate_settings(){
         text_container.appendChild(description);
         setting_div.appendChild(text_container);
 
+        let right_box=document.createElement("div");
+        right_box.classList.add("settings-right-box");
         let reset_button=document.createElement("a");
         reset_button.id=key+'_reset';
         reset_button.href='#';
@@ -228,7 +230,7 @@ function populate_settings(){
         reset_icon.alt="Reset this setting to default";
         reset_icon.classList.add("reset-icon");
         reset_button.appendChild(reset_icon);
-        setting_div.appendChild(reset_button);
+        right_box.appendChild(reset_button);
 
         let input_element=document.createElement("input");
         switch(settings[key]["type"]){
@@ -262,7 +264,8 @@ function populate_settings(){
             let update={"key":key,"value":e.target[property]};
             onChange(update);
         })
-        setting_div.appendChild(input_element);
+        right_box.appendChild(input_element);
+        setting_div.appendChild(right_box);
         root_container.appendChild(setting_div);
     })
 
