@@ -128,7 +128,6 @@ function write_displayed_settings() {
     };*/
     let json_settings={};
     Object.keys(settings).forEach(key=>{
-        console.log(key+'_input');
         let source=document.getElementById(key+'_input');
         source_property=settings[key].type=="boolean" ? "checked" : "value"
         json_settings[key]=source[source_property];
@@ -187,7 +186,6 @@ function display_settings(json_settings) {
     document.getElementById("theme-setting-value").value = json_settings["theme"]; */
     Object.keys(json_settings).forEach(key=>{
         let destination=document.getElementById(key+'_input');
-        console.log(key+'_input');
         destination_property=settings[key].type=="boolean" ? "checked" : "value"
         destination[destination_property]=json_settings[key];
         update_reset_button({"key":key,"value":json_settings[key]});
@@ -224,7 +222,6 @@ function populate_settings(){
         reset_button.addEventListener("click",(e)=>{
             e.preventDefault();
             reset_setting(key);
-            console.log("resetting a single setting");
         });
         let reset_icon=document.createElement('img');
         reset_icon.src="/images/reset.png";
@@ -323,7 +320,6 @@ function onChange(setting_update){
     }
 
     if(settings[setting_update["key"]]["type"]=="boolean"){ // call setChecked only on boolean options
-        console.log("is boolean");
         setChecked(document.getElementById(setting_update["key"]+'_input'));
     }
 
