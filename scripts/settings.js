@@ -185,11 +185,12 @@ function display_settings(json_settings) {
     document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
     document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
     document.getElementById("theme-setting-value").value = json_settings["theme"]; */
-    Object.keys(settings).forEach(key=>{
+    Object.keys(json_settings).forEach(key=>{
         let destination=document.getElementById(key+'_input');
         console.log(key+'_input');
         destination_property=settings[key].type=="boolean" ? "checked" : "value"
         destination[destination_property]=json_settings[key];
+        update_reset_button({"key":key,"value":json_settings[key]});
     });
 }
 function setChecked(element){
@@ -215,6 +216,22 @@ function populate_settings(){
         description.innerHTML=settings[key]["description"];
         text_container.appendChild(description);
         setting_div.appendChild(text_container);
+
+        let reset_button=document.createElement("a");
+        reset_button.id=key+'_reset';
+        reset_button.href='#';
+        reset_button.title="Reset this setting to default";
+        reset_button.addEventListener("click",(e)=>{
+            e.preventDefault();
+            reset_setting(key);
+            console.log("resetting a single setting");
+        });
+        let reset_icon=document.createElement('img');
+        reset_icon.src="/images/reset.png";
+        reset_icon.alt="Reset this setting to default";
+        reset_icon.classList.add("reset-icon");
+        reset_button.appendChild(reset_icon);
+        setting_div.appendChild(reset_button);
 
         let input_element=document.createElement("input");
         switch(settings[key]["type"]){
@@ -244,7 +261,7 @@ function populate_settings(){
         input_element.setAttribute("id",key+'_input');
         input_element.classList.add("setting-value");
         input_element.addEventListener('change',(e)=>{
-            let property=settings[key]=="boolean"?"checked":"value";
+            let property=settings[key]["type"]=="boolean"?"checked":"value";
             let update={"key":key,"value":e.target[property]};
             onChange(update);
         })
@@ -253,9 +270,20 @@ function populate_settings(){
     })
 
     // move the reset button to the bottom
-    let reset_button=document.getElementById("reset_button_container");
-    root_container.removeChild(reset_button);
-    root_container.appendChild(reset_button);
+    let reset_all_button=document.getElementById("reset_button_container");
+    root_container.removeChild(reset_all_button);
+    root_container.appendChild(reset_all_button);
+}
+
+function update_reset_button(setting_update){
+    let show=setting_update["value"]!=settings[setting_update["key"]]["default"]; // true if the value is not equal to the default
+    document.getElementById(setting_update["key"]+'_reset').style.display=show?"block":"none";
+}
+
+function reset_setting(setting_key){
+    let update={};
+    update[setting_key]=settings[setting_key]["default"];
+    display_settings(update);
 }
 
 function initialize_popup() {
@@ -292,6 +320,8 @@ function onChange(setting_update){
     if(setting_update["key"]=="theme"){
         setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
     }
+
+    update_reset_button(setting_update);
 }
 
 function open_popup() {

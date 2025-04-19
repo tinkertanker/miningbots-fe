@@ -42,3 +42,8 @@ filter:invert(100%);
 /* don't invert (cancel it out) */
 filter:invert(100%);
 }
+
+.reset-icon {
+/* don't invert (cancel it out) */
+filter:invert(100%) !important;
+}

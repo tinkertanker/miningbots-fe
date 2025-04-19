@@ -86,6 +86,14 @@ select {
   width: 166px;
 }
 
+.reset-icon {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right:5px;
+  height: 16px;
+  width: 16px;
+}
+
 #help-icon {
   margin-left: 5px;
 }
