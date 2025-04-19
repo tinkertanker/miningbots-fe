@@ -55,6 +55,8 @@ body {
 .setting-container {
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid lightgray;
+  border-top: 5px solid transparent;
 }
 
 .setting-value,
@@ -73,6 +75,8 @@ select {
 
 #reset_button_container {
   width: 100vw;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #reset_button {

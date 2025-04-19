@@ -10,6 +10,7 @@
   <link href="/styles/site.css" rel="stylesheet" />
   <script src="/scripts/cookies.js"></script>
   <script src="/scripts/ui/notifications.js"></script>
+  <script src="/scripts/utilities/functools.js"></script>
   <script src="/scripts/settings.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
   <style>
@@ -41,14 +42,14 @@
 
 
   <div id="settings-megacontainer">
-    <div id="secure-protocols-setting" class="setting-container">
+    <!-- <div id="secure-protocols-setting" class="setting-container" data-key="enable_security">
       <div class="setting-text-container">
         <h6 class="setting-text-name">Use secure protocols</h6>
         <p class="setting-text-description">Use HTTPS and WSS over HTTP and WS</p>
       </div>
       <input type="checkbox" id="secure-protocols-setting-value" class="setting-value">
     </div>
-    <div id="game-port-setting" class="setting-container">
+    <div id="game-port-setting" class="setting-container" data-key="game_port">
       <div class="setting-text-container">
         <h6 class="setting-text-name">Game Port number</h6>
         <p class="setting-text-description">Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers</p>
@@ -56,7 +57,7 @@
       <input type="number" id="game-port-setting-value" class="setting-value" min="1"
         max="65535">
     </div>
-    <div id="localhost-port-setting" class="setting-container">
+    <div id="localhost-port-setting" class="setting-container" data-key="">
       <div class="setting-text-container">
         <h6 class="setting-text-name">Testing Port number</h6>
         <p class="setting-text-description">Port number used when connecting to the &quot;Testing&quot; server</p>
@@ -81,9 +82,9 @@
         </p>
       </div>
       <input type="checkbox" id="name-display-setting-value" class="setting-value">
-    </div>
+    </div> -->
     <!-- Is this needed? -->
-    <div id="gameid-display-setting" class="setting-container">
+    <!-- <div id="gameid-display-setting" class="setting-container">
       <div class="setting-text-container">
         <h6 class="setting-text-name">Debugging: Display Game ID</h6>
         <p class="setting-text-description">Display the Game ID in the top right corner.<br>
@@ -91,9 +92,9 @@
         </p>
       </div>
       <input type="checkbox" id="gameid-display-setting-value" class="setting-value">
-    </div>
+    </div> -->
     <!-- Is this needed? -->
-    <div class="setting-container">
+    <!-- <div class="setting-container">
       <div class="setting-text-container">
         <h6 class="setting-text-name">Debugging: Display Game Status</h6>
         <p class="setting-text-description">Display the Game Status in the top right corner.<br>
@@ -122,7 +123,7 @@
         <option value="light">Light</option>
         <option value="dark">Dark</option>
       </select>
-    </div>
+    </div> -->
     <div id="reset_button_container">
       <button onclick="reset_settings_clicked();" id="reset_button">Reset settings</button>
     </div>

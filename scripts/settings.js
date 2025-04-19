@@ -1,15 +1,89 @@
 var settings_window;
-const default_settings = {
-    "enable_security": false,
-    "game_port": 9001,
-    "localhost_port": 9003,
-    "observer_key": 514525537,
-    "show_player_names": true,
-    "show_gameid": true,
-    "show_game_status": true,
-    "show_notifications": true,
-    "theme": "auto"
+const settings = {
+    "enable_security": {
+        "type":"boolean",
+        "default":false,
+        "title":"Use secure protocols",
+        "description":"Use HTTPS and WSS over HTTP and WS"
+    },
+    "game_port": {
+        "type":"number",
+        "default":9001,
+        "title":"Game Port number",
+        "description":"Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers",
+        "range": {
+            "minimum":1,
+            "maximum":65535
+        }
+    },
+    "localhost_port": {
+        "type":"number",
+        "default":9003,
+        "title":"Testing Port number",
+        "description":"Port number used when connecting to the &quot;Testing&quot; server",
+        "range": {
+            "minimum":1,
+            "maximum":65535
+        }
+    },
+    "observer_key": {
+        "type":"number",
+        "title": "Observer key",
+        "description":"Observer key used to subscribe to the server",
+        "default":514525537,
+        "range":"unbound"
+    },
+    "show_player_names": {
+        "type":"boolean",
+        "title":"Show player names",
+        "description":`Show player names next to the player IDs in the sidebars and Winner Display
+          Dialog.<br>
+          When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
+          When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;`,
+        "default":true
+    },
+    "show_gameid": {
+        "type":"boolean",
+        "title": "Debugging: Display Game ID",
+        "description":`Display the Game ID in the top right corner.<br>
+          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.`,
+        "default":true
+    },
+    "show_game_status": {
+        "type":"boolean",
+        "title": "Debugging: Display Game Status",
+        "description":`Display the Game Status in the top right corner.<br>
+          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.`,
+        "default":true
+    },
+    "show_notifications": {
+        "type":"boolean",
+        "title":"Debugging: Enable push notifications",
+        "description":`Enable push notifications when certain events happen (e.g. player
+          joined)<br>
+          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.`,
+        "default":true
+    },
+    "theme": {
+        "type":"setpicker",
+        "default":"auto",
+        "title":"Theme",
+        "description":"Set the application theme",
+        "range": [
+            {"name":"light","display":"Light"},
+            {"name":"dark","display":"Dark"},
+            {"name":"auto","display":"Automatic (follow browser theme)"}
+        ]
+    },
 }
+const default_settings=(function(){
+    keys=Object.keys(settings);
+    let default_settings={};
+    keys.forEach((key)=>{
+        default_settings[key]=settings[key]["default"];
+    })
+    return default_settings;
+})();
 function write_settings(json_settings) {
     let cookie_value = encodeURI(JSON.stringify(json_settings));
     setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
@@ -41,7 +115,7 @@ function write_settings(json_settings) {
     return false;
 }
 function write_displayed_settings() {
-    let json_settings = {
+    /*let json_settings = {
         "enable_security": document.getElementById("secure-protocols-setting-value").checked,
         "game_port": parseInt(document.getElementById('game-port-setting-value').value),
         "localhost_port": parseInt(document.getElementById("localhost-port-setting-value").value),
@@ -51,12 +125,19 @@ function write_displayed_settings() {
         "show_game_status": document.getElementById("game-status-display-setting-value").checked,
         "show_notifications": document.getElementById("show-notifications-setting-value").checked,
         "theme": document.getElementById("theme-setting-value").value
-    };
+    };*/
+    let json_settings={};
+    Object.keys(settings).forEach(key=>{
+        console.log(key+'_input');
+        let source=document.getElementById(key+'_input');
+        source_property=settings[key].type=="boolean" ? "checked" : "value"
+        json_settings[key]=source[source_property];
+    });
     let error=write_settings(json_settings);
     return error;
 }
 function write_default_settings() {
-    write_settings(default_settings);
+    write_settings();
     window.opener.location.reload();
     display_settings(default_settings);
 }
@@ -82,7 +163,7 @@ function ok_clicked() {
     if(!error)window.close();
 }
 function read_settings_cookie() {
-    settings=Object.assign({},default_settings);
+    let settings=Object.assign({},default_settings);
     let cookie_value = getCookie("settings");
     if (cookie_value){
         let cookie=JSON.parse(decodeURI(cookie_value));
@@ -95,7 +176,7 @@ function read_settings_cookie() {
     return settings;
 }
 function display_settings(json_settings) {
-    document.getElementById("secure-protocols-setting-value").checked = json_settings["enable_security"];
+    /*document.getElementById("secure-protocols-setting-value").checked = json_settings["enable_security"];
     document.getElementById("game-port-setting-value").value = json_settings["game_port"].toString();
     document.getElementById("localhost-port-setting-value").value = json_settings["localhost_port"].toString();
     document.getElementById("observer-key-setting-value").value = json_settings["observer_key"].toString();
@@ -103,13 +184,82 @@ function display_settings(json_settings) {
     document.getElementById("gameid-display-setting-value").checked = json_settings["show_gameid"];
     document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
     document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
-    document.getElementById("theme-setting-value").value = json_settings["theme"];
+    document.getElementById("theme-setting-value").value = json_settings["theme"]; */
+    Object.keys(settings).forEach(key=>{
+        let destination=document.getElementById(key+'_input');
+        console.log(key+'_input');
+        destination_property=settings[key].type=="boolean" ? "checked" : "value"
+        destination[destination_property]=json_settings[key];
+    });
 }
 function setChecked(element){
     if(element.checked)element.classList.add("checkbox-checked");
     else element.classList.remove("checkbox-checked");
 }
+function populate_settings(){
+    const root_container=document.getElementById("settings-megacontainer");
+
+    keys=Object.keys(settings);
+    keys.forEach((key)=>{
+        let setting_div=document.createElement("div");
+        setting_div.classList.add("setting-container");
+        setting_div.setAttribute("id",key);
+        let text_container=document.createElement("div");
+        text_container.classList.add("setting-text-container");
+        let title=document.createElement("h6");
+        title.classList.add("setting-text-name");
+        title.innerHTML=settings[key]["title"];
+        text_container.appendChild(title);
+        let description=document.createElement("h6");
+        description.classList.add("setting-text-description");
+        description.innerHTML=settings[key]["description"];
+        text_container.appendChild(description);
+        setting_div.appendChild(text_container);
+
+        let input_element=document.createElement("input");
+        switch(settings[key]["type"]){
+            case "boolean":
+                input_element.type="checkbox";
+                break;
+            case "number":
+                input_element.type="number";
+                if(typeof settings[key]["range"]=="object"){
+                    input_element.min=settings[key]["range"]["minimum"];
+                    input_element.max=settings[key]["range"]["maximum"];
+                }
+                break;
+            case "setpicker":
+                input_element=document.createElement("select");
+                settings[key]["range"].forEach(option=>{
+                    let option_element=document.createElement("option");
+                    option_element.setAttribute("value",option["name"]);
+                    option_element.innerHTML=option["display"];
+                    input_element.appendChild(option_element);
+                });
+                break;
+            default:
+                input_element.type="hidden"; // disable it
+                break;
+        }
+        input_element.setAttribute("id",key+'_input');
+        input_element.classList.add("setting-value");
+        input_element.addEventListener('change',(e)=>{
+            let property=settings[key]=="boolean"?"checked":"value";
+            let update={"key":key,"value":e.target[property]};
+            onChange(update);
+        })
+        setting_div.appendChild(input_element);
+        root_container.appendChild(setting_div);
+    })
+
+    // move the reset button to the bottom
+    let reset_button=document.getElementById("reset_button_container");
+    root_container.removeChild(reset_button);
+    root_container.appendChild(reset_button);
+}
+
 function initialize_popup() {
+    populate_settings();
     let json_settings = read_settings_cookie();
     display_settings(json_settings);
     pairDarkMode(json_settings);
@@ -122,7 +272,7 @@ function initialize_popup() {
     });
     window.addEventListener("keydown", (event) => {
         if (event.key == "Escape") cancel_clicked();
-    })
+    });
 }
 function initialize_main(production_status) {
     if (navigator.onLine && !production_status) {
@@ -137,6 +287,13 @@ function initialize_main(production_status) {
         });
     }
 }
+
+function onChange(setting_update){
+    if(setting_update["key"]=="theme"){
+        setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
+    }
+}
+
 function open_popup() {
     // Position of popup
     let width = 400;
