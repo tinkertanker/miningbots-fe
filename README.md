@@ -61,3 +61,9 @@ To use init.sh, the following software must be installed
 		<td>python3</td>
 	</tr>
 </table>
+
+### Windows version
+
+A Windows version is available called init.win.sh
+<br><br>
+To be able to use this version, Git Bash must be installed.
