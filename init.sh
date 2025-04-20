@@ -4,6 +4,9 @@ function server_is_running(){
         ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep > /dev/null
 }
 function start_browser(){
+    if [ ! -f firefox-chrome/user.js ]; then
+      ./utilities/update_ffconfig.py browser.shell.checkDefaultBrowser=false
+    fi
     if ! ls -d ~/.mozilla/firefox/*.miningbots 1>/dev/null 2>&1; then
       ps -x | grep firefox | grep -v grep >/dev/null && exit 1
       firefox -CreateProfile miningbots || exit 1
