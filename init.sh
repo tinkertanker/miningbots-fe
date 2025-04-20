@@ -4,6 +4,13 @@ function server_is_running(){
         ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep > /dev/null
 }
 function start_browser(){
+    if ! ls -d ~/.mozilla/firefox/*.miningbots 1>/dev/null 2>&1; then
+      ps -x | grep firefox | grep -v grep >/dev/null && exit 1
+      firefox -CreateProfile miningbots || exit 1
+      PROFILE_DIR=$(ls -d ~/.mozilla/firefox/*.miningbots | head -n 1)
+      ln -s "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
+      ln -s "chrome/user.js" "$PROFILE_DIR/user.js"
+    fi
     source browsersettings.conf # simple way to load a name=value pairs config file
     # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ $UI_MODE == "debug" ]; then
