@@ -205,11 +205,12 @@ function populate_settings(){
         setting_div.setAttribute("id",key);
         let text_container=document.createElement("div");
         text_container.classList.add("setting-text-container");
-        let title=document.createElement("h6");
+        let title=document.createElement("label");
+        title.setAttribute('for',key+'_input');
         title.classList.add("setting-text-name");
         title.innerHTML=settings[key]["title"];
         text_container.appendChild(title);
-        let description=document.createElement("h6");
+        let description=document.createElement("p");
         description.classList.add("setting-text-description");
         description.innerHTML=settings[key]["description"];
         text_container.appendChild(description);
@@ -218,16 +219,18 @@ function populate_settings(){
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
         let reset_button=document.createElement("a");
+        let accessibility_text=`Reset the ${settings[key]['title']} setting to default`;
         reset_button.id=key+'_reset';
         reset_button.href='#';
-        reset_button.title="Reset this setting to default";
+        reset_button.title=accessibility_text;
+        reset_button.setAttribute('role','button');
         reset_button.addEventListener("click",(e)=>{
             e.preventDefault();
             reset_setting(key);
         });
         let reset_icon=document.createElement('img');
         reset_icon.src="/images/reset.png";
-        reset_icon.alt="Reset this setting to default";
+        //reset_icon.alt=accessibility_text;
         reset_icon.classList.add("reset-icon");
         reset_button.appendChild(reset_icon);
         right_box.appendChild(reset_button);
