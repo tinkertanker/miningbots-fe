@@ -47,6 +47,18 @@ If ($LaunchServer) {
 }
 
 $FirefoxPath=(Get-ItemProperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe" -Name "(Default)")."(default)"
+$FirefoxProfilesDirectory="$env:APPDATA\Mozilla\Firefox\Profiles"
+If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
+    If (Get-Process -Name (Get-Item $FirefoxPath).BaseName -ErrorAction SilentlyContinue){
+        Write-Error "Firefox is already running. Profiles cannot be created while Firefox is running."
+    } else {
+        Start-Process $FirefoxPath -Wait -ArgumentList "-CreateProfile","miningbots"
+        $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
+        Copy-Item "firefox-chrome\user.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
+        New-Item -Path (Join-Path $FirefoxProfileDirectory "chrome") -ItemType Directory
+        Copy-Item "firefox-chrome\userChrome.css" (Join-Path $FirefoxProfileDirectory "chrome")
+    }
+}
 $FirefoxArguments=@("-p","miningbots","localhost")
 If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
