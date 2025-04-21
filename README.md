@@ -69,9 +69,9 @@ A Windows version is available, called ``` init.win.sh ```
 To be able to use this version, the following software must be installed:
 <ul>
   <li>
-		  Git Bash
-		</li>
-		<li>
-		  Firefox Browser
-		</li>
+    Git Bash
+  </li>
+  <li>
+    Firefox Browser
+  </li>
 </ul>
