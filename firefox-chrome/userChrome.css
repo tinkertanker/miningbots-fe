@@ -9,6 +9,10 @@
     visibility: collapse;
 }
 
+#notifications-toolbar {
+    visibility:collapse !important;
+}
+
 /*#back-button {
     padding-inline-start: 0px;
     padding-left: 2px;

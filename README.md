@@ -36,9 +36,11 @@ p1.bootcamp.tk.sg {
 }
 ```
 
-## init.sh
+## ``` init.sh ```
 
-To use init.sh, the following software must be installed
+``` init.sh ``` is a script that sets up the environment and loads the MiningBots frontend automatically.
+
+To use ``` init.sh ```, the following software must be installed:
 <table>
 	<tr>
 		<th>Software name</th>
@@ -64,6 +66,14 @@ To use init.sh, the following software must be installed
 
 ### Windows version
 
-A Windows version is available called init.win.sh
+A Windows version is available, called ``` init.win.sh ```
 <br><br>
-To be able to use this version, Git Bash must be installed.
+To be able to use this version, the following software must be installed:
+<ul>
+  <li>
+    Git Bash
+  </li>
+  <li>
+    Firefox Browser
+  </li>
+</ul>
