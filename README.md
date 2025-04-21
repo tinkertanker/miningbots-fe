@@ -38,6 +38,8 @@ p1.bootcamp.tk.sg {
 
 ## ``` init.sh ```
 
+``` init.sh ``` is a script that sets up the environment and loads the MiningBots frontend automatically.
+
 To use ``` init.sh ```, the following software must be installed:
 <table>
 	<tr>
