@@ -64,7 +64,7 @@ To use init.sh, the following software must be installed:
 
 ### Windows version
 
-A Windows version is available called init.win.sh
+A Windows version is available, called init.win.sh
 <br><br>
 To be able to use this version, the following software must be installed:
 <ul>
