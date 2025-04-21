@@ -36,9 +36,9 @@ p1.bootcamp.tk.sg {
 }
 ```
 
-## init.sh
+## ``` init.sh ```
 
-To use init.sh, the following software must be installed:
+To use ``` init.sh ```, the following software must be installed:
 <table>
 	<tr>
 		<th>Software name</th>
@@ -47,24 +47,24 @@ To use init.sh, the following software must be installed:
 	</tr>
 	<tr>
 		<td>GNU Bash Shell</td>
-		<td>bash</td>
-		<td>bash</td>
+		<td>``` bash ```</td>
+		<td>``` bash ```</td>
 	</tr>
 	<tr>
 		<td>Firefox Browser</td>
-		<td>firefox</td>
-		<td>firefox</td>
+		<td>``` firefox ```</td>
+		<td>``` firefox ```</td>
 	</tr>
 	<tr>
 		<td>Python 3</td>
-		<td>python3</td>
-		<td>python3</td>
+		<td>``` python3 ```</td>
+		<td>``` python3 ```</td>
 	</tr>
 </table>
 
 ### Windows version
 
-A Windows version is available, called init.win.sh
+A Windows version is available, called ``` init.win.sh ```
 <br><br>
 To be able to use this version, the following software must be installed:
 <ul>
