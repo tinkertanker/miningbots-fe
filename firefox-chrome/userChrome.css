@@ -9,8 +9,8 @@
     visibility: collapse;
 }
 
-notification-message.infobar {
-    visibility:collapse;
+#notifications-toolbar {
+    visibility:collapse !important;
 }
 
 /*#back-button {
