@@ -38,7 +38,7 @@ p1.bootcamp.tk.sg {
 
 ## init.sh
 
-To use init.sh, the following software must be installed
+To use init.sh, the following software must be installed:
 <table>
 	<tr>
 		<th>Software name</th>
@@ -66,4 +66,12 @@ To use init.sh, the following software must be installed
 
 A Windows version is available called init.win.sh
 <br><br>
-To be able to use this version, Git Bash must be installed.
+To be able to use this version, the following software must be installed:
+<ul>
+  <li>
+		  Git Bash
+		</li>
+		<li>
+		  Firefox Browser
+		</li>
+</ul>
