@@ -173,7 +173,9 @@ document.addEventListener("DOMContentLoaded",()=>{
             port = getPortNumber(http_type, servers[hostname].url);
         }
     } else {
-        setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
+        if(navigator.onLine) {
+            setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
+        }
     }
 });
 
