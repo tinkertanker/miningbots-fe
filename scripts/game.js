@@ -904,5 +904,7 @@ if (!custom_server)
     document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
 else
     document.getElementById("navbarDropdownMenuLink").textContent = "Custom";
-drawGame();
+if(navigator.onLine){
+    drawGame();
+}
 });
