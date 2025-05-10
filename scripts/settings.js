@@ -229,7 +229,7 @@ function populate_settings(){
             reset_setting(key);
         });
         let reset_icon=document.createElement('img');
-        reset_icon.src="/images/reset.png";
+        reset_icon.src="/images/ui/reset.png";
         //reset_icon.alt=accessibility_text;
         reset_icon.classList.add("reset-icon");
         reset_button.appendChild(reset_icon);
