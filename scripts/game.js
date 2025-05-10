@@ -887,7 +887,7 @@ function drawGame() {
                     if (server != undefined) {
                         // if the custom option is selected but the user canceled the selection, don't show an error dialog
                         if (hostname != "custom.invalid")
-                            alert(`Error fetching ${http_type}://${hostname}:${port}/games: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                            alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
                         // auto show the dropdown menu
                         setTimeout(function () {
                             let link=document.getElementById("navbarDropdownMenuLink");
