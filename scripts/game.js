@@ -155,7 +155,7 @@ function onunload() {
 document.addEventListener("DOMContentLoaded",()=>{
     if (hostname && servers.hasOwnProperty(hostname)) {
         if (hostname == "custom.invalid") {
-            document.getElementById("navbarDropdownMenuLink").textContent = servers["custom.invalid"].name;
+            setServerName(servers["custom.invalid"].name);
             let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
             while (socket===undefined){
                 socket = prompt("Enter socket of server:");
@@ -901,9 +901,9 @@ function drawGame() {
 document.addEventListener("DOMContentLoaded", (_e) => {
 console.log(servers["localhost"].name);
 if (!custom_server)
-    document.getElementById("navbarDropdownMenuLink").textContent = hostname !== null ? servers[hostname].name : "Choose a server";
+    setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
 else
-    document.getElementById("navbarDropdownMenuLink").textContent = "Custom";
+    setServerName("Custom");
 if(navigator.onLine){
     drawGame();
 }
