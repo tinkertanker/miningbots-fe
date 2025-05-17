@@ -136,12 +136,12 @@ function write_displayed_settings() {
     return error;
 }
 function write_default_settings() {
-    write_settings();
+    write_settings(default_settings);
     window.opener.location.reload();
     display_settings(default_settings);
 }
 function reset_settings_clicked() {
-    if (confirm(`Are you sure you want to reset the settings?
+    if (confirm(`Are you sure you want to reset all settings to their defaults?
 This cannot be undone!`)) {
         write_default_settings();
     }
