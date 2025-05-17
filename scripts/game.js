@@ -133,8 +133,12 @@ document.addEventListener("DOMContentLoaded",()=>{
             name: "Staging 10",
             url: `s10.bootcamp.tk.sg:${gport}`,
         },
+        "current.invalid": {
+            name: "Testing (on frontend server)",
+            url: "current.invalid",
+        },
         "localhost": {
-            name: "Testing",
+            name: "Testing (on localhost)",
             url: `localhost:${port}`,
         },
         "miningbots-api.dev.tk.sg": {
@@ -166,8 +170,11 @@ document.addEventListener("DOMContentLoaded",()=>{
                 setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                 console.log("URL: " + servers["custom.invalid"].url);
                 port = getPortNumber(http_type, servers["custom.invalid"].url);
-                custom_server = true;
+                custom_server = "custom";
             }
+        } else if (hostname == "current.invalid") {
+            hostname=location.hostname;
+            custom_server="current";
         } else {
             console.log("URL: " + servers[hostname].url);
             port = getPortNumber(http_type, servers[hostname].url);
@@ -900,10 +907,17 @@ function drawGame() {
 }
 document.addEventListener("DOMContentLoaded", (_e) => {
 console.log(servers["localhost"].name);
-if (!custom_server)
-    setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
-else
-    setServerName("Custom");
+switch(custom_server){
+    case false:
+        setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
+        break;
+    case "current":
+        setServerName(servers["current.invalid"].name);
+        break;
+    case "custom":
+        setServerName("Custom");
+        break;
+}
 if(navigator.onLine){
     drawGame();
 }
