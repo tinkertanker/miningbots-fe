@@ -17,6 +17,10 @@ body {
   flex-basis: auto;
 }
 
+.navbar-brand-logo {
+  margin-right: 10px;
+}
+
 #page-cover {
   position:fixed;
   width:100vw;
