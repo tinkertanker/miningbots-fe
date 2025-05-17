@@ -138,7 +138,7 @@ function write_displayed_settings() {
 function write_default_settings() {
     write_settings(default_settings);
     window.opener.location.reload();
-    display_settings(default_settings);
+    location.reload();
 }
 function reset_settings_clicked() {
     if (confirm(`Are you sure you want to reset all settings to their defaults?
