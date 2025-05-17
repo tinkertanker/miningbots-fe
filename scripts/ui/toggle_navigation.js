@@ -1,10 +1,14 @@
 function toggleNavigation(){
+  setTimeout(()=>{
     let link=document.getElementById('navbarDropdownMenuLink');
     // toggle show
-    if (link.classList.contains('show')){
+    // HACK: add a second class to prevent bootstrap from tampering with our system
+    if (link.classList.contains('secret-show')){
       link.classList.remove('show');
+      link.classList.remove('secret-show');
     } else {
       link.classList.add('show');
+      link.classList.add('secret-show');
     }
     let dropdown=document.getElementById('dropdown-menu');
     // toggle show
@@ -19,4 +23,5 @@ function toggleNavigation(){
     } else {
       dropdown.setAttribute("data-bs-popper","static");
     }
+  },0);
 }
