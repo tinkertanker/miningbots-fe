@@ -47,3 +47,8 @@ filter:invert(100%);
 /* don't invert (cancel it out) */
 filter:invert(100%) !important;
 }
+
+.navbar-brand-logo {
+  /* cancel out the invert */
+  filter:invert(100%);
+}
