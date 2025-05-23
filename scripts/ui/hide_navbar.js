@@ -1,5 +1,6 @@
+var PRODUCTION_MODE=false;
 document.addEventListener("DOMContentLoaded",(_e)=>{
-    var PRODUCTION_MODE = false;
+    PRODUCTION_MODE = false;
     is_production().then((production_mode) => {
       PRODUCTION_MODE = production_mode;
     });
