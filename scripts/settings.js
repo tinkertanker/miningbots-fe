@@ -129,8 +129,10 @@ function write_displayed_settings() {
     let json_settings={};
     Object.keys(settings).forEach(key=>{
         let source=document.getElementById(key+'_input');
-        source_property=settings[key].type=="boolean" ? "checked" : "value"
-        json_settings[key]=source[source_property];
+        source_property=settings[key].type=="boolean" ? "checked" : "value";
+        value=source[source_property];
+        if(settings[key].type=="number")value=JSON.parse(value); //convert string to int
+        json_settings[key]=value;
     });
     let error=write_settings(json_settings);
     return error;
