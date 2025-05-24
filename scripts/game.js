@@ -554,53 +554,62 @@ function drawGame() {
             //When receiving message from the server, parses it and applies updates to game accordingly
             ws.onmessage = function (msg) {
                 console.log('before parse:', msg);
-                try {
-                    const data = JSON.parse(msg.data);
-                    console.log('after parse:', data);
-                    switch (data.update_type) {
-                        case 'kTickUpdate':
-                            console.log('tick update: ', data)
-                            if (Array.isArray(data.bot_updates)) {
-                                data.bot_updates.forEach(botUpdate => {
-                                    console.log('botUpdate: ', botUpdate);
-                                    updateBot(botUpdate, data.player_id);
-                                })
+                //try {
+                    function text_callback(json_text){
+                        try {
+                            const data = JSON.parse(json_text);
+                            console.log('after parse:', data);
+                            switch (data.update_type) {
+                                case 'kTickUpdate':
+                                    console.log('tick update: ', data)
+                                    if (Array.isArray(data.bot_updates)) {
+                                        data.bot_updates.forEach(botUpdate => {
+                                            console.log('botUpdate: ', botUpdate);
+                                            updateBot(botUpdate, data.player_id);
+                                        })
+                                    }
+                                    if (Array.isArray(data.job_updates)) {
+                                        data.job_updates.forEach(jobUpdate => {
+                                            console.log('jobUpdate: ', jobUpdate);
+                                            updateJob(jobUpdate);
+                                        })
+                                    }
+                                    if (Array.isArray(data.land_updates)) {
+                                        data.land_updates.forEach(landUpdate => {
+                                            console.log('landUpdate: ', landUpdate);
+                                            updateLand(landUpdate);
+                                        })
+                                    }
+                                    gameStatus = data.game_status;
+                                    updateGameState();
+                                    updateUI(data.player_id);
+                                    render();
+                                    break;
+                                case 'kEndInWin':
+                                    console.log(`game ended player id ${data.player_id} won`);
+                                    gameStatus = data.game_status;
+                                    updateGameState();
+                                    showWinner(data.player_id);
+                                    break;
+                                case 'kEndInDraw':
+                                    console.log('game ended in draw');
+                                    gameStatus = data.game_status;
+                                    updateGameState();
+                                    break;
+                                default:
+                                    console.log(data.UpdateType);
+                                    break;
                             }
-                            if (Array.isArray(data.job_updates)) {
-                                data.job_updates.forEach(jobUpdate => {
-                                    console.log('jobUpdate: ', jobUpdate);
-                                    updateJob(jobUpdate);
-                                })
-                            }
-                            if (Array.isArray(data.land_updates)) {
-                                data.land_updates.forEach(landUpdate => {
-                                    console.log('landUpdate: ', landUpdate);
-                                    updateLand(landUpdate);
-                                })
-                            }
-                            gameStatus = data.game_status;
-                            updateGameState();
-                            updateUI(data.player_id);
-                            render();
-                            break;
-                        case 'kEndInWin':
-                            console.log(`game ended player id ${data.player_id} won`);
-                            gameStatus = data.game_status;
-                            updateGameState();
-                            showWinner(data.player_id);
-                            break;
-                        case 'kEndInDraw':
-                            console.log('game ended in draw');
-                            gameStatus = data.game_status;
-                            updateGameState();
-                            break;
-                        default:
-                            console.log(data.UpdateType);
-                            break;
+                        } catch (error) {
+                            console.error('Error parsing message:', error);
+                        }
                     }
-                } catch (error) {
-                    console.error('Error parsing message:', error);
-                }
+                    if(typeof msg.data == "string"){
+                        text_callback(msg.data);
+                    } else {
+                        msg.data.text().then(text_callback);
+                    }
+                //}catch(_e){};
             }
             //Sidebars will be dynamically populated
             if (!sidebars) var sidebars = [];
