@@ -97,13 +97,13 @@ function write_settings(json_settings,complete_handler) {
                     }
                     if(!notificationPermissionGranted()){
                         alert("Notifications are unavailable");
-                        document.getElementById("show-notifications-setting-value").checked=false;
+                        document.getElementById("show_notifications-setting-value").checked=false;
                     } else {
                         complete_handler();
                     }
                 },()=>{
                     alert("Notifications are unavailable");
-                    document.getElementById("show-notifications-setting-value").checked=false;
+                    document.getElementById("show_notifications-setting-value").checked=false;
                 });
                 alert("To enable notifications completely, allow notifications.");
                 break;
