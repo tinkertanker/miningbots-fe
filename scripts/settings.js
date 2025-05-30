@@ -84,7 +84,7 @@ const default_settings=(function(){
     })
     return default_settings;
 })();
-function write_settings(json_settings) {
+function write_settings(json_settings,complete_handler) {
     let cookie_value = encodeURI(JSON.stringify(json_settings));
     setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
     if(json_settings["show_notifications"]){
@@ -98,6 +98,8 @@ function write_settings(json_settings) {
                     if(!notificationPermissionGranted()){
                         alert("Notifications are unavailable");
                         document.getElementById("show-notifications-setting-value").checked=false;
+                    } else {
+                        complete_handler();
                     }
                 },()=>{
                     alert("Notifications are unavailable");
@@ -109,12 +111,14 @@ function write_settings(json_settings) {
                 alert("Notifications disabled from browser. Please clear notification permission and try again.");
                 break;
             case "granted":
-                ; // Permission allowed! Do nothing.
+                complete_handler(); // Permission allowed! Do nothing.
+                break;
         }
+    } else {
+        complete_handler();
     }
-    return false;
 }
-function write_displayed_settings() {
+function write_displayed_settings(complete_handler) {
     /*let json_settings = {
         "enable_security": document.getElementById("secure-protocols-setting-value").checked,
         "game_port": parseInt(document.getElementById('game-port-setting-value').value),
@@ -134,13 +138,13 @@ function write_displayed_settings() {
         if(settings[key].type=="number")value=JSON.parse(value); //convert string to int
         json_settings[key]=value;
     });
-    let error=write_settings(json_settings);
-    return error;
+    write_settings(json_settings,complete_handler);
 }
 function write_default_settings() {
-    write_settings(default_settings);
-    window.opener.location.reload();
-    location.reload();
+    write_settings(default_settings,()=>{
+        window.opener.location.reload();
+        location.reload();
+    });
 }
 function reset_settings_clicked() {
     if (confirm(`Are you sure you want to reset all settings to their defaults?
@@ -149,10 +153,7 @@ This cannot be undone!`)) {
     }
 }
 function apply_clicked() {
-    let error=write_displayed_settings();
-    window.opener.location.reload();
-    if(error)alert("Error occured. Check for mistakes in the settings and try again.");
-    return error;
+    write_displayed_settings(window.opener.location.reload);
 }
 
 function cancel_clicked() {
@@ -160,8 +161,10 @@ function cancel_clicked() {
 }
 
 function ok_clicked() {
-    let error=apply_clicked();
-    if(!error)window.close();
+    write_displayed_settings(()=>{
+        window.opener.location.reload();
+        window.close();
+    });
 }
 function read_settings_cookie() {
     let settings=Object.assign({},default_settings);
