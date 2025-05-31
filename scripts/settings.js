@@ -153,7 +153,9 @@ This cannot be undone!`)) {
     }
 }
 function apply_clicked() {
-    write_displayed_settings(window.opener.location.reload);
+    write_displayed_settings(()=>{
+        window.opener.location.reload();
+    });
 }
 
 function cancel_clicked() {
