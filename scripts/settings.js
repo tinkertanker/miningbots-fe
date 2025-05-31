@@ -85,38 +85,50 @@ const default_settings=(function(){
     return default_settings;
 })();
 function write_settings(json_settings,complete_handler) {
-    let cookie_value = encodeURI(JSON.stringify(json_settings));
-    setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
-    if(json_settings["show_notifications"]){
-        switch(Notification.permission){
-            case "default":
-                // code from https://riptutorial.com/javascript/example/2305/requesting-permission-to-send-notifications
-                askForNotificationPermission().then((permission)=>{
-                    if (!('permission' in Notification)) {
-                        Notification.permission = permission;
-                    }
-                    if(!notificationPermissionGranted()){
-                        alert("Notifications are unavailable");
-                        document.getElementById("show_notifications-setting-value").checked=false;
-                    } else {
-                        complete_handler();
-                    }
-                },()=>{
-                    alert("Notifications are unavailable");
-                    document.getElementById("show_notifications-setting-value").checked=false;
-                });
-                alert("To enable notifications completely, allow notifications.");
-                break;
-            case "denied":
-                alert("Notifications disabled from browser. Please clear notification permission and try again.");
-                break;
-            case "granted":
-                complete_handler(); // Permission allowed! Do nothing.
-                break;
-        }
-    } else {
-        complete_handler();
+    function finish_ui(){
+        document.getElementById("saving-cover-board").style.display="none";
     }
+    document.getElementById("saving-cover-board").style.display="flex";
+    setTimeout(()=>{
+        let cookie_value = encodeURI(JSON.stringify(json_settings));
+        setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
+        if(json_settings["show_notifications"]){
+            switch(Notification.permission){
+                case "default":
+                    // code from https://riptutorial.com/javascript/example/2305/requesting-permission-to-send-notifications
+                    askForNotificationPermission().then((permission)=>{
+                        if (!('permission' in Notification)) {
+                            Notification.permission = permission;
+                        }
+                        if(!notificationPermissionGranted()){
+                            alert("Notifications are unavailable");
+                            document.getElementById("show_notifications_input").checked=false;
+                            finish_ui();
+                        } else {
+                            finish_ui();
+                            complete_handler();
+                        }
+                    },()=>{
+                        alert("Notifications are unavailable");
+                        document.getElementById("show_notifications_input").checked=false;
+                        finish_ui();
+                    });
+                    alert("To enable notifications completely, allow notifications.");
+                    break;
+                case "denied":
+                    alert("Notifications disabled from browser. Please clear notification permission and try again.");
+                    finish_ui();
+                    break;
+                case "granted":
+                    finish_ui();
+                    complete_handler(); // Permission allowed! Do nothing.
+                    break;
+            }
+        } else {
+            finish_ui();
+            complete_handler();
+        }
+    },10);
 }
 function write_displayed_settings(complete_handler) {
     /*let json_settings = {

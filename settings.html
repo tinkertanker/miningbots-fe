@@ -28,104 +28,113 @@
 </head>
 
 <body id="settings-page">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
-    <a class="navbar-brand" href="#">Settings</a>
-    <div id="action-container">
-      <button onclick="ok_clicked();" title="This can also be triggered by pressing Alt-Shift-S" accesskey="s"
-        id="ok-button">OK</button>
-      <button onclick="cancel_clicked();" title="This can also be trigger by pressing Escape or closing the window"
-        id="cancel-button">Cancel</button>
-      <button onclick="apply_clicked();" title="This can also be triggered by pressing Alt-Shift-A" accesskey="a"
-        id="apply-button">Apply</button>
-    </div>
-  </nav>
+  <div id="main">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
+      <a class="navbar-brand" href="#">Settings</a>
+      <div id="action-container">
+        <button onclick="ok_clicked();" title="This can also be triggered by pressing Alt-Shift-S" accesskey="s"
+          id="ok-button">OK</button>
+        <button onclick="cancel_clicked();" title="This can also be trigger by pressing Escape or closing the window"
+          id="cancel-button">Cancel</button>
+        <button onclick="apply_clicked();" title="This can also be triggered by pressing Alt-Shift-A" accesskey="a"
+          id="apply-button">Apply</button>
+      </div>
+    </nav>
 
 
-  <div id="settings-megacontainer">
-    <!-- <div id="secure-protocols-setting" class="setting-container" data-key="enable_security">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Use secure protocols</h6>
-        <p class="setting-text-description">Use HTTPS and WSS over HTTP and WS</p>
+    <div id="settings-megacontainer">
+      <!-- <div id="secure-protocols-setting" class="setting-container" data-key="enable_security">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Use secure protocols</h6>
+          <p class="setting-text-description">Use HTTPS and WSS over HTTP and WS</p>
+        </div>
+        <input type="checkbox" id="secure-protocols-setting-value" class="setting-value">
       </div>
-      <input type="checkbox" id="secure-protocols-setting-value" class="setting-value">
+      <div id="game-port-setting" class="setting-container" data-key="game_port">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Game Port number</h6>
+          <p class="setting-text-description">Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers</p>
+        </div>
+        <input type="number" id="game-port-setting-value" class="setting-value" min="1"
+          max="65535">
+      </div>
+      <div id="localhost-port-setting" class="setting-container" data-key="">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Testing Port number</h6>
+          <p class="setting-text-description">Port number used when connecting to the &quot;Testing&quot; server</p>
+        </div>
+        <input type="number" id="localhost-port-setting-value" class="setting-value" min="1"
+          max="65535">
+      </div>
+      <div id="observer-key-setting" class="setting-container">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Observer key</h6>
+          <p class="setting-text-description">Observer key used to subscribe to the server</p>
+        </div>
+        <input type="number" id="observer-key-setting-value" class="setting-value" min="0" max="4294967295">
+      </div>
+      <div id="name-display-setting" class="setting-container">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Show player names</h6>
+          <p class="setting-text-description">Show player names next to the player IDs in the sidebars and Winner Display
+            Dialog.<br>
+            When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
+            When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;
+          </p>
+        </div>
+        <input type="checkbox" id="name-display-setting-value" class="setting-value">
+      </div> -->
+      <!-- Is this needed? -->
+      <!-- <div id="gameid-display-setting" class="setting-container">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Debugging: Display Game ID</h6>
+          <p class="setting-text-description">Display the Game ID in the top right corner.<br>
+            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.
+          </p>
+        </div>
+        <input type="checkbox" id="gameid-display-setting-value" class="setting-value">
+      </div> -->
+      <!-- Is this needed? -->
+      <!-- <div class="setting-container">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Debugging: Display Game Status</h6>
+          <p class="setting-text-description">Display the Game Status in the top right corner.<br>
+            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.
+          </p>
+        </div>
+        <input type="checkbox" id="game-status-display-setting-value" class="setting-value">
+      </div>
+      <div id="show-notifications-setting" class="setting-container">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Debugging: Enable push notifications</h6>
+          <p class="setting-text-description">Enable push notifications when certain events happen (e.g. player
+            joined)<br>
+            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.
+          </p>
+        </div>
+        <input type="checkbox" id="show-notifications-setting-value" class="setting-value">
+      </div>
+      <div id="theme-setting" class="setting-container">
+        <div class="setting-text-container">
+          <h6 class="setting-text-name">Theme</h6>
+          <p class="setting-text-description">Set the application theme</p>
+        </div>
+        <select id="theme-setting-value" class="setting-value" onchange="setDarkMode(darkModeEnabled({'theme':document.getElementById('theme-setting-value').value}));">
+          <option value="auto">Auto (follow browser theme)</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div> -->
+      <div id="reset_button_container">
+        <button onclick="reset_settings_clicked();" id="reset_button">Reset all to default</button>
+      </div>
     </div>
-    <div id="game-port-setting" class="setting-container" data-key="game_port">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Game Port number</h6>
-        <p class="setting-text-description">Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers</p>
-      </div>
-      <input type="number" id="game-port-setting-value" class="setting-value" min="1"
-        max="65535">
-    </div>
-    <div id="localhost-port-setting" class="setting-container" data-key="">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Testing Port number</h6>
-        <p class="setting-text-description">Port number used when connecting to the &quot;Testing&quot; server</p>
-      </div>
-      <input type="number" id="localhost-port-setting-value" class="setting-value" min="1"
-        max="65535">
-    </div>
-    <div id="observer-key-setting" class="setting-container">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Observer key</h6>
-        <p class="setting-text-description">Observer key used to subscribe to the server</p>
-      </div>
-      <input type="number" id="observer-key-setting-value" class="setting-value" min="0" max="4294967295">
-    </div>
-    <div id="name-display-setting" class="setting-container">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Show player names</h6>
-        <p class="setting-text-description">Show player names next to the player IDs in the sidebars and Winner Display
-          Dialog.<br>
-          When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
-          When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;
-        </p>
-      </div>
-      <input type="checkbox" id="name-display-setting-value" class="setting-value">
-    </div> -->
-    <!-- Is this needed? -->
-    <!-- <div id="gameid-display-setting" class="setting-container">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Debugging: Display Game ID</h6>
-        <p class="setting-text-description">Display the Game ID in the top right corner.<br>
-          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.
-        </p>
-      </div>
-      <input type="checkbox" id="gameid-display-setting-value" class="setting-value">
-    </div> -->
-    <!-- Is this needed? -->
-    <!-- <div class="setting-container">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Debugging: Display Game Status</h6>
-        <p class="setting-text-description">Display the Game Status in the top right corner.<br>
-          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.
-        </p>
-      </div>
-      <input type="checkbox" id="game-status-display-setting-value" class="setting-value">
-    </div>
-    <div id="show-notifications-setting" class="setting-container">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Debugging: Enable push notifications</h6>
-        <p class="setting-text-description">Enable push notifications when certain events happen (e.g. player
-          joined)<br>
-          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.
-        </p>
-      </div>
-      <input type="checkbox" id="show-notifications-setting-value" class="setting-value">
-    </div>
-    <div id="theme-setting" class="setting-container">
-      <div class="setting-text-container">
-        <h6 class="setting-text-name">Theme</h6>
-        <p class="setting-text-description">Set the application theme</p>
-      </div>
-      <select id="theme-setting-value" class="setting-value" onchange="setDarkMode(darkModeEnabled({'theme':document.getElementById('theme-setting-value').value}));">
-        <option value="auto">Auto (follow browser theme)</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </div> -->
-    <div id="reset_button_container">
-      <button onclick="reset_settings_clicked();" id="reset_button">Reset all to default</button>
+  </div>
+  <div id="saving-cover-board" style="display:none">
+    <div id="saving-cover-board-content">
+      <b style="color:white;font-size: 32px;user-select: none;">
+        Saving...
+      </b>
     </div>
   </div>
   <script>initialize_popup();</script>

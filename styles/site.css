@@ -31,8 +31,29 @@ body {
   z-index: 10000000000;
 }
 
+#saving-cover-board {
+  z-index: 10000000000;
+  background-color: rgba(0,0,0,0.5);
+  position:fixed;
+  top: 0;
+  left:0;
+  bottom: 0;
+  right:0;
+  width:100%;
+  height:100%;
+  display: flex; /* Make it a flex container */
+  align-items: center; /* Vertically centers the child (sub-div) */
+  justify-content: center; /* Horizontally centers the child (optional, but often desired) */
+}
+
+#saving-cover-board-content {
+  width:100px;
+  height: 100px;
+}
+
 #page-cover-content {
   text-align:center;
+  user-select: none;
 }
 
 .settings-top-bar {

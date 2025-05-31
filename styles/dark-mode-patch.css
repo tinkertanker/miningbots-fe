@@ -1,6 +1,9 @@
 body {
-filter:invert(100%);
 background-color: rgb(86, 86, 86);
+}
+
+div#main {
+  filter:invert(100%);
 }
 
 #settings-button, #gameCanvas {
