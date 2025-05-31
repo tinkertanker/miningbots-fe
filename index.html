@@ -29,60 +29,62 @@
 </head>
 
 <body onbeforeunload="if(navigator.onLine && onunload())return true;">
-  <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-    <img src="favicon.ico" class="navbar-brand-logo">
-    <a class="navbar-brand" href="#">Mining Bots</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleNavigation();">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle collapse-if-minified" href="#" id="navbarDropdownMenuLink" role="button"
-            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Select a server
-          </a>
-          <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <!-- Dropdown items will be dynamically populated -->
-          </div>
-        </li>
-      </ul>
+  <div id="main">
+    <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+      <img src="favicon.ico" class="navbar-brand-logo">
+      <a class="navbar-brand" href="#">Mining Bots</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleNavigation();">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle collapse-if-minified" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Select a server
+            </a>
+            <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <!-- Dropdown items will be dynamically populated -->
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="gameStatus"></div>
+      <div id="gameID"></div>
+      <a href="javascript:show_help();" id="help" role="button">
+        <img 
+        onmouseenter="this.src='images/ui/helphover.png'" 
+        onmouseleave="this.src='images/ui/help.png'" 
+        onmousedown="this.src='images/ui/helprollover.png'"
+        onmouseup="this.src='images/ui/helphover.png'";
+        src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
+      <button onclick="settings_window=open_popup();" id="settings-button"
+        title="This can also be triggered by pressing Control-Alt-C">Settings</button>
+    </nav>
+
+    <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
+    <div id="game-info-container">
+      <!--The drawing of the game-->
+      <canvas id="gameCanvas"></canvas>
+
+      <!--A DIV to hold all the player-bot info-->
+      <div class="sidebar-container sidebar-hidden" id="bot-info-megacontainer">
+        <!--For the purpose of allowing >2 players to be shown, probably best to also dynamically populate this-->
+        <!-- <div class="sidebar" id="bot-sidebar-one"></div>
+        <div class="sidebar" id="bot-sidebar-two"></div>
+        <div class="sidebar" id="bot-sidebar-three"></div> -->
+      </div>
     </div>
-    <div id="gameStatus"></div>
-    <div id="gameID"></div>
-    <a href="javascript:show_help();" id="help" role="button">
-      <img 
-      onmouseenter="this.src='images/ui/helphover.png'" 
-      onmouseleave="this.src='images/ui/help.png'" 
-      onmousedown="this.src='images/ui/helprollover.png'"
-      onmouseup="this.src='images/ui/helphover.png'";
-      src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
-    <button onclick="settings_window=open_popup();" id="settings-button"
-      title="This can also be triggered by pressing Control-Alt-C">Settings</button>
-  </nav>
 
-  <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
-  <div id="game-info-container">
-    <!--The drawing of the game-->
-    <canvas id="gameCanvas"></canvas>
-
-    <!--A DIV to hold all the player-bot info-->
-    <div class="sidebar-container sidebar-hidden" id="bot-info-megacontainer">
-      <!--For the purpose of allowing >2 players to be shown, probably best to also dynamically populate this-->
-      <!-- <div class="sidebar" id="bot-sidebar-one"></div>
-      <div class="sidebar" id="bot-sidebar-two"></div>
-      <div class="sidebar" id="bot-sidebar-three"></div> -->
+    <div class="loadingbox" id="loadingbox">
+      <noscript id="page-cover">
+        <p id="page-cover-content">
+          JavaScript must be enabled to open this page.<br>
+          Once enabled, refresh the page.
+        <p>
+      </noscript>
     </div>
-  </div>
-
-  <div class="loadingbox" id="loadingbox">
-    <noscript id="page-cover">
-      <p id="page-cover-content">
-        JavaScript must be enabled to open this page.<br>
-        Once enabled, refresh the page.
-      <p>
-    </noscript>
   </div>
 </body>
 
