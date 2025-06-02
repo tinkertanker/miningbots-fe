@@ -349,10 +349,10 @@ function onChange(setting_update){
 }
 
 function update_setting(setting,value){
-    let property="value";
-    if(settings[setting]["type"]=="boolean")property="checked";
-    document.getElementById(setting+"_input")[property]=value;
-    onChange({"key":setting,"value":value});
+    let property=settings[setting]["type"]=="boolean"?"checked":"value";
+    let element=document.getElementById(setting+"_input");
+    element[property]=value;
+    element.dispatchEvent(new Event("change"));//force the change handler to run
 }
 
 function open_popup() {
