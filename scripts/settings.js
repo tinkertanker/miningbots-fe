@@ -103,6 +103,7 @@ function write_settings(json_settings,complete_handler) {
                         if(!notificationPermissionGranted()){
                             alert("Notifications are unavailable");
                             document.getElementById("show_notifications_input").checked=false;
+                            onChange({"key":"show_notifications","value":false});
                             finish_ui();
                         } else {
                             finish_ui();
@@ -111,6 +112,7 @@ function write_settings(json_settings,complete_handler) {
                     },()=>{
                         alert("Notifications are unavailable");
                         document.getElementById("show_notifications_input").checked=false;
+                        onChange({"key":"show_notifications","value":false});
                         finish_ui();
                     });
                     alert("To enable notifications completely, allow notifications.");
