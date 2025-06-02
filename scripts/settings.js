@@ -102,8 +102,7 @@ function write_settings(json_settings,complete_handler) {
                         }
                         if(!notificationPermissionGranted()){
                             alert("Notifications are unavailable");
-                            document.getElementById("show_notifications_input").checked=false;
-                            onChange({"key":"show_notifications","value":false});
+                            update_setting("show_notifications",false);
                             finish_ui();
                         } else {
                             finish_ui();
@@ -111,8 +110,7 @@ function write_settings(json_settings,complete_handler) {
                         }
                     },()=>{
                         alert("Notifications are unavailable");
-                        document.getElementById("show_notifications_input").checked=false;
-                        onChange({"key":"show_notifications","value":false});
+                        update_setting("show_notifications",false);
                         finish_ui();
                     });
                     alert("To enable notifications completely, allow notifications.");
@@ -305,10 +303,7 @@ function update_reset_button(setting_update){
 }
 
 function reset_setting(setting_key){
-    let update={};
-    update[setting_key]=settings[setting_key]["default"];
-    display_settings(update);
-    onChange({"key":setting_key,"value":update[setting_key]});
+    update_setting(setting_key,settings[setting_key]["default"]);
 }
 
 function initialize_popup() {
@@ -351,6 +346,13 @@ function onChange(setting_update){
     }
 
     update_reset_button(setting_update);
+}
+
+function update_setting(setting,value){
+    let property="value";
+    if(settings[setting]["type"]=="boolean")property="checked";
+    document.getElementById(setting+"_input")[property]=value;
+    onChange({"key":setting,"value":value});
 }
 
 function open_popup() {
