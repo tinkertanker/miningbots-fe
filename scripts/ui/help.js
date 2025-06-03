@@ -1,5 +1,5 @@
 function show_help() {
-    document.getElementById("help-icon").src="/images/help.png";
+    document.getElementById("help-icon").src="/images/ui/help.png";
     setTimeout(alert,200,
         `Keyboard shortcuts:
 
