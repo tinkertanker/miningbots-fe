@@ -721,7 +721,7 @@ function drawGame() {
 
             //Display a dialog box in the middle of the screen indicating the winner
             function showWinner(playerId) {
-                let name_insert = CONFIG["show_player_names"] ? ` (${playername_cache[playerId]})` : "";
+                let name_insert = playername_cache[playerId]["insert"];
                 let text = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
                 showDialog(text,"Game Won");
             }
@@ -745,7 +745,7 @@ function drawGame() {
                 var name = playerInfo[0].name;
                 let name_insert = CONFIG["show_player_names"] ? ` (${name})` : "";
                 if (!playername_cache[player_id]) { // make sure player isn't already cached
-                    playername_cache[player_id] = name; // Store names in hash table. Used by showWinner
+                    playername_cache[player_id] = {"raw":name,"insert":name_insert}; // Store names in hash table. Used by showWinner
                     console.log("before call");
                     if (CONFIG["show_notifications"] && !PRODUCTION_MODE)
                         sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
