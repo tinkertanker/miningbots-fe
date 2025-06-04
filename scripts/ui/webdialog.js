@@ -7,6 +7,7 @@ function showDialog_(html,title,buttons){
     dialog.style.transform = 'translate(-50%, -50%)';
     dialog.style.padding = '20px';
     dialog.style.backgroundColor = 'white';
+    dialog.classList.add("usedark");
     dialog.style.border = '2px solid silver';
     dialog.style.borderTop = '40px solid silver';
     dialog.style.borderRadius="5px";
@@ -28,6 +29,7 @@ function showDialog_(html,title,buttons){
 
     //create the close button
     const closeButton = document.createElement('button');
+    closeButton.classList.add("nodark");
     const x = document.createElement('p');
     x.innerHTML="x";
     x.style.top="-4px";
@@ -60,6 +62,7 @@ function showDialog_(html,title,buttons){
 
     //create the button box
     let buttonBox=document.createElement("div");
+    buttonBox.classList.add("nodark");
     buttonBox.style.display="flex";
     buttonBox.style.justifyContent="center";
     buttonBox.style.width="100%";
