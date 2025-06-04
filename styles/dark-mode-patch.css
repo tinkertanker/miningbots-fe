@@ -23,33 +23,15 @@ border-top: 6px solid darkgreen;
 background-color: darkkhaki !important;
 }
 
-#action-container {
-filter:invert(100%);
-}
-
+.nodark {
+filter:invert(100%) !important;
 }
 
 .setting-text-description {
-filter: invert(100%);
 color: rgb(170, 170, 170) ! important;
 }
 
 .checkbox-checked {
 /* cancel out inversion on checkboxes */
 filter:invert(100%);
-}
-
-#reset_button {
-/* don't invert (cancel it out) */
-filter:invert(100%);
-}
-
-.reset-icon {
-/* don't invert (cancel it out) */
-filter:invert(100%) !important;
-}
-
-.navbar-brand-logo {
-  /* cancel out the invert */
-  filter:invert(100%);
 }

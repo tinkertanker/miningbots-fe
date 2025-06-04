@@ -35,7 +35,7 @@
 <body onbeforeunload="if(navigator.onLine && onunload())return true;">
   <div id="main">
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
-      <img src="favicon.ico" class="navbar-brand-logo">
+      <img src="favicon.ico" class="navbar-brand-logo nodark">
       <a class="navbar-brand" href="#">Mining Bots</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
         aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleNavigation();">
@@ -63,14 +63,14 @@
         onmousedown="this.src='images/ui/helprollover.png'"
         onmouseup="this.src='images/ui/helphover.png'";
         src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
-      <button onclick="settings_window=open_popup();" id="settings-button"
+      <button onclick="settings_window=open_popup();" id="settings-button" class="nodark"
         title="This can also be triggered by pressing Control-Alt-C">Settings</button>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
     <div id="game-info-container">
       <!--The drawing of the game-->
-      <canvas id="gameCanvas"></canvas>
+      <canvas id="gameCanvas" class="nodark"></canvas>
 
       <!--A DIV to hold all the player-bot info-->
       <div class="sidebar-container sidebar-hidden" id="bot-info-megacontainer">

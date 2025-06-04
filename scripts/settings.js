@@ -231,6 +231,7 @@ function populate_settings(){
         text_container.appendChild(title);
         let description=document.createElement("p");
         description.classList.add("setting-text-description");
+        description.classList.add("nodark");
         description.innerHTML=settings[key]["description"];
         text_container.appendChild(description);
         setting_div.appendChild(text_container);
@@ -247,6 +248,7 @@ function populate_settings(){
             e.preventDefault();
             reset_setting(key);
         });
+        reset_button.classList.add("nodark");
         let reset_icon=document.createElement('img');
         reset_icon.src="/images/ui/reset.png";
         //reset_icon.alt=accessibility_text;
