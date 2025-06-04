@@ -1,5 +1,5 @@
 body {
-background-color: rgb(86, 86, 86);
+  background-color: rgb(86, 86, 86);
 }
 
 .usedark{
@@ -7,26 +7,26 @@ background-color: rgb(86, 86, 86);
 }
 
 #bot-info-megacontainer {
-background-color: darkgray;
+  background-color: darkgray;
 }
 
 .sidebar {
-border-top: 6px solid darkgreen;
+  border-top: 6px solid darkgreen;
 }
 
 .bot-info {
-background-color: darkkhaki !important;
+  background-color: darkkhaki !important;
 }
 
 .nodark {
-filter:invert(100%) !important;
+  filter:invert(100%) !important;
 }
 
 .setting-text-description {
-color: rgb(170, 170, 170) ! important;
+  color: rgb(170, 170, 170) ! important;
 }
 
 .checkbox-checked {
 /* cancel out inversion on checkboxes */
-filter:invert(100%);
+  filter:invert(100%);
 }
