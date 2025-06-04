@@ -6,11 +6,6 @@ div#main {
   filter:invert(100%);
 }
 
-#settings-button, #gameCanvas {
-/* cancel out the inverts */
-filter:invert(100%);
-}
-
 #bot-info-megacontainer {
 background-color: darkgray;
 }
