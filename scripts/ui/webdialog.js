@@ -34,7 +34,7 @@ function showDialog_(html,title,buttons){
     x.innerHTML="x";
     x.style.top="-4px";
     x.style.position="relative";
-    x.style.filter="invert(100%)"; // don't invert the X button; it makes it hard to see
+    x.style.color='white';
     closeButton.appendChild(x);
     closeButton.style.position = 'absolute';
     closeButton.style.top = `-30px`;
