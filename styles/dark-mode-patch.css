@@ -2,7 +2,7 @@ body {
 background-color: rgb(86, 86, 86);
 }
 
-div#main {
+.usedark{
   filter:invert(100%);
 }
 
