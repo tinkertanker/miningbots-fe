@@ -1,3 +1,12 @@
+function getTextWidth_(text, font) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    context.font = font; // Set the font style
+    const metrics = context.measureText(text);
+    return metrics.width; // Return the width of the text
+}
+
+
 function showDialog_(html,title,buttons){
     //create the dialog box
     const dialog = document.createElement('div');
@@ -22,7 +31,7 @@ function showDialog_(html,title,buttons){
     x.innerHTML="x";
     closeButton.appendChild(x);
     let overflow_prev=document.body.style.overflow;
-    function close_dialog(){
+    function close_dialog(){ 
         document.body.removeChild(dialog);
         document.body.removeChild(coverBoard);
         document.body.style.overflow=overflow_prev;
@@ -31,8 +40,12 @@ function showDialog_(html,title,buttons){
 
     //create the dialog title
     const dialogTitle=document.createElement("h3");
-    dialogTitle.innerText=(typeof title == "string")?title:"[In-page dialog]";
+    title=(typeof title == "string")?title:"[In-page dialog]"
+    dialogTitle.innerText=title;
     dialogTitle.classList.add("dialog-title");
+
+    // set dialog width
+    dialog.style.minWidth=`${getTextWidth_(title,"500 1.75rem Arial")+200}px`;
 
     //create the button box
     let buttonBox=document.createElement("div");

@@ -225,7 +225,6 @@ select {
   border-top: 40px solid silver;
   border-radius: 5px;
   z-index: 1002;
-  min-width: 200px;
 }
 
 @keyframes darken {
