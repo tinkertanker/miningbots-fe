@@ -228,11 +228,16 @@ select {
   min-width: 200px;
 }
 
+@keyframes darken {
+  0% {background-color: transparent;}
+  100% {background-color: rgba(0,0,0,0.5);}
+}
+
 .dialog-modal-coverboard {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: transparent;
+  animation: darken 0.5s ease forwards;
   width: 100vw;
   height: 100vh;
   z-index: 1001;

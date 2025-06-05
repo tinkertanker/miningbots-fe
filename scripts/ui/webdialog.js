@@ -3,6 +3,8 @@ function showDialog_(html,title,buttons){
     const dialog = document.createElement('div');
     dialog.classList.add('dialog');
     dialog.classList.add("usedark");
+    dialog.style.display="none";
+    setTimeout(()=>{dialog.style.display="";},500);
 
     //place the text in the box
     dialog.innerHTML=html?html:"";
