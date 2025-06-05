@@ -7,7 +7,7 @@ function showDialog_(html,title,buttons){
     //place the text in the box
     dialog.innerHTML=html?html:"";
 
-    //create the cover board to prevent clicking outside the winner box while it is open
+    //create the cover board to prevent clicking outside the dialog box while it is open
     const coverBoard = document.createElement('div');
     coverBoard.classList.add('dialog-modal-coverboard');
 
