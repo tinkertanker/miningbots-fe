@@ -160,24 +160,31 @@ document.addEventListener("DOMContentLoaded",()=>{
     if (hostname && servers.hasOwnProperty(hostname)) {
         if (hostname == "custom.invalid") {
             setServerName(servers["custom.invalid"].name);
-            let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
-            while (socket===undefined){
-                socket = prompt("Enter socket of server:");
-            }
-            servers["custom.invalid"].url=socket;
-            if (servers["custom.invalid"].url) {
-                hostname = getNameOfSocket(servers["custom.invalid"].url);
-                setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
-                console.log("URL: " + servers["custom.invalid"].url);
-                port = getPortNumber(http_type, servers["custom.invalid"].url);
-                custom_server = "custom";
-            }
+            setTimeout(()=>{
+                let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
+                while (socket===undefined){
+                    socket = prompt("Enter socket of server:");
+                }
+                servers["custom.invalid"].url=socket;
+                if (servers["custom.invalid"].url) {
+                    hostname = getNameOfSocket(servers["custom.invalid"].url);
+                    setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
+                    console.log("URL: " + servers["custom.invalid"].url);
+                    port = getPortNumber(http_type, servers["custom.invalid"].url);
+                    custom_server = "custom";
+                    server_assigned();
+                } else {
+                    setServerName("Custom");
+                }
+            },200);
         } else if (hostname == "current.invalid") {
             hostname=location.hostname;
             custom_server="current";
+            server_assigned();
         } else {
             console.log("URL: " + servers[hostname].url);
             port = getPortNumber(http_type, servers[hostname].url);
+            server_assigned();
         }
     } else {
         if(navigator.onLine) {
@@ -855,20 +862,20 @@ function drawGame() {
             }
         });
 }
-document.addEventListener("DOMContentLoaded", (_e) => {
-console.log(servers["localhost"].name);
-switch(custom_server){
-    case false:
-        setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
-        break;
-    case "current":
-        setServerName(servers["current.invalid"].name);
-        break;
-    case "custom":
-        setServerName("Custom");
-        break;
+function server_assigned() {
+    console.log(servers["localhost"].name);
+    switch(custom_server){
+        case false:
+            setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
+            break;
+        case "current":
+            setServerName(servers["current.invalid"].name);
+            break;
+        case "custom":
+            setServerName("Custom");
+            break;
+    }
+    if(navigator.onLine){
+        drawGame();
+    }
 }
-if(navigator.onLine){
-    drawGame();
-}
-});
