@@ -198,12 +198,12 @@ function populateDropdown() {
     let dropdownMenu = document.getElementById("dropdown-menu");
     Object.keys(servers).forEach(function (key) {
         let server = servers[key];
-        let menuItem;
-        if(key=="custom.invalid")
-            menuItem = `<a class="dropdown-item" href="#" data-url="custom.invalid">${server.name}</a>`;
-        else
-            menuItem = `<a class="dropdown-item" href="#" data-url="${server.url}">${server.name}</a>`;
-        dropdownMenu.innerHTML += menuItem;
+        let menuItem=document.createElement('a');
+        menuItem.classList.add("dropdown-item");
+        menuItem.innerText=server.name;
+        menuItem.href="#";
+        menuItem.setAttribute("data-url",key=="custom.invalid"?"custom.invalid":server.url);
+        dropdownMenu.appendChild(menuItem);
     });
 }
 
