@@ -196,8 +196,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 // Function to populate the dropdown menu (server list)
 function populateDropdown() {
     let dropdownMenu = document.getElementById("dropdown-menu");
-    Object.keys(servers).forEach(function (key) {
-        let server = servers[key];
+    object_forEach(servers,(key,server) => {
         let menuItem=document.createElement('a');
         menuItem.classList.add("dropdown-item");
         menuItem.innerText=server.name;

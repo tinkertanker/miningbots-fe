@@ -5,3 +5,9 @@ function map(array,f) {
     });
     return output;
 }
+
+function object_forEach(object,f){
+    Object.keys(object).forEach((key)=>{
+        f(key,object[key]);
+    });
+}
