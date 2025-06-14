@@ -11,3 +11,19 @@ function object_forEach(object,f){
         f(key,object[key]);
     });
 }
+
+function object_map(object,f){
+    let array=[];
+    object_forEach(object,(key,value)=>{
+        array.push(f(key,value));
+    });
+    return array;
+}
+
+function object_map_values(object,f){
+    let target=Object.assign({},object);
+    object_forEach(object,(key,value)=>{
+        target[key]=f(key,value);
+    });
+    return target;
+}
