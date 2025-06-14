@@ -4,7 +4,10 @@ const settings = {
         "type":"boolean",
         "default":false,
         "title":"Use secure protocols",
-        "description":"Use HTTPS and WSS over HTTP and WS"
+        "description":"Use HTTPS and WSS over HTTP and WS",
+        "force_value":location.protocol.indexOf('https:')!=-1
+                      ? {"value":true}
+                      : null
     },
     "game_port": {
         "type":"number",
@@ -14,7 +17,8 @@ const settings = {
         "range": {
             "minimum":1,
             "maximum":65535
-        }
+        },
+        force_value:null
     },
     "localhost_port": {
         "type":"number",
@@ -24,14 +28,16 @@ const settings = {
         "range": {
             "minimum":1,
             "maximum":65535
-        }
+        },
+        force_value:null
     },
     "observer_key": {
         "type":"number",
         "title": "Observer key",
         "description":"Observer key used to subscribe to the server",
         "default":514525537,
-        "range":"unbound"
+        "range":"unbound",
+        force_value:null
     },
     "show_player_names": {
         "type":"boolean",
@@ -40,21 +46,24 @@ const settings = {
           Dialog.<br>
           When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
           When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;`,
-        "default":true
+        "default":true,
+        force_value:null
     },
     "show_gameid": {
         "type":"boolean",
         "title": "Debugging: Display Game ID",
         "description":`Display the Game ID in the top right corner.<br>
           NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.`,
-        "default":true
+        "default":true,
+        force_value:null
     },
     "show_game_status": {
         "type":"boolean",
         "title": "Debugging: Display Game Status",
         "description":`Display the Game Status in the top right corner.<br>
           NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.`,
-        "default":true
+        "default":true,
+        force_value:null
     },
     "show_notifications": {
         "type":"boolean",
@@ -62,7 +71,8 @@ const settings = {
         "description":`Enable push notifications when certain events happen (e.g. player
           joined)<br>
           NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.`,
-        "default":true
+        "default":true,
+        force_value:null
     },
     "theme": {
         "type":"setpicker",
@@ -73,7 +83,8 @@ const settings = {
             {"name":"light","display":"Light"},
             {"name":"dark","display":"Dark"},
             {"name":"auto","display":"Automatic (follow browser theme)"}
-        ]
+        ],
+        force_value:null
     },
 }
 const default_settings=(function(){
@@ -180,18 +191,29 @@ function ok_clicked() {
         window.close();
     });
 }
+
+function is_value_forced(setting){
+    //HACK: use eval to defer parsing
+    return (setting["force_value"]!=null) && eval(`typeof setting["force_value"]["value"] != "undefined"`);
+}
+
 function read_settings_cookie() {
-    let settings=Object.assign({},default_settings);
+    let current_settings=Object.assign({},default_settings);
     let cookie_value = getCookie("settings");
     if (cookie_value){
         let cookie=JSON.parse(decodeURI(cookie_value));
         Object.keys(cookie).forEach((key)=>{
            if(default_settings.hasOwnProperty(key)){ // make sure key is valid
-             settings[key]=cookie[key];
+             current_settings[key]=cookie[key];
            } 
         });
     }
-    return settings;
+    object_forEach(settings,(name,setting)=>{
+       if (is_value_forced(setting)){
+          current_settings[name]=setting["force_value"]["value"];
+       }
+    });
+    return current_settings;
 }
 function display_settings(json_settings) {
     /*document.getElementById("secure-protocols-setting-value").checked = json_settings["enable_security"];
@@ -219,6 +241,8 @@ function populate_settings(){
 
     keys=Object.keys(settings);
     keys.forEach((key)=>{
+        let value_forced = is_value_forced(settings[key]);
+
         let setting_div=document.createElement("div");
         setting_div.classList.add("setting-container");
         setting_div.setAttribute("id",key);
@@ -238,17 +262,17 @@ function populate_settings(){
 
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
-        let reset_button=document.createElement("a");
+        let reset_button=document.createElement("button");
         let accessibility_text=`Reset the ${settings[key]['title']} setting to default`;
         reset_button.id=key+'_reset';
-        reset_button.href='#';
         reset_button.title=accessibility_text;
-        reset_button.setAttribute('role','button');
         reset_button.addEventListener("click",(e)=>{
             e.preventDefault();
             reset_setting(key);
         });
         reset_button.classList.add("nodark");
+        reset_button.classList.add("reset-button");
+        reset_button.disabled=value_forced;
         let reset_icon=document.createElement('img');
         reset_icon.src="/images/ui/reset.png";
         //reset_icon.alt=accessibility_text;
@@ -283,6 +307,7 @@ function populate_settings(){
         }
         input_element.setAttribute("id",key+'_input');
         input_element.classList.add("setting-value");
+        input_element.disabled=value_forced;
         input_element.addEventListener('change',(e)=>{
             let property=settings[key]["type"]=="boolean"?"checked":"value";
             let update={"key":key,"value":e.target[property]};
@@ -291,7 +316,7 @@ function populate_settings(){
         right_box.appendChild(input_element);
         setting_div.appendChild(right_box);
         root_container.appendChild(setting_div);
-    })
+    });
 
     // move the reset button to the bottom
     let reset_all_button=document.getElementById("reset_button_container");

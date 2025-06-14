@@ -127,6 +127,11 @@ select {
   width: 166px;
 }
 
+.reset-button{
+  background-color: transparent;
+  border: none;
+}
+
 .reset-icon {
   margin-top: auto;
   margin-bottom: auto;
