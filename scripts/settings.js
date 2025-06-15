@@ -199,11 +199,7 @@ function read_settings_cookie(raw) {
     let cookie_value = getCookie("settings");
     if (cookie_value){
         let cookie=JSON.parse(decodeURI(cookie_value));
-        object_forEach(cookie,(key,value)=>{
-            if(default_settings.hasOwnProperty(key)){ // make sure key is valid
-                current_settings[key]=value;
-            } 
-        });
+        current_settings=Object.assign(current_settings,cookie);
     }
     if (!raw){
         object_forEach(settings,(name,setting)=>{
