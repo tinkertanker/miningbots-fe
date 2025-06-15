@@ -95,7 +95,8 @@ function write_settings(json_settings,complete_handler) {
     }
     document.getElementById("saving-cover-board").style.display="flex";
     setTimeout(()=>{
-        let cookie_value = encodeURI(JSON.stringify(json_settings));
+        let updated_settings=Object.assign(read_settings_cookie(/*raw=*/true),json_settings);
+        let cookie_value = encodeURI(JSON.stringify(updated_settings));
         setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
         if(json_settings["show_notifications"]){
             switch(Notification.permission){
@@ -149,11 +150,13 @@ function write_displayed_settings(complete_handler) {
     };*/
     let json_settings={};
     object_forEach(settings,(key,setting)=>{
-        let source=document.getElementById(key+'_input');
-        source_property=setting.type=="boolean" ? "checked" : "value";
-        value=source[source_property];
-        if(setting.type=="number")value=JSON.parse(value); //convert string to int
-        json_settings[key]=value;
+        if(!is_value_forced(setting)){ // only store values that are not forced
+            let source=document.getElementById(key+'_input');
+            source_property=setting.type=="boolean" ? "checked" : "value";
+            value=source[source_property];
+            if(setting.type=="number")value=JSON.parse(value); //convert string to int
+            json_settings[key]=value;
+        }
     });
     write_settings(json_settings,complete_handler);
 }
@@ -191,7 +194,7 @@ function is_value_forced(setting){
     return (setting["force_value"]!=null) && eval(`typeof setting["force_value"]["value"] != "undefined"`);
 }
 
-function read_settings_cookie() {
+function read_settings_cookie(raw) {
     let current_settings=Object.assign({},default_settings);
     let cookie_value = getCookie("settings");
     if (cookie_value){
@@ -202,11 +205,13 @@ function read_settings_cookie() {
             } 
         });
     }
-    object_forEach(settings,(name,setting)=>{
-       if (is_value_forced(setting)){
-          current_settings[name]=setting["force_value"]["value"];
-       }
-    });
+    if (!raw){
+        object_forEach(settings,(name,setting)=>{
+        if (is_value_forced(setting)){
+            current_settings[name]=setting["force_value"]["value"];
+        }
+        });
+    }
     return current_settings;
 }
 function display_settings(json_settings) {
