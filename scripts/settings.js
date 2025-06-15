@@ -87,14 +87,8 @@ const settings = {
         force_value:null
     },
 }
-const default_settings=(function(){
-    keys=Object.keys(settings);
-    let default_settings={};
-    keys.forEach((key)=>{
-        default_settings[key]=settings[key]["default"];
-    })
-    return default_settings;
-})();
+const default_settings=object_map_values(settings,(key,setting)=>setting["default"]);
+
 function write_settings(json_settings,complete_handler) {
     function finish_ui(){
         document.getElementById("saving-cover-board").style.display="none";
@@ -154,11 +148,11 @@ function write_displayed_settings(complete_handler) {
         "theme": document.getElementById("theme-setting-value").value
     };*/
     let json_settings={};
-    Object.keys(settings).forEach(key=>{
+    object_forEach(settings,(key,setting)=>{
         let source=document.getElementById(key+'_input');
-        source_property=settings[key].type=="boolean" ? "checked" : "value";
+        source_property=setting.type=="boolean" ? "checked" : "value";
         value=source[source_property];
-        if(settings[key].type=="number")value=JSON.parse(value); //convert string to int
+        if(setting.type=="number")value=JSON.parse(value); //convert string to int
         json_settings[key]=value;
     });
     write_settings(json_settings,complete_handler);
@@ -202,10 +196,10 @@ function read_settings_cookie() {
     let cookie_value = getCookie("settings");
     if (cookie_value){
         let cookie=JSON.parse(decodeURI(cookie_value));
-        Object.keys(cookie).forEach((key)=>{
-           if(default_settings.hasOwnProperty(key)){ // make sure key is valid
-             current_settings[key]=cookie[key];
-           } 
+        object_forEach(cookie,(key,value)=>{
+            if(default_settings.hasOwnProperty(key)){ // make sure key is valid
+                current_settings[key]=value;
+            } 
         });
     }
     object_forEach(settings,(name,setting)=>{
@@ -225,11 +219,11 @@ function display_settings(json_settings) {
     document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
     document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
     document.getElementById("theme-setting-value").value = json_settings["theme"]; */
-    Object.keys(json_settings).forEach(key=>{
+    object_forEach(json_settings,(key,value)=>{
         let destination=document.getElementById(key+'_input');
         destination_property=settings[key].type=="boolean" ? "checked" : "value"
-        destination[destination_property]=json_settings[key];
-        update_reset_button({"key":key,"value":json_settings[key]});
+        destination[destination_property]=value;
+        update_reset_button({"key":key,"value":value});
     });
 }
 function setChecked(element){
@@ -239,9 +233,8 @@ function setChecked(element){
 function populate_settings(){
     const root_container=document.getElementById("settings-megacontainer");
 
-    keys=Object.keys(settings);
-    keys.forEach((key)=>{
-        let value_forced = is_value_forced(settings[key]);
+    object_forEach(settings,(key,setting)=>{
+        let value_forced = is_value_forced(setting);
 
         let setting_div=document.createElement("div");
         setting_div.classList.add("setting-container");
@@ -251,19 +244,19 @@ function populate_settings(){
         let title=document.createElement("label");
         title.setAttribute('for',key+'_input');
         title.classList.add("setting-text-name");
-        title.innerHTML=settings[key]["title"];
+        title.innerHTML=setting["title"];
         text_container.appendChild(title);
         let description=document.createElement("p");
         description.classList.add("setting-text-description");
         description.classList.add("nodark");
-        description.innerHTML=settings[key]["description"];
+        description.innerHTML=setting["description"];
         text_container.appendChild(description);
         setting_div.appendChild(text_container);
 
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
         let reset_button=document.createElement("button");
-        let accessibility_text=`Reset the ${settings[key]['title']} setting to default`;
+        let accessibility_text=`Reset the ${setting['title']} setting to default`;
         reset_button.id=key+'_reset';
         reset_button.title=accessibility_text;
         reset_button.addEventListener("click",(e)=>{
@@ -281,20 +274,20 @@ function populate_settings(){
         right_box.appendChild(reset_button);
 
         let input_element=document.createElement("input");
-        switch(settings[key]["type"]){
+        switch(setting["type"]){
             case "boolean":
                 input_element.type="checkbox";
                 break;
             case "number":
                 input_element.type="number";
-                if(typeof settings[key]["range"]=="object"){
-                    input_element.min=settings[key]["range"]["minimum"];
-                    input_element.max=settings[key]["range"]["maximum"];
+                if(typeof setting["range"]=="object"){
+                    input_element.min=setting["range"]["minimum"];
+                    input_element.max=setting["range"]["maximum"];
                 }
                 break;
             case "setpicker":
                 input_element=document.createElement("select");
-                settings[key]["range"].forEach(option=>{
+                setting["range"].forEach(option=>{
                     let option_element=document.createElement("option");
                     option_element.setAttribute("value",option["name"]);
                     option_element.innerHTML=option["display"];
@@ -309,7 +302,7 @@ function populate_settings(){
         input_element.classList.add("setting-value");
         input_element.disabled=value_forced;
         input_element.addEventListener('change',(e)=>{
-            let property=settings[key]["type"]=="boolean"?"checked":"value";
+            let property=setting["type"]=="boolean"?"checked":"value";
             let update={"key":key,"value":e.target[property]};
             onChange(update);
         })
@@ -388,5 +381,5 @@ function open_popup() {
     let height = 600;
     let left = Math.floor((screen.width / 2) - (width / 2));
     let top = Math.floor((screen.height / 2) - (height / 2));
-    return window.open('/settings.html', '_blank', `popup=yes,width=${width},height=${height},left=${left},top=${top}`);
+    return window.open('/settings.html', '',`popup=yes,width=${width},height=${height},left=${left},top=${top}`);
 }
