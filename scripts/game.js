@@ -768,44 +768,41 @@ function drawGame() {
                 sidebar.innerHTML = ''; // Clear the existing sidebar content
 
                 const header = document.createElement('h4');
+                header.classList.add("sidebar-header");
                 header.textContent = `Player: ${player_id}${name_insert}`;
                 header.style.color = color;
-                header.style.fontSize = "0.8vw";
-                header.style.margin = "0vw";
-                header.style.padding = "0.05vw";
                 sidebar.appendChild(header);
 
                 const botBox = document.createElement('div');
-                botBox.style = "display: flex; gap: 0vw; padding: 0vw, margin: 0.1vw; height: 100%; width: 100%; overflow-y: auto";
+                botBox.classList.add("bot-infobox");
                 sidebar.appendChild(botBox);
                 for (const [id, [position, variant, current_energy, job, cargo, botPlayerIndex]] of botMap.entries()) {
                     if (playerIndex == botPlayerIndex) { //THIS MIGHT NOT WORK
                         const botDiv = document.createElement('div');
                         console.log('cargo: ', cargo);
                         botDiv.classList.add('bot-info');
-                        botDiv.style = "width: 14%, height: 24%";
                         let variantLabel = mapName('variantMap',variant);
                         botDiv.innerHTML = `
-            <h4 style="margin: 2px 0; padding: 0;"><b>${variantLabel}</b> ${id}</h4>
-            <hr style="margin: 2px 0;">
-            <p style="margin: 2px 0; padding: 0;"><b>Position:</b> ${position.x}, ${position.y}</p>
-            <p style="margin: 2px 0; padding: 0;"><b>Energy:</b> ${current_energy}</p>
-            <p style="margin: 2px 0; padding: 0;"><b>Job:</b> ${job.action}</p> 
-            <hr style="margin: 2px 0;">
+            <h4><b>${variantLabel}</b> ${id}</h4>
+            <hr>
+            <p><b>Position:</b> ${position.x}, ${position.y}</p>
+            <p><b>Energy:</b> ${current_energy}</p>
+            <p><b>Job:</b> ${job.action}</p> 
+            <hr>
         `;
                         // , ${job.status}
                         const cargoContainer = document.createElement('div');
 
                         //Creating a grid: left side will be image of mineral, right side will be count of mineral
-                        cargoContainer.style = "display: grid; grid-template-columns: auto auto; grid-gap: 0.05vw; padding: 0.1vw"
+                        cargoContainer.classList.add('cargo-container'); // dealt with in css
 
                         // Add each cargo item as a new paragraph
                         cargo.forEach(item => {
                             //Image of the mineral
                             let mineralImage = document.createElement('img');
+                            mineralImage.classList.add('mineral-image');
                             let resource = String(resources[item.id]);
                             mineralImage.src = "./images/" + resource + ".png"
-                            mineralImage.style = "width: 1vw; height: 1vw"
                             mineralImage.alt = mineralImage.title = resource;
                             cargoContainer.appendChild(mineralImage);
 

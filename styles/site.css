@@ -195,23 +195,46 @@ select {
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.sidebar-header {
+  font-size: 0.8vw;
+  margin: 0vw;
+  padding: 0.05vw;
+}
+
+.bot-infobox {
+  display: flex;
+  gap: 0vw;
+  padding: 0vw;
+  margin: 0.1vw;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
 .bot-info {
   margin: 10px;
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
   background-color: #fff;
+  width: 14%;
+  height: 24%;
 }
 
 .bot-info h4 {
-  margin: 0;
-  padding: 0;
   font-size: 14px;
+  margin: 2px 0;
+  padding: 0;
+}
+
+.bot-info hr {
+  margin: 2px 0;
 }
 
 .bot-info p {
-  margin: 5px 0;
   font-size: 12px;
+  margin: 2px 0;
+  padding: 0;
 }
 
 .navbar {
@@ -281,4 +304,16 @@ select {
 .dialog-button {
   margin-left: 3px;
   margin-right: 3px;
+}
+
+.cargo-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 0.05vw;
+  padding: 0.1vw;
+}
+
+.mineral-image {
+  width: 1vw;
+  height: 1vw
 }
