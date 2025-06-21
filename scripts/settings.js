@@ -137,17 +137,6 @@ function write_settings(json_settings,complete_handler) {
     },10);
 }
 function write_displayed_settings(complete_handler) {
-    /*let json_settings = {
-        "enable_security": document.getElementById("secure-protocols-setting-value").checked,
-        "game_port": parseInt(document.getElementById('game-port-setting-value').value),
-        "localhost_port": parseInt(document.getElementById("localhost-port-setting-value").value),
-        "observer_key": parseInt(document.getElementById("observer-key-setting-value").value),
-        "show_player_names": document.getElementById("name-display-setting-value").checked,
-        "show_gameid": document.getElementById("gameid-display-setting-value").checked,
-        "show_game_status": document.getElementById("game-status-display-setting-value").checked,
-        "show_notifications": document.getElementById("show-notifications-setting-value").checked,
-        "theme": document.getElementById("theme-setting-value").value
-    };*/
     let json_settings={};
     object_forEach(settings,(key,setting)=>{
         if(!is_value_forced(setting)){ // only store values that are not forced
@@ -211,15 +200,6 @@ function read_settings_cookie(raw) {
     return current_settings;
 }
 function display_settings(json_settings) {
-    /*document.getElementById("secure-protocols-setting-value").checked = json_settings["enable_security"];
-    document.getElementById("game-port-setting-value").value = json_settings["game_port"].toString();
-    document.getElementById("localhost-port-setting-value").value = json_settings["localhost_port"].toString();
-    document.getElementById("observer-key-setting-value").value = json_settings["observer_key"].toString();
-    document.getElementById("name-display-setting-value").checked = json_settings["show_player_names"];
-    document.getElementById("gameid-display-setting-value").checked = json_settings["show_gameid"];
-    document.getElementById("game-status-display-setting-value").checked = json_settings["show_game_status"];
-    document.getElementById("show-notifications-setting-value").checked = json_settings["show_notifications"]&&notificationPermissionGranted();
-    document.getElementById("theme-setting-value").value = json_settings["theme"]; */
     object_forEach(json_settings,(key,value)=>{
         let destination=document.getElementById(key+'_input');
         destination_property=settings[key].type=="boolean" ? "checked" : "value"
