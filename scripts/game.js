@@ -21,8 +21,14 @@ function mapName(name,key){
     return eval(`typeof ${name} != 'undefined' ? ${name}['${key}'] : '${key}'`);
 }
 
+function should_confirm_unload() {
+    console.log(gameStatus);
+    return gameStatus !== "kNotStarted";
+}
+
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
+    //require internet access
     if (!navigator.onLine) {
         document.getElementById("navbar").classList.add("no-internet");
         document.getElementById("game-info-container").classList.add("no-internet");
@@ -42,7 +48,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     port = CONFIG["localhost_port"];
 
     console.log('host name: ' + hostname);
-
+    
+    //set protocols
     if (CONFIG["enable_security"]) {
         http_type = "https";
         ws_type = "wss";
@@ -51,8 +58,9 @@ document.addEventListener("DOMContentLoaded",()=>{
         ws_type = "ws";
     }
     //Dictionary of servers and respective names, urls
-    var gport=CONFIG["game_port"];
-    servers = {
+    servers = (()=>{
+        const gport=CONFIG["game_port"];
+        return {
         "p1.bootcamp.tk.sg": {
             name: "Game 1",
             url: `p1.bootcamp.tk.sg:${gport}`,
@@ -149,14 +157,9 @@ document.addEventListener("DOMContentLoaded",()=>{
             name: "Custom...",
             url: "custom.invalid",
         }
-    };
-});
-function onunload() {
-    console.log(gameStatus);
-    return gameStatus !== "kNotStarted";
-}
+    }})();
 
-document.addEventListener("DOMContentLoaded",()=>{
+    //set the hostname to the correct hostname if the cookie value is a special one
     if (hostname && servers.hasOwnProperty(hostname)) {
         if (hostname == "custom.invalid") {
             setServerName(servers["custom.invalid"].name);
@@ -191,42 +194,38 @@ document.addEventListener("DOMContentLoaded",()=>{
             setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
         }
     }
-});
 
-// Function to populate the dropdown menu (server list)
-function populateDropdown() {
-    let dropdownMenu = document.getElementById("dropdown-menu");
-    object_forEach(servers,(key,server) => {
-        let menuItem=document.createElement('a');
-        menuItem.classList.add("dropdown-item");
-        menuItem.innerText=server.name;
-        menuItem.href="#";
-        menuItem.setAttribute("data-url",key=="custom.invalid"?"custom.invalid":server.url);
-        dropdownMenu.appendChild(menuItem);
-    });
-}
+    // Function to populate the dropdown menu (server list)
+    function populateDropdown() {
+        let dropdownMenu = document.getElementById("dropdown-menu");
+        object_forEach(servers,(key,server) => {
+            //create the links and set the text on them
+            let menuItem=document.createElement('a');
+            menuItem.classList.add("dropdown-item");
+            menuItem.innerText=server.name;
+            menuItem.href="#";
+            menuItem.setAttribute("data-url",key=="custom.invalid"?"custom.invalid":server.url);
 
-// Event listener for dropdown item click
-document.addEventListener("DOMContentLoaded", function () {
-    populateDropdown();
-
-    //convert to array to make it possible to use forEach
-    let dropdownItems = Array.from(document.getElementsByClassName("dropdown-item"));
-    dropdownItems.forEach(function (item) {
-        item.addEventListener("click", function (event) {
-            event.preventDefault();
-            let selectedServerUrl = this.getAttribute("data-url");
-            console.log(selectedServerUrl);
-            //let selectedServerName = this.textContent;
-            //document.getElementById("navbarDropdownMenuLink").textContent =
-            //    selectedServerName;
-            deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
-            // Save to cookie first
-            setCookie("lastServer", getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
-            location.reload();
-            // drawGame();
+            // add click handlers
+            menuItem.addEventListener("click", function (event) {
+                event.preventDefault();
+                let selectedServerUrl = this.getAttribute("data-url");
+                console.log(selectedServerUrl);
+                //let selectedServerName = this.textContent;
+                //document.getElementById("navbarDropdownMenuLink").textContent =
+                //    selectedServerName;
+                deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
+                // Save to cookie first
+                setCookie("lastServer", getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
+                location.reload();
+                // drawGame();
+            });
+        
+            //attach them to the UI
+            dropdownMenu.appendChild(menuItem);
         });
-    });
+    }
+    populateDropdown();
 
     // good time to set dark mode
     pairDarkMode(CONFIG);

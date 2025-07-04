@@ -33,7 +33,7 @@
   <script src="/scripts/game.js"></script>
 </head>
 
-<body onbeforeunload="if(navigator.onLine && onunload())return true;">
+<body onbeforeunload="if(navigator.onLine && should_confirm_unload())return true;">
   <div id="main" class="usedark">
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">
