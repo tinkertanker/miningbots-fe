@@ -417,17 +417,24 @@ function drawGame() {
             canvas.height = ROWS * GRID_SIZE;
 
             updateSidebarDimensions();
-            window.addEventListener("resize",(e)=>{
-                // browser window dimensions
-                screenWidth = window.innerWidth;
-                screenHeight = window.innerHeight-navbarHeight;
-                GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
-                // Update canvas dimensions
-                canvas.width = COLS * GRID_SIZE;
-                canvas.height = ROWS * GRID_SIZE;
-                updateSidebarDimensions();
-                render(); // refresh the canvas
-            });
+            (()=> {
+                let resizeTimeout = null;
+                window.addEventListener("resize",(e)=>{
+                    if(resizeTimeout) clearTimeout(resizeTimeout); // clear the timeout if it exists
+                    resizeTimeout = setTimeout(()=>{
+                        // browser window dimensions
+                        let navbarHeight=document.getElementById("navbar").offsetHeight;
+                        screenWidth = window.innerWidth;
+                        screenHeight = window.innerHeight-navbarHeight;
+                        GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+                        // Update canvas dimensions
+                        canvas.width = COLS * GRID_SIZE;
+                        canvas.height = ROWS * GRID_SIZE;
+                        updateSidebarDimensions();
+                        render(); // refresh the canvas
+                    },100);
+                });
+            })();
 
             let resource_configs = map_config.resource_configs;
 
