@@ -395,8 +395,10 @@ function drawGame() {
             // rendring information
 
             // browser window dimensions
+            let navbarHeight=document.getElementById("navbar").offsetHeight;
+            console.log("navbar:",navbarHeight);
             var screenWidth = window.innerWidth;
-            var screenHeight = window.innerHeight;
+            var screenHeight = window.innerHeight-navbarHeight;
             // map dimensions
             const COLS = map_config.max_x;
             const ROWS = map_config.max_y;
@@ -418,7 +420,7 @@ function drawGame() {
             window.addEventListener("resize",(e)=>{
                 // browser window dimensions
                 screenWidth = window.innerWidth;
-                screenHeight = window.innerHeight;
+                screenHeight = window.innerHeight-navbarHeight;
                 GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
                 // Update canvas dimensions
                 canvas.width = COLS * GRID_SIZE;
