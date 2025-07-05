@@ -21,7 +21,7 @@ function setLoadingBoxStatus_(status) {
             break;
 
         case LB_NO_GAME:
-            LB_OBJECT.innerHTML = "No games are available on the server";
+            LB_OBJECT.innerHTML = "No active games are available on the server";
             LB_OBJECT.classList.remove("loading-completed");
             break;
 

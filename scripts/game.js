@@ -351,20 +351,24 @@ function drawGame() {
                 //post the game status on the DOM
                 updateGameState();
 
+                //show the game ID in the navbar
+                setTimeout(()=>{
+                    if (CONFIG["show_gameid"])
+                        document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+                },0);
+
                 // make sure the game is running
                 if (gameStatus == 'kEnded') {
                     console.log('failed to subscribe because game has ended');
-                    return;
+                    setLoadingBoxStatus(LB_NO_GAME);
+                    throw new Error("cancelled");
+                    //return;
                 }
 
                 //get the map_config
                 let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
                     method: 'GET'
                 });
-
-                //show the game ID in the navbar
-                if (CONFIG["show_gameid"])
-                    document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
 
                 // pass the map_config and game id to the prepper
                 return { response: fetch_map_config, game_id: gameId };
