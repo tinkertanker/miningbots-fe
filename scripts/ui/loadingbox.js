@@ -3,6 +3,7 @@ const LB_SERVER_NO_SELECTION = 4;
 const LB_LOADING = 1;
 const LB_SERVER_UNAVAILABLE = 2;
 const LB_NO_INTERNET = 3;
+const LB_NO_GAME = 5;
 let LB_OBJECT = null;
 document.addEventListener("DOMContentLoaded",()=>{
     LB_OBJECT = document.getElementById("loadingbox");
@@ -17,6 +18,11 @@ function setLoadingBoxStatus_(status) {
 
         case LB_LOADING:
             LB_OBJECT.innerHTML = "Please wait while we connect to the selected server";
+            break;
+
+        case LB_NO_GAME:
+            LB_OBJECT.innerHTML = "No games are available on the server";
+            LB_OBJECT.classList.remove("loading-completed");
             break;
 
         case LB_SERVER_UNAVAILABLE:

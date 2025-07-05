@@ -26,6 +26,8 @@ function should_confirm_unload() {
     return gameStatus !== "kNotStarted";
 }
 
+function CancelLoading(){return CancelLoading};
+
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
     //require internet access
@@ -324,12 +326,12 @@ function drawGame() {
         .then(response => {
             // console.log(response);
             // make the UI ready
-            if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
             document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
 
             // return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
+                if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
                 return response.json();
             } else {
                 throw new Error(response.statusText);
@@ -339,32 +341,37 @@ function drawGame() {
         .then(games => {
             console.log('games:', games);
             // get the first available game
-            game_info=games[0];
+            if(games.length>0){
+                game_info=games[0];
+            
+                // and retrieve info about it
+                gameId = game_info.game_id;
+                gameStatus = game_info.game_status;
 
-            // and retrieve info about it
-            gameId = game_info.game_id;
-            gameStatus = game_info.game_status;
+                //post the game status on the DOM
+                updateGameState();
 
-            //post the game status on the DOM
-            updateGameState();
+                // make sure the game is running
+                if (gameStatus == 'kEnded') {
+                    console.log('failed to subscribe because game has ended');
+                    return;
+                }
 
-            // make sure the game is running
-            if (gameStatus == 'kEnded') {
-                console.log('failed to subscribe because game has ended');
-                return;
+                //get the map_config
+                let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
+                    method: 'GET'
+                });
+
+                //show the game ID in the navbar
+                if (CONFIG["show_gameid"])
+                    document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+
+                // pass the map_config and game id to the prepper
+                return { response: fetch_map_config, game_id: gameId };
+            } else {
+                setLoadingBoxStatus(LB_NO_GAME);
+                throw new Error("cancelled");
             }
-
-            //get the map_config
-            let fetch_map_config = fetch(`${http_type}://${hostname}:${port}/map_config?game_id=${gameId}`, {
-                method: 'GET'
-            });
-
-            //show the game ID in the navbar
-            if (CONFIG["show_gameid"])
-                document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
-
-            // pass the map_config and game id to the prepper
-            return { response: fetch_map_config, game_id: gameId };
         })
         // prep the map_config for the next function
         .then(async result => {
@@ -839,6 +846,7 @@ function drawGame() {
         })
         // if an error occurs in any part to the above code
         .catch((error) => {
+            if(error.message=="cancelled")return;
             console.error("Error:", error);
             if (navigator.onLine) {
                 setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
