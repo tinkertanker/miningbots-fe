@@ -394,11 +394,19 @@ function drawGame() {
             console.log('map_config:', map_config);
             // rendring information
 
-            // browser window dimensions
-            let navbarHeight=document.getElementById("navbar").offsetHeight;
-            console.log("navbar:",navbarHeight);
-            var screenWidth = window.innerWidth;
-            var screenHeight = window.innerHeight-navbarHeight;
+            function updateDimensions() {
+                // browser window dimensions
+                let navbarHeight=document.getElementById("navbar").offsetHeight;
+                screenWidth = window.innerWidth;
+                screenHeight = window.innerHeight-navbarHeight;
+                GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+                // Update canvas dimensions
+                canvas.width = COLS * GRID_SIZE;
+                canvas.height = ROWS * GRID_SIZE;
+                updateSidebarDimensions();
+                render(); // refresh the canvas
+            }
+
             // map dimensions
             const COLS = map_config.max_x;
             const ROWS = map_config.max_y;
@@ -412,27 +420,13 @@ function drawGame() {
 
             console.log(COLS);
 
-            // Update canvas dimensions
-            canvas.width = COLS * GRID_SIZE;
-            canvas.height = ROWS * GRID_SIZE;
-
-            updateSidebarDimensions();
+            // browser window dimensions
+            updateDimensions();
             (()=> {
                 let resizeTimeout = null;
-                window.addEventListener("resize",(e)=>{
+                window.addEventListener("resize",(_e)=>{
                     if(resizeTimeout) clearTimeout(resizeTimeout); // clear the timeout if it exists
-                    resizeTimeout = setTimeout(()=>{
-                        // browser window dimensions
-                        let navbarHeight=document.getElementById("navbar").offsetHeight;
-                        screenWidth = window.innerWidth;
-                        screenHeight = window.innerHeight-navbarHeight;
-                        GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
-                        // Update canvas dimensions
-                        canvas.width = COLS * GRID_SIZE;
-                        canvas.height = ROWS * GRID_SIZE;
-                        updateSidebarDimensions();
-                        render(); // refresh the canvas
-                    },100);
+                    resizeTimeout = setTimeout(updateDimensions,100);
                 });
             })();
 
