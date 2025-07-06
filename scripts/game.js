@@ -319,6 +319,11 @@ function drawGame() {
         if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + mapName("gameStatusMap",gameStatus);
     }
 
+    function updateGameId() {
+        if (CONFIG["show_gameid"])
+        document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+    }
+
     // connect to the server to fetch the list of games
     fetch(`${http_type}://${hostname}:${port}/games`, {
         method: 'GET'
@@ -353,8 +358,7 @@ function drawGame() {
 
                 //show the game ID in the navbar
                 setTimeout(()=>{
-                    if (CONFIG["show_gameid"])
-                        document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+                    updateGameId();
                 },0);
 
                 // make sure the game is running
