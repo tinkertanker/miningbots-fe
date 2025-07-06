@@ -314,12 +314,14 @@ function drawGame() {
     terrainImages.mountains.src = 'images/mountain.jpg';*/
 
     // display the value of the gameStatus on the webpage
-    function updateGameState() {
+    function updateGameState(gameStatus_new) {
+        gameStatus=gameStatus_new || gameStatus;
         console.log("raw game status: " + gameStatus);
         if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + mapName("gameStatusMap",gameStatus);
     }
 
-    function updateGameId() {
+    function updateGameId(game_id) {
+        gameId = game_id || gameId;
         if (CONFIG["show_gameid"])
         document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
     }
@@ -603,21 +605,18 @@ function drawGame() {
                                             updateLand(landUpdate);
                                         })
                                     }
-                                    gameStatus = data.game_status;
-                                    updateGameState();
+                                    updateGameState(data.game_status);
                                     updateUI(data.player_id);
                                     render();
                                     break;
                                 case 'kEndInWin':
                                     console.log(`game ended player id ${data.player_id} won`);
-                                    gameStatus = data.game_status;
-                                    updateGameState();
+                                    updateGameState(data.game_status);
                                     showWinner(data.player_id);
                                     break;
                                 case 'kEndInDraw':
                                     console.log('game ended in draw');
-                                    gameStatus = data.game_status;
-                                    updateGameState();
+                                    updateGameState(data.game_status);
                                     break;
                                 default:
                                     console.log(data.UpdateType);
