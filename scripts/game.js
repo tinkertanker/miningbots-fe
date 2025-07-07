@@ -400,7 +400,8 @@ function drawGame() {
             console.log('map_config:', map_config);
             // rendring information
 
-            function updateDimensions() {
+            let screenWidth,screenHeight;
+            function updateDimensions(lazy_render) {
                 // browser window dimensions
                 let navbarHeight=document.getElementById("navbar").offsetHeight;
                 screenWidth = window.innerWidth;
@@ -410,7 +411,7 @@ function drawGame() {
                 canvas.width = COLS * GRID_SIZE;
                 canvas.height = ROWS * GRID_SIZE;
                 updateSidebarDimensions();
-                render(); // refresh the canvas
+                if(!lazy_render)render(); // refresh the canvas
             }
 
             // map dimensions
@@ -427,7 +428,7 @@ function drawGame() {
             console.log(COLS);
 
             // browser window dimensions
-            updateDimensions();
+            updateDimensions(true);
             (()=> {
                 let resizeTimeout = null;
                 window.addEventListener("resize",(_e)=>{
