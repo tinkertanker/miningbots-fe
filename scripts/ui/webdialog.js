@@ -48,6 +48,8 @@ function showDialog_(html,title,buttons){
     dialog.style.minWidth=`${getTextWidth_(title,"500 1.75rem Arial")+200}px`;
 
     //create the button box
+    let buttonBoxContainer=document.createElement("div");
+    buttonBoxContainer.classList.add("dialog-buttonbox-container");
     let buttonBox=document.createElement("div");
     buttonBox.classList.add("dialog-buttonbox");
     buttonBox.classList.add("nodark");
@@ -70,7 +72,8 @@ function showDialog_(html,title,buttons){
     });
 
     //add the elements
-    dialog.appendChild(buttonBox);
+    buttonBoxContainer.appendChild(buttonBox);
+    dialog.appendChild(buttonBoxContainer);
     dialog.appendChild(closeButton);
     dialog.appendChild(dialogTitle);
     document.body.appendChild(coverBoard);
