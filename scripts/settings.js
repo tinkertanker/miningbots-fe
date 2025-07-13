@@ -308,9 +308,16 @@ function initialize_popup() {
     pairDarkMode(json_settings);
     setDarkMode(darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
-        if (event.key == "Escape" || (isPrimaryPressed(event) && event.key=="c")) cancel_clicked();
-        else if(isPrimaryPressed(event) && event.key=="o") ok_clicked();
-        else if(isPrimaryPressed(event) && event.key=="a") apply_clicked();
+        if (event.key == "Escape" || (isPrimaryPressed(event) && event.key=="c")) {
+            event.preventDefault();
+            cancel_clicked();
+        } else if(isPrimaryPressed(event) && event.key=="o") {
+            event.preventDefault();
+            ok_clicked();
+        } else if(isPrimaryPressed(event) && event.key=="a") {
+            event.preventDefault();
+            apply_clicked();
+        }
     });
     window.addEventListener("keyup", (event) =>{
         if(!event.altKey) {
