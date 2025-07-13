@@ -216,10 +216,10 @@ function populate_settings(){
         let setting_div=document.createElement("div");
         setting_div.classList.add("setting-container");
         setting_div.setAttribute("id",key);
-        let text_container=document.createElement("div");
+        let text_container=document.createElement("label");
         text_container.classList.add("setting-text-container");
-        let title=document.createElement("label");
-        title.setAttribute('for',key+'_input');
+        text_container.setAttribute('for',key+'_input');
+        let title=document.createElement("span");
         title.classList.add("setting-text-name");
         title.innerHTML=setting["title"];
         text_container.appendChild(title);
