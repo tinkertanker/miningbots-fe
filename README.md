@@ -36,6 +36,10 @@ p1.bootcamp.tk.sg {
 }
 ```
 
+## UI note
+
+Control/Command is used to trigger mnemonics, instead of Alt/Option
+
 ## ``` init.sh ```
 
 ``` init.sh ``` is a script that sets up the environment and loads the MiningBots frontend automatically.

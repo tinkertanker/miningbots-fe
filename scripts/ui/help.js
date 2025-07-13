@@ -3,7 +3,7 @@ function show_help() {
     setTimeout(alert,200,
         `Keyboard shortcuts:
 
-        Control-Alt-C: Open Settings panel
-        Control-H:     Open this help`
+        ${primaryKey}-E: Open Settings panel
+        ${primaryKey}-H:     Open this help`
     );
 }

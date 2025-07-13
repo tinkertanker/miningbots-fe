@@ -20,6 +20,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"
     integrity="sha384-KGmzmwrs7oAU2sG5qfETslFsscVcCaxQrX2d7PW7I9bTrsuTD/eSMFr9jaMS9i+b"
     crossorigin="anonymous"></script>
+  <script src="/scripts/utilities/detect_mac.js"></script>
   <script src="/scripts/ui/webdialog.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
   <script src="/scripts/ui/help.js"></script>
@@ -29,6 +30,7 @@
   <script src="/scripts/ui/loadingbox.js"></script>
   <script src="/scripts/ui/toggle_navigation.js"></script>
   <script src="/scripts/ui/server_text.js"></script>
+  <script src="/scripts/ui/mnemonics.js"></script>
   
   <script src="/scripts/game.js"></script>
 </head>
@@ -68,8 +70,7 @@
         <img 
         src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon">
       </a>
-      <button onclick="settings_window=open_popup();" id="settings-button"
-        title="This can also be triggered by pressing Control-Alt-C">Settings</button>
+      <button onclick="settings_window=open_popup();" id="settings-button">S<span class="mnemonic">e</span>ttings</button>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->

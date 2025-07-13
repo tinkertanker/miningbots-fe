@@ -9,7 +9,9 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <link href="/styles/site.css" rel="stylesheet" />
   <script src="/scripts/cookies.js"></script>
+  <script src="/scripts/utilities/detect_mac.js"></script>
   <script src="/scripts/ui/notifications.js"></script>
+  <script src="/scripts/ui/mnemonics.js"></script>
   <script src="/scripts/utilities/functools.js"></script>
   <script src="/scripts/settings.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
@@ -32,12 +34,12 @@
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
       <a class="navbar-brand" href="#">Settings</a>
       <div id="action-container">
-        <button onclick="ok_clicked();" title="This can also be triggered by pressing Alt-Shift-S" accesskey="s"
-          id="ok-button">OK</button>
-        <button onclick="cancel_clicked();" title="This can also be trigger by pressing Escape or closing the window"
-          id="cancel-button">Cancel</button>
-        <button onclick="apply_clicked();" title="This can also be triggered by pressing Alt-Shift-A" accesskey="a"
-          id="apply-button">Apply</button>
+        <button onclick="ok_clicked();"
+          id="ok-button"><span class="mnemonic">O</span>K</button>
+        <button onclick="cancel_clicked();"
+          id="cancel-button"><span class="mnemonic">C</span>ancel</button>
+        <button onclick="apply_clicked();"
+          id="apply-button"><span class="mnemonic">A</span>pply</button>
       </div>
     </nav>
 
