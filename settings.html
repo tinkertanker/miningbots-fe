@@ -10,6 +10,7 @@
   <link href="/styles/site.css" rel="stylesheet" />
   <script src="/scripts/cookies.js"></script>
   <script src="/scripts/utilities/detect_mac.js"></script>
+  <script src="/scripts/ui/help.js"></script>
   <script src="/scripts/ui/notifications.js"></script>
   <script src="/scripts/ui/mnemonics.js"></script>
   <script src="/scripts/utilities/functools.js"></script>
@@ -34,6 +35,15 @@
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
       <a class="navbar-brand" href="#">Settings</a>
       <div id="action-container">
+        <a href="javascript:show_settings_help()" role="button" 
+         onmouseenter="this.src='images/ui/helphover.png'" 
+         onmouseleave="this.src='images/ui/help.png'" 
+         onmousedown="this.src='images/ui/helprollover.png'"
+         onmouseup="this.src='images/ui/helphover.png'"
+         id="help">
+          <img 
+          src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon">
+        </a>
         <button onclick="ok_clicked();"
           id="ok-button"><span class="mnemonic">O</span>K</button>
         <button onclick="cancel_clicked();"
