@@ -207,10 +207,6 @@ function display_settings(json_settings) {
         update_reset_button({"key":key,"value":value});
     });
 }
-function setChecked(element){
-    if(element.checked)element.classList.add("checkbox-checked");
-    else element.classList.remove("checkbox-checked");
-}
 function populate_settings(){
     const root_container=document.getElementById("settings-megacontainer");
 
@@ -229,7 +225,6 @@ function populate_settings(){
         text_container.appendChild(title);
         let description=document.createElement("p");
         description.classList.add("setting-text-description");
-        description.classList.add("nodark");
         description.innerHTML=setting["description"];
         text_container.appendChild(description);
         setting_div.appendChild(text_container);
@@ -239,17 +234,16 @@ function populate_settings(){
         let reset_button=document.createElement("button");
         let accessibility_text=`Reset the ${setting['title']} setting to default`;
         reset_button.id=key+'_reset';
-        reset_button.title=accessibility_text;
         reset_button.addEventListener("click",(e)=>{
             e.preventDefault();
             reset_setting(key);
         });
-        reset_button.classList.add("nodark");
         reset_button.classList.add("reset-button");
         reset_button.disabled=value_forced;
         let reset_icon=document.createElement('img');
         reset_icon.src="/images/ui/reset.png";
-        //reset_icon.alt=accessibility_text;
+        reset_icon.alt=accessibility_text;
+        reset_icon.title=accessibility_text;
         reset_icon.classList.add("reset-icon");
         reset_button.appendChild(reset_icon);
         right_box.appendChild(reset_button);
@@ -313,12 +307,6 @@ function initialize_popup() {
     display_settings(json_settings);
     pairDarkMode(json_settings);
     setDarkMode(darkModeEnabled(json_settings));
-    document.querySelectorAll("input.setting-value[type='checkbox']").forEach((element)=>{
-        element.addEventListener("click",(e)=>{
-            setChecked(e.target);
-        });
-        setChecked(element);
-    });
     window.addEventListener("keydown", (event) => {
         if (event.key == "Escape") cancel_clicked();
     });
@@ -340,10 +328,6 @@ function initialize_main(production_status) {
 function onChange(setting_update){
     if(setting_update["key"]=="theme"){
         setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
-    }
-
-    if(settings[setting_update["key"]]["type"]=="boolean"){ // call setChecked only on boolean options
-        setChecked(document.getElementById(setting_update["key"]+'_input'));
     }
 
     update_reset_button(setting_update);

@@ -37,7 +37,7 @@
   <div id="main" class="usedark">
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
       <a class="navbar-brand" href="#">
-        <img src="favicon.ico" class="navbar-brand-logo nodark">
+        <img src="favicon.ico" class="navbar-brand-logo" alt="tinkertanker logo">
         Mining Bots
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -57,23 +57,25 @@
           </li>
         </ul>
       </div>
-      <div id="gameStatus"></div>
-      <div id="gameID"></div>
-      <a href="javascript:show_help();" id="help" role="button">
+      <span role="presentation" id="gameStatus"></span>
+      <span role="presentation" id="gameID"></span>
+      <a href="javascript:show_help()" role="button" 
+         onmouseenter="this.src='images/ui/helphover.png'" 
+         onmouseleave="this.src='images/ui/help.png'" 
+         onmousedown="this.src='images/ui/helprollover.png'"
+         onmouseup="this.src='images/ui/helphover.png'"
+         id="help">
         <img 
-        onmouseenter="this.src='images/ui/helphover.png'" 
-        onmouseleave="this.src='images/ui/help.png'" 
-        onmousedown="this.src='images/ui/helprollover.png'"
-        onmouseup="this.src='images/ui/helphover.png'";
-        src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon"></a>
-      <button onclick="settings_window=open_popup();" id="settings-button" class="nodark"
+        src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon">
+      </a>
+      <button onclick="settings_window=open_popup();" id="settings-button"
         title="This can also be triggered by pressing Control-Alt-C">Settings</button>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
     <div id="game-info-container">
       <!--The drawing of the game-->
-      <canvas id="gameCanvas" class="nodark"></canvas>
+      <canvas id="gameCanvas" aria-label="game map view"></canvas>
 
       <!--A DIV to hold all the player-bot info-->
       <div class="sidebar-container sidebar-hidden" id="bot-info-megacontainer">

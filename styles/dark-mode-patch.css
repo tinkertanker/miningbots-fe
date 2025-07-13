@@ -1,9 +1,13 @@
 body {
-  background-color: rgb(86, 86, 86);
+  background-color: rgb(51, 51, 51);
 }
 
-.usedark{
-  filter:invert(100%);
+nav#navbar {
+  background-color: rgb(105,105,105) !important;
+}
+
+span[role="presentation"],a.nav-link,a.navbar-brand {
+  color: white;
 }
 
 #bot-info-megacontainer {
@@ -18,15 +22,24 @@ body {
   background-color: darkkhaki !important;
 }
 
-.nodark {
-  filter:invert(100%) !important;
+.setting-text-name {
+  color:white !important;
 }
 
 .setting-text-description {
-  color: rgb(170, 170, 170) ! important;
+  color: rgb(204, 204, 204) ! important;
 }
 
-.checkbox-checked {
-/* cancel out inversion on checkboxes */
-  filter:invert(100%);
+input:not([type="checkbox"]) {
+  background-color: #1f1f1f;   /* Dark background */
+  color: #f0f0f0;              /* Light text */
+  border: 1px solid #888;
+}
+
+input::placeholder {
+  color: #ccc;
+}
+
+input[type="checkbox"]:not(:checked) {
+  filter: invert(100%);
 }

@@ -24,7 +24,6 @@ function showDialog_(html,title,buttons){
 
     //create the close button
     const closeButton = document.createElement('button');
-    closeButton.classList.add("nodark");
     closeButton.classList.add("dialog-close");
     const x = document.createElement('p');
     x.classList.add("dialog-xbutton");
