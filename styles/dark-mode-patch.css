@@ -10,16 +10,24 @@ span[role="presentation"],a.nav-link,a.navbar-brand {
   color: white;
 }
 
-#bot-info-megacontainer {
-  background-color: darkgray;
+a.nav-link:hover,a.navbar-brand:hover {
+  color: rgb(200,200,200) !important;
 }
 
 .sidebar {
-  border-top: 6px solid darkgreen;
+  background-color:rgb(30,30,30);
+  border-bottom: 2px solid rgb(100,100,100);
 }
 
 .bot-info {
-  background-color: darkkhaki !important;
+  background-color: gray !important;
+}
+
+.bot-info h4,
+.bot-info p,
+.cargo-container p,
+.cargo-container img{
+  color:white;
 }
 
 .setting-text-name {
@@ -54,4 +62,8 @@ select {
 option {
   background-color: #1e1e1e;
   color: #f1f1f1;
+}
+
+#loadingbox {
+  color: white;
 }

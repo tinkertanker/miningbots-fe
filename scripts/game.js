@@ -431,6 +431,15 @@ function drawGame() {
             var GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
             //Possibly add more colours for >2 players too
             const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
+            const inverted_colors = [
+                'rgb(255,255,0)',    // inverse of blue
+                'rgb(0,255,255)',    // inverse of red
+                'rgb(255,0,255)',    // inverse of green
+                'rgb(0,0,255)',      // inverse of yellow
+                'rgb(0,255,255)',    // inverse of purple
+                'rgb(0,255,255)',    // inverse of orange
+                'rgb(0,255,255)'     // inverse of pink
+            ];
 
             console.log(COLS);
 
@@ -546,7 +555,7 @@ function drawGame() {
                                 const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
                                 const botImage = images[variant];
                                 const playerIndex = Math.floor(element_ / 2);
-                                const color = colors[playerIndex];
+                                const color = (DM_ENABLED?inverted_colors:colors)[playerIndex];
                                 console.log(color, " ", variant);
                                 drawABot(col, row, color, botImage);
                         }
@@ -778,7 +787,7 @@ function drawGame() {
                 const sidebar = getSidebar(playerIndex);
                 console.log('sidebar:', sidebar);
 
-                const color = colors[playerIndex];
+                const color = (DM_ENABLED?inverted_colors:colors)[playerIndex];
 
                 sidebar.innerHTML = ''; // Clear the existing sidebar content
 
