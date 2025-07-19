@@ -64,7 +64,7 @@ input::placeholder {
   color: #ccc;
 }
 
-input[type="checkbox"]:not(:checked) {
+input[type="checkbox"]:not(:checked), .navbar-toggler-icon {
   filter: invert(100%);
 }
 
