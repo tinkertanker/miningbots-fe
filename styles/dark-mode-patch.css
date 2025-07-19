@@ -10,8 +10,24 @@ span[role="presentation"],a.nav-link,a.navbar-brand {
   color: white;
 }
 
-a.nav-link:hover,a.navbar-brand:hover {
-  color: rgb(200,200,200) !important;
+a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
+  color: rgb(230,230,230) !important;
+}
+
+a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
+  color: rgb(205,205,205) !important;
+}
+
+div#dropdown-menu{
+  background-color: rgb(105,105,105) !important;
+}
+
+a.dropdown-item {
+  color: white !important;
+}
+
+a.dropdown-item:hover {
+  background-color: rgb(80,80,80) !important;
 }
 
 .sidebar {
