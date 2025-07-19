@@ -66,6 +66,11 @@ To use ``` init.sh ```, the following software must be installed:
 		<td>python3</td>
 		<td>python3</td>
 	</tr>
+	<tr>
+		<td>Node.js</td>
+		<td>node</td>
+		<td>node</td>
+	</tr>
 </table>
 
 ### Windows version
