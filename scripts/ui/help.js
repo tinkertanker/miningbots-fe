@@ -1,5 +1,5 @@
 function show_help() {
-    document.getElementById("help-icon").src="/images/ui/help.png";
+    updateHelpIcon("normal");
     setTimeout(alert,200,
         `Keyboard shortcuts:
 
@@ -9,7 +9,7 @@ function show_help() {
 }
 
 function show_settings_help() {
-    document.getElementById("help-icon").src="/images/ui/help.png";
+    updateHelpIcon("normal");
     setTimeout(alert,200,
         `Keyboard shortcuts:
 
@@ -18,3 +18,32 @@ function show_settings_help() {
         ${primaryKey}-A: Save settings and reload main page`
     );
 }
+
+let updateHelpIcon;
+
+document.addEventListener("DOMContentLoaded",(_e) => {
+    const helpIcon = document.getElementById("help-icon");
+    updateHelpIcon=function(newState){
+        if(!helpIcon) return;
+        switch(newState){
+            case "rollover":
+                newImage = "/images/ui/helprollover.png";
+                break;
+            case "hover":
+                newImage = "/images/ui/helphover.png";
+                break;
+            case "normal":
+            default:
+                newImage = "/images/ui/help.png";
+        }
+        helpIcon.src = newImage;
+    }
+
+
+    const helpButton = document.getElementById("help");
+    if(!helpButton) return;
+    helpButton.addEventListener("mouseenter", () => {updateHelpIcon("hover")});
+    helpButton.addEventListener("mouseleave", () => {updateHelpIcon("normal")});
+    helpButton.addEventListener("mousedown", () => {updateHelpIcon("rollover")});
+    helpButton.addEventListener("mouseup", () => {updateHelpIcon("hover")});
+});
