@@ -10,12 +10,11 @@ KeyboardUtilities.joinKeys = function(...keys) {
     output = "";
     if(KeyboardUtilities.isMac){
         Array.from(keys).forEach((key) => {
-            output += key.replace("Primary", "⌘").replace("Alt", "⌥");
+            output += key.replace("Primary", "⌘").replace("Alt", "⌥").replace("Shift", "⇧");
         });
     } else {
         let ported_keys = map(keys, (key) => {
             if(key === "Primary") return "Ctrl";
-            if(key === "Alt") return "Alt";
             return key;
         });
         output = ported_keys.join(" + ");
