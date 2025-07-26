@@ -3,8 +3,8 @@ function show_help() {
     setTimeout(alert,200,
         `Keyboard shortcuts:
 
-        ${primaryKey}-E: Open Settings panel
-        ${primaryKey}-H:     Open this help`
+        ${KeyboardUtilities.joinKeys('Primary','E')}: Open Settings panel
+        ${KeyboardUtilities.joinKeys('Primary','H')}: Open this help`
     );
 }
 
@@ -13,9 +13,9 @@ function show_settings_help() {
     setTimeout(alert,200,
         `Keyboard shortcuts:
 
-        ${primaryKey}-O: Save settings, reload main page, and close this window
-        ${primaryKey}-C: Close this window without saving the settings
-        ${primaryKey}-A: Save settings and reload main page`
+        ${KeyboardUtilities.joinKeys('Primary','O')}: Save settings, reload main page, and close this window
+        ${KeyboardUtilities.joinKeys('Primary','C')}: Close this window without saving the settings
+        ${KeyboardUtilities.joinKeys('Primary','A')}: Save settings and reload main page`
     );
 }
 
