@@ -59,6 +59,6 @@ if $TEST_MODE; then
     cd $CURRENT_DIR # restore the previous current directory
 fi
 start_browser
-pkill -2 abyssws
+pkill -2 $(basename $REL_WEB_SERVER_PATH)
 $TEST_MODE && pkill -2 $TEST_MB_SERVER_NAME # if the server was started by this script, quit it
 echo "Server shut down on $(date)" >> webserver/log/startup.log
