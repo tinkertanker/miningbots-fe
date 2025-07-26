@@ -1,7 +1,7 @@
 #!/bin/bash
 function server_is_running(){
 	source browsersettings.conf
-        ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep > /dev/null
+        ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
     if [ ! -f firefox-chrome/user.js ]; then
@@ -59,6 +59,6 @@ if $TEST_MODE; then
     cd $CURRENT_DIR # restore the previous current directory
 fi
 start_browser
-pkill -2 $(basename $REL_WEB_SERVER_PATH)
-$TEST_MODE && pkill -2 $TEST_MB_SERVER_NAME # if the server was started by this script, quit it
+pkill -2 "$(basename "$REL_WEB_SERVER_PATH")"
+$TEST_MODE && pkill -2 "$TEST_MB_SERVER_NAME" # if the server was started by this script, quit it
 echo "Server shut down on $(date)" >> webserver/log/startup.log
