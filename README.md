@@ -38,7 +38,15 @@ p1.bootcamp.tk.sg {
 
 ## UI note
 
-Control/Command + Shift is used to trigger mnemonics, instead of Alt/Option
+Mnemonics are triggered in an unusual way to prevent clashing with system shortcuts:
+<ul>
+	<li>
+		On Mac: Cmd + Shift + &lt;letter&gt;
+	</li>
+	<li>
+		On PC: Ctrl + &lt;letter&gt;
+	</li>
+</ul>
 
 ## ``` init.sh ```
 

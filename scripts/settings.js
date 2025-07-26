@@ -308,13 +308,13 @@ function initialize_popup() {
     pairDarkMode(json_settings);
     setDarkMode(darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
-        if (event.key == "Escape" || (KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey && event.key=="c")) {
+        if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,'c'))) {
             event.preventDefault();
             cancel_clicked();
-        } else if(KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey && event.key=="o") {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'o')) {
             event.preventDefault();
             ok_clicked();
-        } else if(KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey && event.key=="a") {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'a')) {
             event.preventDefault();
             apply_clicked();
         }
@@ -323,10 +323,10 @@ function initialize_popup() {
 function initialize_main(production_status) {
     if (navigator.onLine && !production_status) {
         window.addEventListener("keydown", (event) => {
-            if (KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey && event.key=="e") {
+            if (KeyboardUtilities.isMnemonicPressed(event,'e')) {
                 settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
-            }  else if (KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey && event.key=="h") {
+            }  else if (KeyboardUtilities.isMnemonicPressed(event,'h')) {
                 show_help();
                 event.preventDefault();
             }

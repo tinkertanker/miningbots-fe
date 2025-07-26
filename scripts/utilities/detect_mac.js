@@ -6,6 +6,18 @@ KeyboardUtilities.isPrimaryPressed=function (event){
     return (KeyboardUtilities.isMac ? event.metaKey:event.ctrlKey);
 }
 
+KeyboardUtilities.isMnemonicBasePressed = function(event) {
+    if (KeyboardUtilities.isMac) {
+        return KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey;
+    } else {
+        return KeyboardUtilities.isPrimaryPressed(event) && event.altKey;
+    }
+}
+
+KeyboardUtilities.isMnemonicPressed = function(event, letter) {
+    return KeyboardUtilities.isMnemonicBasePressed(event) && event.key.toLowerCase() === letter.toLowerCase();
+}
+
 KeyboardUtilities.joinKeys = function(...keys) {
     output = "";
     if(KeyboardUtilities.isMac){
@@ -20,4 +32,8 @@ KeyboardUtilities.joinKeys = function(...keys) {
         output = ported_keys.join(" + ");
     }
     return output;
+}
+
+KeyboardUtilities.joinMnemonic = function(letter) {
+    return KeyboardUtilities.isMac?KeyboardUtilities.joinKeys('Primary', 'Shift', letter):KeyboardUtilities.joinKeys('Primary','Alt',letter);
 }
