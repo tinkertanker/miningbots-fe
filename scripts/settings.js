@@ -319,13 +319,6 @@ function initialize_popup() {
             apply_clicked();
         }
     });
-    window.addEventListener("keyup", (event) =>{
-        if(!event.altKey) {
-            Array.from(document.getElementsByClassName("mnemonic")).forEach((element)=>{
-                element.style.textDecoration="none";
-            });   
-        }
-    });
 }
 function initialize_main(production_status) {
     if (navigator.onLine && !production_status) {
