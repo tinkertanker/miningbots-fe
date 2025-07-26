@@ -38,7 +38,7 @@ p1.bootcamp.tk.sg {
 
 ## UI note
 
-Control/Command is used to trigger mnemonics, instead of Alt/Option
+Control/Command must be used to trigger mnemonics in addition to Alt/Option
 
 ## ``` init.sh ```
 
