@@ -52,5 +52,3 @@ if $START_WEB_SERVER; then
 	echo -e "\rFrontend server started successfully.                                "
 fi
 start_browser
-pkill -2 abyssws
-echo "Server shut down on $(date)" >> webserver/log/startup.log
