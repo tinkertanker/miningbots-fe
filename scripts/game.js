@@ -22,8 +22,7 @@ function mapName(name,key){
 }
 
 function should_confirm_unload() {
-    console.log(gameStatus);
-    return gameStatus !== "kNotStarted";
+    return Object.keys(playername_cache).length > 0;
 }
 
 function CancelLoading(){return CancelLoading};
