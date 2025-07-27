@@ -317,6 +317,9 @@ function initialize_popup() {
         } else if(KeyboardUtilities.isMnemonicPressed(event,'a')) {
             event.preventDefault();
             apply_clicked();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'h')) {
+            event.preventDefault();
+            show_settings_help();
         }
     });
 }
