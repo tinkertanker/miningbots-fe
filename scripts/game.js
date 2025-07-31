@@ -191,9 +191,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             server_assigned();
         }
     } else {
-        if(navigator.onLine) {
-            setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
-        }
+        setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
     }
 
     // Function to populate the dropdown menu (server list)
@@ -337,7 +335,7 @@ function drawGame() {
             // return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
-                if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
+                setLoadingBoxStatus(LB_LOADING_COMPLETED);
                 return response.json();
             } else {
                 throw new Error(response.statusText);
@@ -865,21 +863,19 @@ function drawGame() {
         .catch((error) => {
             if(error.message=="cancelled")return;
             console.error("Error:", error);
-            if (navigator.onLine) {
-                setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
-                setTimeout(function () {
-                    if (server != undefined) {
-                        // if the custom option is selected but the user canceled the selection, don't show an error dialog
-                        if (hostname != "custom.invalid")
-                            alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                        // auto show the dropdown menu
-                        setTimeout(function () {
-                            let link=document.getElementById("navbarDropdownMenuLink");
-                            if(link.ariaExpanded=="false")link.dispatchEvent(new Event("click")); 
-                        }, 400);
-                    }
-                }, 400);
-            }
+            setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
+            setTimeout(function () {
+                if (server != undefined) {
+                    // if the custom option is selected but the user canceled the selection, don't show an error dialog
+                    if (hostname != "custom.invalid")
+                        alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                    // auto show the dropdown menu
+                    setTimeout(function () {
+                        let link=document.getElementById("navbarDropdownMenuLink");
+                        if(link.ariaExpanded=="false")link.dispatchEvent(new Event("click")); 
+                    }, 400);
+                }
+            }, 400);
         });
 }
 function server_assigned() {
