@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         window.addEventListener("online", (e) => {
             location.reload();
         });
+        return;
     } else {
         setLoadingBoxStatus(LB_LOADING);
     }
@@ -892,7 +893,5 @@ function server_assigned() {
             setServerName("Custom");
             break;
     }
-    if(navigator.onLine){
-        drawGame();
-    }
+    drawGame();
 }
