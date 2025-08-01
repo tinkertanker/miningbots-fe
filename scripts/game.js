@@ -29,6 +29,11 @@ function CancelLoading(){return CancelLoading};
 
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
+
+    // set dark mode
+    pairDarkMode(CONFIG);
+    setDarkMode(darkModeEnabled(CONFIG));
+
     //require internet access
     if (!navigator.onLine) {
         document.getElementById("navbar").classList.add("no-internet");
@@ -225,10 +230,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         });
     }
     populateDropdown();
-
-    // good time to set dark mode
-    pairDarkMode(CONFIG);
-    setDarkMode(darkModeEnabled(CONFIG));
 });
 
 // Player Name fetch code 
