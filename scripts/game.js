@@ -874,7 +874,7 @@ function drawGame() {
                     // auto show the dropdown menu
                     setTimeout(function () {
                         let link=document.getElementById("navbarDropdownMenuLink");
-                        if(link.ariaExpanded=="false")link.dispatchEvent(new Event("click")); 
+                        if(link.ariaExpanded=="false")showNavigation(); 
                     }, 400);
                 }
             }, 400);

@@ -25,3 +25,13 @@ function toggleNavigation(){
     }
   },0);
 }
+
+function showNavigation(){
+  let link=document.getElementById('navbarDropdownMenuLink');
+  // add show
+  link.classList.add('show');
+  link.classList.add('secret-show');
+  let dropdown=document.getElementById('dropdown-menu');
+  dropdown.classList.add('show');
+  dropdown.setAttribute("data-bs-popper","static");
+}
