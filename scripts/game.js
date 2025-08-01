@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     if (server !== null) hostname = server;
 
     CONFIG = read_settings_cookie();
-    port = CONFIG["localhost_port"];
 
     console.log('host name: ' + hostname);
     
@@ -67,6 +66,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     //Dictionary of servers and respective names, urls
     servers = (()=>{
         const gport=CONFIG["game_port"];
+        const lport = CONFIG["localhost_port"];
         return {
         "p1.bootcamp.tk.sg": {
             name: "Game 1",
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         },
         "localhost": {
             name: "Testing (on localhost)",
-            url: `localhost:${port}`,
+            url: `localhost:${lport}`,
         },
         "miningbots-api.dev.tk.sg": {
             name: "Development",
