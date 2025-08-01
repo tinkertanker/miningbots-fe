@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded",(_e) => {
         helpIcon.src = newImage;
     }
 
+    helpIcon.title+=` (${KeyboardUtilities.joinMnemonic('H')})`;
 
     const helpButton = document.getElementById("help");
     if(!helpButton) return;
