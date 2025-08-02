@@ -155,9 +155,30 @@ function write_displayed_settings(complete_handler) {
     let json_settings=dump_settings();
     write_settings(json_settings,complete_handler);
 }
+
 function write_default_settings(complete_handler) {
     write_settings(default_settings,complete_handler);
 }
+
+function export_settings() {
+    let json_settings=dump_settings();
+    downloadJSON(JSON.stringify(json_settings),"settings.json");
+    alert("Settings exported to settings.json");
+}
+
+function import_settings() {
+    importJSON((json_string)=>{
+        //confirmation dialog
+        if(!confirm("Are you sure you want to import these settings? This will overwrite your current settings!")){
+            return;
+        }
+        write_settings(JSON.parse(json_string),()=>{
+            window.opener.location.reload();
+            location.reload();
+        });
+    });
+}
+
 function reset_settings_clicked() {
     if (confirm(`Are you sure you want to reset all settings to their defaults?
 This cannot be undone!`)) {
@@ -323,6 +344,12 @@ function initialize_popup() {
         } else if(KeyboardUtilities.isMnemonicPressed(event,'a')) {
             event.preventDefault();
             apply_clicked();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'s')) {
+            event.preventDefault();
+            export_settings();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'i')) {
+            event.preventDefault();
+            import_settings();
         } else if(KeyboardUtilities.isMnemonicPressed(event,'h')) {
             event.preventDefault();
             show_settings_help();

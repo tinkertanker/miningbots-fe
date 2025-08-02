@@ -14,6 +14,7 @@
   <script src="/scripts/ui/help.js"></script>
   <script src="/scripts/ui/notifications.js"></script>
   <script src="/scripts/utilities/functools.js"></script>
+  <script src="/scripts/utilities/json_download.js"></script>
   <script src="/scripts/settings.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
   <style>
@@ -45,10 +46,16 @@
           id="cancel-button"><svgfile src="/images/ui/cancel.svg"></svgfile></a>
         <a role="button" href="#" onclick="apply_clicked();" title="Apply"
           id="apply-button"><svgfile src="/images/ui/apply.svg"></svgfile></a>
+        <a role="button" href="#" onclick="export_settings();" title="Export settings"
+          id="export-button"><svgfile src="/images/ui/export.svg"></svgfile></a>
+        <a role="button" href="#" onclick="import_settings();" title="Import settings"
+          id="import-button"><svgfile src="/images/ui/import.svg"></svgfile></a>
         <script>
           document.getElementById("ok-button").title += ` (${KeyboardUtilities.joinMnemonic('O')})`;
           document.getElementById("cancel-button").title += ` (${KeyboardUtilities.joinMnemonic('C')} or Esc)`;
           document.getElementById("apply-button").title += ` (${KeyboardUtilities.joinMnemonic('A')})`;
+          document.getElementById("export-button").title += ` (${KeyboardUtilities.joinMnemonic('S')})`;
+          document.getElementById("import-button").title += ` (${KeyboardUtilities.joinMnemonic('I')})`;
         </script>
       </div>
     </nav>
