@@ -30,6 +30,8 @@ function CancelLoading(){return CancelLoading};
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
 
+    CONFIG = read_settings_cookie();
+
     // set dark mode
     pairDarkMode(CONFIG);
     setDarkMode(darkModeEnabled(CONFIG));
@@ -50,8 +52,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     // Get hostname from cookie, otherwise leave as null
     server = getCookie("lastServer");
     if (server !== null) hostname = server;
-
-    CONFIG = read_settings_cookie();
 
     console.log('host name: ' + hostname);
     
