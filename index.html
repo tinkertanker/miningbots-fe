@@ -21,6 +21,7 @@
     integrity="sha384-KGmzmwrs7oAU2sG5qfETslFsscVcCaxQrX2d7PW7I9bTrsuTD/eSMFr9jaMS9i+b"
     crossorigin="anonymous"></script>
   <script src="/scripts/utilities/keyboard_utilities.js"></script>
+  <script src="/scripts/utilities/svgimporter.js"></script>
   <script src="/scripts/ui/webdialog.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
   <script src="/scripts/ui/help.js"></script>
@@ -65,7 +66,8 @@
         <img 
         src="images/ui/help.png" id="help-icon" title="Help" alt="help icon">
       </a>
-      <button onclick="settings_window=open_popup();" id="settings-button">S<span class="mnemonic">e</span>ttings</button>
+      <a href="#" role="button" title="Settings" onclick="settings_window=open_popup();" id="settings-button"><svgfile id="settings-icon" src="/images/ui/settings.svg"></svgfile></a>
+      <script>document.getElementById('settings-button').title+= ` (${KeyboardUtilities.joinMnemonic('E')})`</script>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->

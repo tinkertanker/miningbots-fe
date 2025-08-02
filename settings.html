@@ -10,6 +10,7 @@
   <link href="/styles/site.css" rel="stylesheet" />
   <script src="/scripts/cookies.js"></script>
   <script src="/scripts/utilities/keyboard_utilities.js"></script>
+  <script src="/scripts/utilities/svgimporter.js"></script>
   <script src="/scripts/ui/help.js"></script>
   <script src="/scripts/ui/notifications.js"></script>
   <script src="/scripts/ui/mnemonics.js"></script>
@@ -39,12 +40,17 @@
           <img 
           src="images/ui/help.png" id="help-icon" title="Help" alt="help icon">
         </a>
-        <button onclick="ok_clicked();"
-          id="ok-button"><span class="mnemonic">O</span>K</button>
-        <button onclick="cancel_clicked();"
-          id="cancel-button"><span class="mnemonic">C</span>ancel</button>
-        <button onclick="apply_clicked();"
-          id="apply-button"><span class="mnemonic">A</span>pply</button>
+        <a role="button" href="#" onclick="ok_clicked();" title="OK"
+          id="ok-button"><svgfile src="/images/ui/ok.svg"></svgfile></a>
+        <a role="button" href="#" onclick="cancel_clicked();" title="Cancel"
+          id="cancel-button"><svgfile src="/images/ui/cancel.svg"></svgfile></a>
+        <a role="button" href="#" onclick="apply_clicked();" title="Apply"
+          id="apply-button"><svgfile src="/images/ui/apply.svg"></svgfile></a>
+        <script>
+          document.getElementById("ok-button").title += ` (${KeyboardUtilities.joinMnemonic('O')})`;
+          document.getElementById("cancel-button").title += ` (${KeyboardUtilities.joinMnemonic('C')} or Esc)`;
+          document.getElementById("apply-button").title += ` (${KeyboardUtilities.joinMnemonic('A')})`;
+        </script>
       </div>
     </nav>
 
