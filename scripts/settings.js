@@ -136,7 +136,8 @@ function write_settings(json_settings,complete_handler) {
         }
     },10);
 }
-function write_displayed_settings(complete_handler) {
+
+function dump_settings() {
     let json_settings={};
     object_forEach(settings,(key,setting)=>{
         if(!is_value_forced(setting)){ // only store values that are not forced
@@ -147,6 +148,10 @@ function write_displayed_settings(complete_handler) {
             json_settings[key]=value;
         }
     });
+}
+
+function write_displayed_settings(complete_handler) {
+    let json_settings=dump_settings();
     write_settings(json_settings,complete_handler);
 }
 function write_default_settings(complete_handler) {
