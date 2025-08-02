@@ -332,4 +332,6 @@ a[role="button"] {
 
 svg {
   width: 32px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
