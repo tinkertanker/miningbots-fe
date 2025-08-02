@@ -148,6 +148,7 @@ function dump_settings() {
             json_settings[key]=value;
         }
     });
+    return json_settings;
 }
 
 function write_displayed_settings(complete_handler) {
