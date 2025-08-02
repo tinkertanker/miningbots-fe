@@ -36,18 +36,18 @@
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
       <a class="navbar-brand" href="#">Settings</a>
       <div id="action-container">
-        <a href="#" onclick="show_settings_help()" title="Help" role="button" id="help">
+        <a onclick="show_settings_help()" title="Help" role="button" id="help">
           <svgfile src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
         </a>
-        <a role="button" href="#" onclick="ok_clicked();" title="OK"
+        <a role="button" onclick="ok_clicked();" title="OK"
           id="ok-button"><svgfile src="/images/ui/ok.svg"></svgfile></a>
-        <a role="button" href="#" onclick="cancel_clicked();" title="Cancel"
+        <a role="button" onclick="cancel_clicked();" title="Cancel"
           id="cancel-button"><svgfile src="/images/ui/cancel.svg" style="width:20px;"></svgfile></a>
-        <a role="button" href="#" onclick="apply_clicked();" title="Apply"
+        <a role="button" onclick="apply_clicked();" title="Apply"
           id="apply-button"><svgfile src="/images/ui/apply.svg"></svgfile></a>
-        <a role="button" href="#" onclick="export_settings();" title="Export settings"
+        <a role="button" onclick="export_settings();" title="Export settings"
           id="export-button"><svgfile src="/images/ui/export.svg"></svgfile></a>
-        <a role="button" href="#" onclick="import_settings();" title="Import settings"
+        <a role="button" onclick="import_settings();" title="Import settings"
           id="import-button"><svgfile src="/images/ui/import.svg"></svgfile></a>
         <script>
           document.getElementById("ok-button").title += ` (${KeyboardUtilities.joinMnemonic('O')})`;
