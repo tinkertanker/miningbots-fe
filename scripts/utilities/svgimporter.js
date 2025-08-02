@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
       else if(url.startsWith('/'))
           return window.location.origin + url; // Absolute path from root
       else
-          return window.location.href + '../' + url; // Relative path
+          return window.location.href + '/../' + url; // Relative path
   }
 
   // Replace all <svgfile> elements with their SVG content
