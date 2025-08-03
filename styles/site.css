@@ -323,3 +323,15 @@ select {
   width: 1vw;
   height: 1vw
 }
+
+a[role="button"] {
+  cursor: pointer;
+  text-decoration: none;
+  color:#000000;
+}
+
+svg {
+  width: 32px;
+  padding-left: 2px;
+  padding-right: 2px;
+}

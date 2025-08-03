@@ -20,7 +20,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"
     integrity="sha384-KGmzmwrs7oAU2sG5qfETslFsscVcCaxQrX2d7PW7I9bTrsuTD/eSMFr9jaMS9i+b"
     crossorigin="anonymous"></script>
-  <script src="/scripts/utilities/detect_mac.js"></script>
+  <script src="/scripts/utilities/keyboard_utilities.js"></script>
+  <script src="/scripts/utilities/svgimporter.js"></script>
   <script src="/scripts/ui/webdialog.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
   <script src="/scripts/ui/help.js"></script>
@@ -30,7 +31,6 @@
   <script src="/scripts/ui/loadingbox.js"></script>
   <script src="/scripts/ui/toggle_navigation.js"></script>
   <script src="/scripts/ui/server_text.js"></script>
-  <script src="/scripts/ui/mnemonics.js"></script>
   
   <script src="/scripts/game.js"></script>
 </head>
@@ -61,16 +61,11 @@
       </div>
       <span role="presentation" id="gameStatus"></span>
       <span role="presentation" id="gameID"></span>
-      <a href="javascript:show_help()" role="button" 
-         onmouseenter="this.src='images/ui/helphover.png'" 
-         onmouseleave="this.src='images/ui/help.png'" 
-         onmousedown="this.src='images/ui/helprollover.png'"
-         onmouseup="this.src='images/ui/helphover.png'"
-         id="help">
-        <img 
-        src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon">
+      <a onclick="show_help()" title="Help" role="button" id="help">
+        <svgfile aria-hidden="true" src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
       </a>
-      <button onclick="settings_window=open_popup();" id="settings-button">S<span class="mnemonic">e</span>ttings</button>
+      <a role="button" title="Settings" onclick="settings_window=open_popup();" id="settings-button"><svgfile aria-hidden="true" id="settings-icon" src="/images/ui/settings.svg"></svgfile></a>
+      <script>document.getElementById('settings-button').title+= ` (${KeyboardUtilities.joinMnemonic('E')})`</script>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->

@@ -136,7 +136,8 @@ function write_settings(json_settings,complete_handler) {
         }
     },10);
 }
-function write_displayed_settings(complete_handler) {
+
+function dump_settings() {
     let json_settings={};
     object_forEach(settings,(key,setting)=>{
         if(!is_value_forced(setting)){ // only store values that are not forced
@@ -147,11 +148,37 @@ function write_displayed_settings(complete_handler) {
             json_settings[key]=value;
         }
     });
+    return json_settings;
+}
+
+function write_displayed_settings(complete_handler) {
+    let json_settings=dump_settings();
     write_settings(json_settings,complete_handler);
 }
+
 function write_default_settings(complete_handler) {
     write_settings(default_settings,complete_handler);
 }
+
+function export_settings() {
+    let json_settings=dump_settings();
+    downloadJSON(JSON.stringify(json_settings),"settings.json");
+    alert("Settings exported to settings.json");
+}
+
+function import_settings() {
+    importJSON((json_string)=>{
+        //confirmation dialog
+        if(!confirm("Are you sure you want to import these settings? This will overwrite your current settings!")){
+            return;
+        }
+        write_settings(JSON.parse(json_string),()=>{
+            window.opener.location.reload();
+            location.reload();
+        });
+    });
+}
+
 function reset_settings_clicked() {
     if (confirm(`Are you sure you want to reset all settings to their defaults?
 This cannot be undone!`)) {
@@ -231,17 +258,22 @@ function populate_settings(){
 
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
-        let reset_button=document.createElement("button");
+        let reset_button=document.createElement("a");
         let accessibility_text=`Reset the ${setting['title']} setting to default`;
         reset_button.id=key+'_reset';
-        reset_button.addEventListener("click",(e)=>{
-            e.preventDefault();
-            reset_setting(key);
-        });
+        reset_button.role="button";
+        reset_button.setAttribute("title",accessibility_text);
+        if(!value_forced) {
+            reset_button.addEventListener("click",(e)=>{
+                e.preventDefault();
+                reset_setting(key);
+            });
+        }
+        reset_button.style.cursor=value_forced?"not-allowed":"pointer";
         reset_button.classList.add("reset-button");
-        reset_button.disabled=value_forced;
-        let reset_icon=document.createElement('img');
-        reset_icon.src="/images/ui/reset.png";
+        let reset_icon=document.createElement('svgfile');
+        reset_icon.setAttribute("src","/images/ui/reset.svg"); //src= cannot be used since it is not an image
+        reset_icon.setAttribute("aria-hidden","true");
         reset_icon.alt=accessibility_text;
         reset_icon.title=accessibility_text;
         reset_icon.classList.add("reset-icon");
@@ -276,6 +308,7 @@ function populate_settings(){
         input_element.setAttribute("id",key+'_input');
         input_element.classList.add("setting-value");
         input_element.disabled=value_forced;
+        input_element.style.cursor=value_forced?"not-allowed":"default";
         input_element.addEventListener('change',(e)=>{
             let property=setting["type"]=="boolean"?"checked":"value";
             let update={"key":key,"value":e.target[property]};
@@ -290,6 +323,7 @@ function populate_settings(){
     let reset_all_button=document.getElementById("reset_button_container");
     root_container.removeChild(reset_all_button);
     root_container.appendChild(reset_all_button);
+    reimportSVGFiles(); // reimport SVG files after the settings are populated
 }
 
 function update_reset_button(setting_update){
@@ -308,32 +342,34 @@ function initialize_popup() {
     pairDarkMode(json_settings);
     setDarkMode(darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
-        if (event.key == "Escape" || (isPrimaryPressed(event) && event.key=="c")) {
+        if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,'c'))) {
             event.preventDefault();
             cancel_clicked();
-        } else if(isPrimaryPressed(event) && event.key=="o") {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'o')) {
             event.preventDefault();
             ok_clicked();
-        } else if(isPrimaryPressed(event) && event.key=="a") {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'a')) {
             event.preventDefault();
             apply_clicked();
-        }
-    });
-    window.addEventListener("keyup", (event) =>{
-        if(!event.altKey) {
-            Array.from(document.getElementsByClassName("mnemonic")).forEach((element)=>{
-                element.style.textDecoration="none";
-            });   
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'s')) {
+            event.preventDefault();
+            export_settings();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'i')) {
+            event.preventDefault();
+            import_settings();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'h')) {
+            event.preventDefault();
+            show_settings_help();
         }
     });
 }
 function initialize_main(production_status) {
     if (navigator.onLine && !production_status) {
         window.addEventListener("keydown", (event) => {
-            if (isPrimaryPressed(event) && event.key=="e") {
+            if (KeyboardUtilities.isMnemonicPressed(event,'e')) {
                 settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
-            }  else if (isPrimaryPressed(event) && event.key=="h") {
+            }  else if (KeyboardUtilities.isMnemonicPressed(event,'h')) {
                 show_help();
                 event.preventDefault();
             }
@@ -343,6 +379,7 @@ function initialize_main(production_status) {
 
 function onChange(setting_update){
     if(setting_update["key"]=="theme"){
+        setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
         setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
     }
 

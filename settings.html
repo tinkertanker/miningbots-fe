@@ -9,11 +9,12 @@
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
   <link href="/styles/site.css" rel="stylesheet" />
   <script src="/scripts/cookies.js"></script>
-  <script src="/scripts/utilities/detect_mac.js"></script>
+  <script src="/scripts/utilities/keyboard_utilities.js"></script>
+  <script src="/scripts/utilities/svgimporter.js"></script>
   <script src="/scripts/ui/help.js"></script>
   <script src="/scripts/ui/notifications.js"></script>
-  <script src="/scripts/ui/mnemonics.js"></script>
   <script src="/scripts/utilities/functools.js"></script>
+  <script src="/scripts/utilities/json_download.js"></script>
   <script src="/scripts/settings.js"></script>
   <script src="/scripts/ui/dark_mode.js"></script>
   <style>
@@ -35,21 +36,36 @@
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
       <a class="navbar-brand" href="#">Settings</a>
       <div id="action-container">
-        <a href="javascript:show_settings_help()" role="button" 
-         onmouseenter="this.src='images/ui/helphover.png'" 
-         onmouseleave="this.src='images/ui/help.png'" 
-         onmousedown="this.src='images/ui/helprollover.png'"
-         onmouseup="this.src='images/ui/helphover.png'"
-         id="help">
-          <img 
-          src="images/ui/help.png" id="help-icon" title="Help (Ctrl-H)" alt="help icon">
+        <a onclick="show_settings_help()" title="Help" role="button" id="help">
+          <svgfile aria-hidden="true" src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
         </a>
-        <button onclick="ok_clicked();"
-          id="ok-button"><span class="mnemonic">O</span>K</button>
-        <button onclick="cancel_clicked();"
-          id="cancel-button"><span class="mnemonic">C</span>ancel</button>
-        <button onclick="apply_clicked();"
-          id="apply-button"><span class="mnemonic">A</span>pply</button>
+        <a role="button"  onclick="ok_clicked();" title="OK"
+          id="ok-button"><svgfile saria-hidden="true" src="/images/ui/ok.svg"></svgfile></a>
+        <a role="button" onclick="cancel_clicked();" title="Cancel"
+          id="cancel-button"><svgfile aria-hidden="true" src="/images/ui/cancel.svg" style="width:20px;"></svgfile></a>
+        <a role="button" onclick="apply_clicked();" title="Apply"
+          id="apply-button"><svgfile aria-hidden="true" src="/images/ui/apply.svg"></svgfile></a>
+        <a role="button" onclick="export_settings();" title="Export settings"
+          id="export-button"><svgfile aria-hidden="true" src="/images/ui/export.svg"></svgfile></a>
+        <a role="button" onclick="import_settings();" title="Import settings"
+          id="import-button"><svgfile aria-hidden="true" src="/images/ui/import.svg"></svgfile></a>
+        <script>
+          document.addEventListener("DOMContentLoaded",()=> {
+            function setMnemonic(element, key,additional_key) {
+              let keyTag = KeyboardUtilities.joinMnemonic(key) + (additional_key ? ` or ${additional_key}` : '')
+              element.title += ` (${keyTag})`;
+              let describerId=`${element.id}-description`;
+              element.setAttribute("aria-labelledby", `${element.id}-label`);
+              document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
+              element.setAttribute("aria-describedby", describerId);
+            }
+            setMnemonic(document.getElementById("ok-button"),'O');
+            setMnemonic(document.getElementById("cancel-button"),'C','Escape');
+            setMnemonic(document.getElementById("apply-button"),'A');
+            setMnemonic(document.getElementById("export-button"),'S');
+            setMnemonic(document.getElementById("import-button"),'I');
+          });
+        </script>
       </div>
     </nav>
 
@@ -69,6 +85,19 @@
     </div>
   </div>
   <script>initialize_popup();</script>
+  <div id="accessibility-labels" style="display:none">
+    <span id="help-label">Help</span>
+    <span id="help-description"></span>
+    <span id="ok-button-label">OK</span>
+    <span id="ok-button-description"></span>
+    <span id="cancel-button-label">Cancel</span>
+    <span id="cancel-button-description"></span>
+    <span id="apply-button-label">Apply</span>
+    <span id="apply-button-description"></span>
+    <span id="export-button-label">Export</span>
+    <span id="export-button-description"></span>
+    <span id="import-button-label">Import</span>
+    <span id="import-button-description"></span>
 </body>
 
 </html>

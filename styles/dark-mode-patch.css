@@ -18,6 +18,10 @@ a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
   color: rgb(205,205,205) !important;
 }
 
+a[role="button"] svg{
+  color: white !important;
+}
+
 div#dropdown-menu{
   background-color: rgb(105,105,105) !important;
 }

@@ -22,14 +22,20 @@ function mapName(name,key){
 }
 
 function should_confirm_unload() {
-    console.log(gameStatus);
-    return gameStatus !== "kNotStarted";
+    return Object.keys(playername_cache).length > 0;
 }
 
 function CancelLoading(){return CancelLoading};
 
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
+
+    CONFIG = read_settings_cookie();
+
+    // set dark mode
+    pairDarkMode(CONFIG);
+    setDarkMode(darkModeEnabled(CONFIG));
+
     //require internet access
     if (!navigator.onLine) {
         document.getElementById("navbar").classList.add("no-internet");
@@ -38,6 +44,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         window.addEventListener("online", (e) => {
             location.reload();
         });
+        return;
     } else {
         setLoadingBoxStatus(LB_LOADING);
     }
@@ -45,9 +52,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     // Get hostname from cookie, otherwise leave as null
     server = getCookie("lastServer");
     if (server !== null) hostname = server;
-
-    CONFIG = read_settings_cookie();
-    port = CONFIG["localhost_port"];
 
     console.log('host name: ' + hostname);
     
@@ -62,6 +66,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     //Dictionary of servers and respective names, urls
     servers = (()=>{
         const gport=CONFIG["game_port"];
+        const lport = CONFIG["localhost_port"];
         return {
         "p1.bootcamp.tk.sg": {
             name: "Game 1",
@@ -149,7 +154,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         },
         "localhost": {
             name: "Testing (on localhost)",
-            url: `localhost:${port}`,
+            url: `localhost:${lport}`,
         },
         "miningbots-api.dev.tk.sg": {
             name: "Development",
@@ -192,9 +197,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             server_assigned();
         }
     } else {
-        if(navigator.onLine) {
-            setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
-        }
+        setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
     }
 
     // Function to populate the dropdown menu (server list)
@@ -228,10 +231,6 @@ document.addEventListener("DOMContentLoaded",()=>{
         });
     }
     populateDropdown();
-
-    // good time to set dark mode
-    pairDarkMode(CONFIG);
-    setDarkMode(darkModeEnabled(CONFIG));
 });
 
 // Player Name fetch code 
@@ -338,7 +337,7 @@ function drawGame() {
             // return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
-                if (navigator.onLine) setLoadingBoxStatus(LB_LOADING_COMPLETED);
+                setLoadingBoxStatus(LB_LOADING_COMPLETED);
                 return response.json();
             } else {
                 throw new Error(response.statusText);
@@ -866,21 +865,19 @@ function drawGame() {
         .catch((error) => {
             if(error.message=="cancelled")return;
             console.error("Error:", error);
-            if (navigator.onLine) {
-                setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
-                setTimeout(function () {
-                    if (server != undefined) {
-                        // if the custom option is selected but the user canceled the selection, don't show an error dialog
-                        if (hostname != "custom.invalid")
-                            alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                        // auto show the dropdown menu
-                        setTimeout(function () {
-                            let link=document.getElementById("navbarDropdownMenuLink");
-                            if(link.ariaExpanded=="false")link.dispatchEvent(new Event("click")); 
-                        }, 400);
-                    }
-                }, 400);
-            }
+            setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
+            setTimeout(function () {
+                if (server != undefined) {
+                    // if the custom option is selected but the user canceled the selection, don't show an error dialog
+                    if (hostname != "custom.invalid")
+                        alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                    // auto show the dropdown menu
+                    setTimeout(function () {
+                        let link=document.getElementById("navbarDropdownMenuLink");
+                        if(link.ariaExpanded=="false")showNavigation(); 
+                    }, 400);
+                }
+            }, 400);
         });
 }
 function server_assigned() {
@@ -896,7 +893,5 @@ function server_assigned() {
             setServerName("Custom");
             break;
     }
-    if(navigator.onLine){
-        drawGame();
-    }
+    drawGame();
 }

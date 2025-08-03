@@ -38,7 +38,15 @@ p1.bootcamp.tk.sg {
 
 ## UI note
 
-Control/Command is used to trigger mnemonics, instead of Alt/Option
+Mnemonics are triggered in an unusual way to prevent clashing with system shortcuts:
+<ul>
+	<li>
+		On Mac: Cmd + Shift + &lt;letter&gt;
+	</li>
+	<li>
+		On PC: Ctrl + &lt;letter&gt;
+	</li>
+</ul>
 
 ## ``` init.sh ```
 
@@ -86,3 +94,10 @@ To be able to use this version, the following software must be installed:
     Firefox Browser
   </li>
 </ul>
+
+### macOS version
+
+A macOS version is available, called ``` init.mac.sh ```
+<br>
+The only dependency is Firefox.
+ZSH is also used, but it is built into macOS

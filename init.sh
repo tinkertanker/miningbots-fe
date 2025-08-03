@@ -1,7 +1,7 @@
 #!/bin/bash
 function server_is_running(){
 	source browsersettings.conf
-        ps -x | grep $(basename $REL_WEB_SERVER_PATH) | grep -v grep > /dev/null
+        ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
     if [ ! -f firefox-chrome/user.js ]; then
@@ -18,10 +18,10 @@ function start_browser(){
     # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ $UI_MODE == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
-      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit
+      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit 1
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
       CLASS="Mining Bots"
-      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=true browser.tabs.inTitlebar=0 || exit
+      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=true browser.tabs.inTitlebar=0 || exit 1
     else
       echo "Invalid UI mode" 1>&2
       return
@@ -59,6 +59,8 @@ if $TEST_MODE; then
     cd $CURRENT_DIR # restore the previous current directory
 fi
 start_browser
-pkill -2 abyssws
-$TEST_MODE && pkill -2 $TEST_MB_SERVER_NAME # if the server was started by this script, quit it
-echo "Server shut down on $(date)" >> webserver/log/startup.log
+if $START_WEB_SERVER; then
+  pkill -2 "$(basename "$REL_WEB_SERVER_PATH")"
+  echo "Server shut down on $(date)" >> webserver/log/startup.log
+fi
+$TEST_MODE && pkill -2 "$TEST_MB_SERVER_NAME" # if the server was started by this script, quit it
