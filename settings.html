@@ -50,11 +50,21 @@
         <a role="button" onclick="import_settings();" title="Import settings"
           id="import-button"><svgfile aria-hidden="true" src="/images/ui/import.svg"></svgfile></a>
         <script>
-          document.getElementById("ok-button").title += ` (${KeyboardUtilities.joinMnemonic('O')})`;
-          document.getElementById("cancel-button").title += ` (${KeyboardUtilities.joinMnemonic('C')} or Esc)`;
-          document.getElementById("apply-button").title += ` (${KeyboardUtilities.joinMnemonic('A')})`;
-          document.getElementById("export-button").title += ` (${KeyboardUtilities.joinMnemonic('S')})`;
-          document.getElementById("import-button").title += ` (${KeyboardUtilities.joinMnemonic('I')})`;
+          document.addEventListener("DOMContentLoaded",()=> {
+            function setMnemonic(element, key,additional_key) {
+              let keyTag = KeyboardUtilities.joinMnemonic(key) + (additional_key ? ` or ${additional_key}` : '')
+              element.title += ` (${keyTag})`;
+              let describerId=`${element.id}-description`;
+              element.setAttribute("aria-labelledby", `${element.id}-label`);
+              document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
+              element.setAttribute("aria-describedby", describerId);
+            }
+            setMnemonic(document.getElementById("ok-button"),'O');
+            setMnemonic(document.getElementById("cancel-button"),'C','Escape');
+            setMnemonic(document.getElementById("apply-button"),'A');
+            setMnemonic(document.getElementById("export-button"),'S');
+            setMnemonic(document.getElementById("import-button"),'I');
+          });
         </script>
       </div>
     </nav>
@@ -75,6 +85,19 @@
     </div>
   </div>
   <script>initialize_popup();</script>
+  <div id="accessibility-labels" style="display:none">
+    <span id="help-label">Help</span>
+    <span id="help-description"></span>
+    <span id="ok-button-label">OK</span>
+    <span id="ok-button-description"></span>
+    <span id="cancel-button-label">Cancel</span>
+    <span id="cancel-button-description"></span>
+    <span id="apply-button-label">Apply</span>
+    <span id="apply-button-description"></span>
+    <span id="export-button-label">Export</span>
+    <span id="export-button-description"></span>
+    <span id="import-button-label">Import</span>
+    <span id="import-button-description"></span>
 </body>
 
 </html>
