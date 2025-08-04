@@ -262,12 +262,14 @@ function populate_settings(){
         let accessibility_text=`Reset the ${setting['title']} setting to default`;
         reset_button.id=key+'_reset';
         reset_button.role="button";
-        reset_button.addEventListener("click",(e)=>{
-            e.preventDefault();
-            reset_setting(key);
-        });
+        if(!value_forced) {
+            reset_button.addEventListener("click",(e)=>{
+                e.preventDefault();
+                reset_setting(key);
+            });
+        }
+        reset_button.style.cursor=value_forced?"not-allowed":"pointer";
         reset_button.classList.add("reset-button");
-        reset_button.disabled=value_forced;
         let reset_icon=document.createElement('svgfile');
         reset_icon.setAttribute("src","/images/ui/reset.svg"); //src= cannot be used since it is not an image
         reset_icon.alt=accessibility_text;
@@ -304,6 +306,7 @@ function populate_settings(){
         input_element.setAttribute("id",key+'_input');
         input_element.classList.add("setting-value");
         input_element.disabled=value_forced;
+        input_element.style.cursor=value_forced?"not-allowed":"default";
         input_element.addEventListener('change',(e)=>{
             let property=setting["type"]=="boolean"?"checked":"value";
             let update={"key":key,"value":e.target[property]};
