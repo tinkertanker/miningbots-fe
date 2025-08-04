@@ -11,10 +11,6 @@ span[role="presentation"],a.nav-link,a.navbar-brand {
 }
 
 a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
-  color: rgb(230,230,230) !important;
-}
-
-a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
   color: rgb(205,205,205) !important;
 }
 
