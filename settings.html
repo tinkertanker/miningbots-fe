@@ -37,18 +37,18 @@
       <a class="navbar-brand" href="#">Settings</a>
       <div id="action-container">
         <a onclick="show_settings_help()" title="Help" role="button" id="help">
-          <svgfile src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
+          <svgfile aria-hidden="true" src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
         </a>
-        <a role="button" onclick="ok_clicked();" title="OK"
+        <a role="button" aria-hidden="true" onclick="ok_clicked();" title="OK"
           id="ok-button"><svgfile src="/images/ui/ok.svg"></svgfile></a>
-        <a role="button" onclick="cancel_clicked();" title="Cancel"
+        <a role="button" aria-hidden="true" onclick="cancel_clicked();" title="Cancel"
           id="cancel-button"><svgfile src="/images/ui/cancel.svg" style="width:20px;"></svgfile></a>
-        <a role="button" onclick="apply_clicked();" title="Apply"
+        <a role="button" aria-hidden="true" onclick="apply_clicked();" title="Apply"
           id="apply-button"><svgfile src="/images/ui/apply.svg"></svgfile></a>
-        <a role="button" onclick="export_settings();" title="Export settings"
+        <a role="button" aria-hidden="true" aria-hidden="true" onclick="export_settings();" title="Export settings"
           id="export-button"><svgfile src="/images/ui/export.svg"></svgfile></a>
-        <a role="button" onclick="import_settings();" title="Import settings"
-          id="import-button"><svgfile src="/images/ui/import.svg"></svgfile></a>
+        <a role="button" aria-hidden="true" onclick="import_settings();" title="Import settings"
+          id="import-button"><svgfile aria-hidden="true" src="/images/ui/import.svg"></svgfile></a>
         <script>
           document.getElementById("ok-button").title += ` (${KeyboardUtilities.joinMnemonic('O')})`;
           document.getElementById("cancel-button").title += ` (${KeyboardUtilities.joinMnemonic('C')} or Esc)`;

@@ -262,6 +262,7 @@ function populate_settings(){
         let accessibility_text=`Reset the ${setting['title']} setting to default`;
         reset_button.id=key+'_reset';
         reset_button.role="button";
+        reset_button.setAttribute("title",accessibility_text);
         if(!value_forced) {
             reset_button.addEventListener("click",(e)=>{
                 e.preventDefault();
@@ -272,6 +273,7 @@ function populate_settings(){
         reset_button.classList.add("reset-button");
         let reset_icon=document.createElement('svgfile');
         reset_icon.setAttribute("src","/images/ui/reset.svg"); //src= cannot be used since it is not an image
+        reset_icon.setAttribute("aria-hidden","true");
         reset_icon.alt=accessibility_text;
         reset_icon.title=accessibility_text;
         reset_icon.classList.add("reset-icon");

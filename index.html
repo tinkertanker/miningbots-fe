@@ -62,9 +62,9 @@
       <span role="presentation" id="gameStatus"></span>
       <span role="presentation" id="gameID"></span>
       <a onclick="show_help()" title="Help" role="button" id="help">
-        <svgfile src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
+        <svgfile aria-hidden="true" src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
       </a>
-      <a role="button" title="Settings" onclick="settings_window=open_popup();" id="settings-button"><svgfile id="settings-icon" src="/images/ui/settings.svg"></svgfile></a>
+      <a role="button" title="Settings" onclick="settings_window=open_popup();" id="settings-button"><svgfile aria-hidden="true" id="settings-icon" src="/images/ui/settings.svg"></svgfile></a>
       <script>document.getElementById('settings-button').title+= ` (${KeyboardUtilities.joinMnemonic('E')})`</script>
     </nav>
 
