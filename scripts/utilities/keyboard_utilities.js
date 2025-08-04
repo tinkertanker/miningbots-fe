@@ -37,3 +37,19 @@ KeyboardUtilities.joinKeys = function(...keys) {
 KeyboardUtilities.joinMnemonic = function(letter) {
     return KeyboardUtilities.isMac?KeyboardUtilities.joinKeys('Primary', 'Shift', letter):KeyboardUtilities.joinKeys('Primary','Alt',letter);
 }
+
+function setTabIndices() {
+    document.querySelectorAll("a[role='button']").forEach((button) => {
+        button.setAttribute('tabindex', '0');
+        button.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault(); // Prevent scrolling on Space
+                button.click();     // Simulate click
+            }
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", (_e) => {
+    setTabIndices();
+});
