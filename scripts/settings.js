@@ -258,17 +258,18 @@ function populate_settings(){
 
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
-        let reset_button=document.createElement("button");
+        let reset_button=document.createElement("a");
         let accessibility_text=`Reset the ${setting['title']} setting to default`;
         reset_button.id=key+'_reset';
+        reset_button.role="button";
         reset_button.addEventListener("click",(e)=>{
             e.preventDefault();
             reset_setting(key);
         });
         reset_button.classList.add("reset-button");
         reset_button.disabled=value_forced;
-        let reset_icon=document.createElement('img');
-        reset_icon.src="/images/ui/reset.png";
+        let reset_icon=document.createElement('svgfile');
+        reset_icon.setAttribute("src","/images/ui/reset.svg"); //src= cannot be used since it is not an image
         reset_icon.alt=accessibility_text;
         reset_icon.title=accessibility_text;
         reset_icon.classList.add("reset-icon");
@@ -317,6 +318,7 @@ function populate_settings(){
     let reset_all_button=document.getElementById("reset_button_container");
     root_container.removeChild(reset_all_button);
     root_container.appendChild(reset_all_button);
+    reimportSVGFiles(); // reimport SVG files after the settings are populated
 }
 
 function update_reset_button(setting_update){
