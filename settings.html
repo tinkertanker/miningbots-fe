@@ -59,6 +59,7 @@
               document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
               element.setAttribute("aria-describedby", describerId);
             }
+            setMnemonic(document.getElementById("help"),'H');
             setMnemonic(document.getElementById("ok-button"),'O');
             setMnemonic(document.getElementById("cancel-button"),'C','Escape');
             setMnemonic(document.getElementById("apply-button"),'A');

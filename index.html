@@ -65,7 +65,19 @@
         <svgfile aria-hidden="true" src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
       </a>
       <a role="button" title="Settings" onclick="settings_window=open_popup();" id="settings-button"><svgfile aria-hidden="true" id="settings-icon" src="/images/ui/settings.svg"></svgfile></a>
-      <script>document.getElementById('settings-button').title+= ` (${KeyboardUtilities.joinMnemonic('E')})`</script>
+      <script>document.addEventListener("DOMContentLoaded",()=> {
+              function setMnemonic(element, key,additional_key) {
+                let keyTag = KeyboardUtilities.joinMnemonic(key) + (additional_key ? ` or ${additional_key}` : '')
+                element.title += ` (${keyTag})`;
+                let describerId=`${element.id}-description`;
+                element.setAttribute("aria-labelledby", `${element.id}-label`);
+                document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
+                element.setAttribute("aria-describedby", describerId);
+              }
+              setMnemonic(document.getElementById("help"),'H');
+              setMnemonic(document.getElementById("settings-button"),'S');
+            });
+          </script>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
@@ -90,6 +102,12 @@
         <p>
       </noscript>
     </div>
+  </div>
+  <div id="accessibility-labels" style="display:none">
+    <span id="help-label">Help</span>
+    <span id="help-description"></span>
+    <span id="settings-button-label">Settings</span>
+    <span id="settings-button-description"></span>
   </div>
 </body>
 

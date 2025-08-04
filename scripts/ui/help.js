@@ -19,8 +19,3 @@ function show_settings_help() {
         ${KeyboardUtilities.joinMnemonic('H')}: Show this help`
     );
 }
-
-document.addEventListener("DOMContentLoaded",(_e) => {
-    const helpButton = document.getElementById("help");
-    helpButton.title+=` (${KeyboardUtilities.joinMnemonic('H')})`;
-});
