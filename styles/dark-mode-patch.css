@@ -3,7 +3,8 @@ body {
 }
 
 nav#navbar {
-  background-color: rgb(105,105,105) !important;
+  background-color: rgb(75,75,75) !important;
+  border-bottom: #cccccc solid 1px;
 }
 
 span[role="presentation"],a.nav-link,a.navbar-brand {
@@ -11,7 +12,7 @@ span[role="presentation"],a.nav-link,a.navbar-brand {
 }
 
 a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
-  color: rgb(205,205,205) !important;
+  color: rgb(204,204,204) !important;
 }
 
 a[role="button"] svg{
