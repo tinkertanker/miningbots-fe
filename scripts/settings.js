@@ -395,7 +395,7 @@ function update_setting(setting,value){
 
 function open_popup() {
     // Position of popup
-    let width = 400;
+    let width = 700;
     let height = 600;
     let left = Math.floor((screen.width / 2) - (width / 2));
     let top = Math.floor((screen.height / 2) - (height / 2));
