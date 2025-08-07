@@ -6,8 +6,17 @@ function getTextWidth_(text, font) {
     return metrics.width; // Return the width of the text
 }
 
-
-function showDialog_(html,title,buttons){
+let dialog_showing_=false;
+function isAnotherDialogShowing(){
+    return dialog_showing_;
+}
+let upcoming_dialogs=[];
+function showDialog_(html,title,buttons,hasSVGFiles){
+    // Queue upcoming dialogs if one is already showing
+    if(dialog_showing_){
+        upcoming_dialogs.push({"html":html, "title":title, "button":buttons});
+        return;
+    }
     //create the dialog box
     const dialog = document.createElement('div');
     dialog.classList.add('dialog');
@@ -34,6 +43,12 @@ function showDialog_(html,title,buttons){
         document.body.removeChild(dialog);
         document.body.removeChild(coverBoard);
         document.body.style.overflow=overflow_prev;
+        dialog_showing_=false;
+        // If there are more dialogs queued, show the next one
+        if(upcoming_dialogs.length>0){
+            let next_dialog=upcoming_dialogs.shift();
+            showDialog_(next_dialog["html"],next_dialog["title"],next_dialog["buttons"]);
+        }
     }
     closeButton.addEventListener('click',close_dialog);
 
@@ -78,6 +93,9 @@ function showDialog_(html,title,buttons){
     document.body.appendChild(coverBoard);
     document.body.appendChild(dialog);
     document.body.style.overflow="hidden";
+    if(hasSVGFiles)
+        reimportSVGFiles();
+    dialog_showing_=true;
 }
 
 function showDialog(html,title,buttons){
@@ -100,8 +118,5 @@ function showDialog(html,title,buttons){
         }
     });
     cleanHTML=tempDiv.innerHTML;
-    showDialog_(cleanHTML,title,buttons);
-    if(hasSVGFiles){
-        reimportSVGFiles();
-    }
+    showDialog_(cleanHTML,title,buttons,hasSVGFiles);
 }

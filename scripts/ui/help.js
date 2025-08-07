@@ -1,4 +1,5 @@
 function show_help() {
+    if(isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
     showDialog(
         `<svgfile src="/images/ui/help.svg"></svgfile> (Help): Open this help<br>
         <svgfile src="/images/ui/settings.svg"></svgfile> (Settings): Open Settings panel<br>`
@@ -6,6 +7,7 @@ function show_help() {
 }
 
 function show_settings_help() {
+    if(isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
     showDialog(
         `<svgfile src="/images/ui/ok.svg"></svgfile> (OK): Save settings, reload main page, and close this window<br>
         <svgfile src="/images/ui/cancel.svg"></svgfile> (Cancel): Close this window without saving the settings<br>
