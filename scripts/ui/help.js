@@ -1,21 +1,17 @@
 function show_help() {
     showDialog(
-        `Keyboard shortcuts:<br>
-        <br>
-        ${KeyboardUtilities.joinMnemonic('E')}: Open Settings panel<br>
-        ${KeyboardUtilities.joinMnemonic('H')}: Open this help`
+        `<svgfile src="/images/ui/help.svg"></svgfile> (Help): Open this help<br>
+        <svgfile src="/images/ui/settings.svg"></svgfile> (Settings): Open Settings panel<br>`
     ,"Help");
 }
 
 function show_settings_help() {
     showDialog(
-        `Keyboard shortcuts:<br>
-        <br>
-        ${KeyboardUtilities.joinMnemonic('O')}: Save settings, reload main page, and close this window<br>
-        ${KeyboardUtilities.joinMnemonic('C')}: Close this window without saving the settings<br>
-        ${KeyboardUtilities.joinMnemonic('A')}: Save settings and reload main page<br>
-        ${KeyboardUtilities.joinMnemonic('S')}: Export settings to settings.json<br>
-        ${KeyboardUtilities.joinMnemonic('I')}: Load settings from a JSON file<br>
-        ${KeyboardUtilities.joinMnemonic('H')}: Show this help<br>`
+        `<svgfile src="/images/ui/ok.svg"></svgfile> (OK): Save settings, reload main page, and close this window<br>
+        <svgfile src="/images/ui/cancel.svg"></svgfile> (Cancel): Close this window without saving the settings<br>
+        <svgfile src="/images/ui/apply.svg"></svgfile> (Apply): Save settings and reload main page<br>
+        <svgfile src="/images/ui/export.svg"></svgfile> (Export): Export settings to settings.json<br>
+        <svgfile src="/images/ui/import.svg"></svgfile> (Import): Load settings from a JSON file<br>
+        <svgfile src="/images/ui/help.svg"></svgfile> (Help): Show this help<br>`
     ,"Help");
 }
