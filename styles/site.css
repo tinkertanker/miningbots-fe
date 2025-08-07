@@ -335,3 +335,11 @@ svg {
   padding-left: 2px;
   padding-right: 2px;
 }
+
+a[role="button"] svg:hover {
+  color: #999999 !important;
+}
+
+a[role="button"] svg:active {
+  color: #777777 !important;
+}

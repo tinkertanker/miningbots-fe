@@ -16,7 +16,7 @@ a.nav-link:hover,a.nav-link.show,a.navbar-brand:hover {
 }
 
 a[role="button"] svg{
-  color: white !important;
+  color: white;
 }
 
 div#dropdown-menu{
