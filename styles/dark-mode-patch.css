@@ -27,7 +27,7 @@ a.dropdown-item {
   color: white !important;
 }
 
-a.dropdown-item:hover {
+a.dropdown-item:hover,a.dropdown-item:focus {
   background-color: rgb(80,80,80) !important;
 }
 
