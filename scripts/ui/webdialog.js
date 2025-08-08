@@ -10,11 +10,11 @@ let dialog_showing_=false;
 function isAnotherDialogShowing(){
     return dialog_showing_;
 }
-let upcoming_dialogs=[];
+let upcoming_dialogs_=[];
 function showDialog_(html,title,buttons,hasSVGFiles){
     // Queue upcoming dialogs if one is already showing
     if(dialog_showing_){
-        upcoming_dialogs.push({"html":html, "title":title, "button":buttons});
+        upcoming_dialogs_.push({"html":html, "title":title, "button":buttons});
         return;
     }
     //create the dialog box
@@ -45,8 +45,8 @@ function showDialog_(html,title,buttons,hasSVGFiles){
         document.body.style.overflow=overflow_prev;
         dialog_showing_=false;
         // If there are more dialogs queued, show the next one
-        if(upcoming_dialogs.length>0){
-            let next_dialog=upcoming_dialogs.shift();
+        if(upcoming_dialogs_.length>0){
+            let next_dialog=upcoming_dialogs_.shift();
             showDialog_(next_dialog["html"],next_dialog["title"],next_dialog["buttons"]);
         }
     }
