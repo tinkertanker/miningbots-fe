@@ -1,13 +1,13 @@
-function toggleNavigation(){
+function toggleNavigation(event){
+  event.stopPropagation();
   setTimeout(()=>{
     let link=document.getElementById('navbarDropdownMenuLink');
     let dropdown=bootstrap.Dropdown.getOrCreateInstance(link);
-    if(link.classList.contains('secret-show')){
+    menu=document.getElementById('dropdown-menu');
+    if(menu.classList.contains('show')){
       dropdown.hide();
-      link.classList.remove('secret-show');
     }else{
       dropdown.show();
-      link.classList.add('secret-show');
     }
   },0);
 }
