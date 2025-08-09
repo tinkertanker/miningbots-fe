@@ -3,12 +3,7 @@ function toggleNavigation(event){
   setTimeout(()=>{
     let link=document.getElementById('navbarDropdownMenuLink');
     let dropdown=bootstrap.Dropdown.getOrCreateInstance(link);
-    menu=document.getElementById('dropdown-menu');
-    if(menu.classList.contains('show')){
-      dropdown.hide();
-    }else{
-      dropdown.show();
-    }
+    dropdown.toggle();
   },0);
 }
 
