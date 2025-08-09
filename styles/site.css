@@ -324,6 +324,12 @@ select {
   height: 1vw
 }
 
+
+#action-container {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 a[role="button"] {
   cursor: pointer;
   text-decoration: none;
