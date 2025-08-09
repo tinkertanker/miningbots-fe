@@ -85,6 +85,14 @@ function showDialog_(html,title,buttons,hasSVGFiles){
         buttonBox.appendChild(button);
     });
 
+    // add escape handler
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && dialog_showing_) {
+            close_dialog();
+            event.stopPropagation();
+        }
+    });
+
     //add the elements
     buttonBoxContainer.appendChild(buttonBox);
     dialog.appendChild(buttonBoxContainer);
