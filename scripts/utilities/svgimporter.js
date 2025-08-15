@@ -11,6 +11,7 @@ function expandURL(url) {
 // Replace all <svgfile> elements with their SVG content
 function reimportSVGFiles() {
   document.querySelectorAll('svgfile').forEach(async (el) => {
+    if(el.hasAttribute("noimport")) return; // Skip elements with noimport attribute
     const src = el.getAttribute('src');
     const response = await fetch(expandURL(src));
     const svgText = await response.text();
@@ -20,7 +21,7 @@ function reimportSVGFiles() {
 
     // Copy attributes from svgfile to svg element (excluding src)
     [...el.attributes].forEach(attr => {
-      if (attr.name !== 'src') {
+      if (attr.name !== 'src' && attr.name !== 'deferimport') {
         svgEl.setAttribute(attr.name, attr.value);
       }
     });

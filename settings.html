@@ -40,8 +40,11 @@
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light settings-top-bar">
       <a class="navbar-brand" href="#">Settings</a>
       <div id="action-container">
+        <a onclick="activate_helpon_settings()" title="Help on..." role="button" id="help-on">
+          <svgfile aria-hidden="true" src="/images/ui/help-on.svg" alt="help-on icon"></svgfile>
+        </a>
         <a onclick="show_settings_help()" title="Help" role="button" id="help">
-          <svgfile aria-hidden="true" src="/images/ui/help.svg" id="help-icon" alt="help icon"></svgfile>
+          <svgfile aria-hidden="true" src="/images/ui/help.svg" alt="help icon"></svgfile>
         </a>
         <a role="button"  onclick="ok_clicked();" title="OK"
           id="ok-button"><svgfile aria-hidden="true" src="/images/ui/ok.svg"></svgfile></a>
@@ -55,20 +58,21 @@
           id="import-button"><svgfile aria-hidden="true" src="/images/ui/import.svg"></svgfile></a>
         <script>
           document.addEventListener("DOMContentLoaded",()=> {
-            function setMnemonic(element, key,additional_key) {
-              let keyTag = KeyboardUtilities.joinMnemonic(key) + (additional_key ? ` or ${additional_key}` : '')
+            function setMnemonic(element, useSecondary, key,additional_key) {
+              let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')
               element.title += ` (${keyTag})`;
               let describerId=`${element.id}-description`;
               element.setAttribute("aria-labelledby", `${element.id}-label`);
               document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
               element.setAttribute("aria-describedby", describerId);
             }
-            setMnemonic(document.getElementById("help"),'H');
-            setMnemonic(document.getElementById("ok-button"),'O');
-            setMnemonic(document.getElementById("cancel-button"),'C','Escape');
-            setMnemonic(document.getElementById("apply-button"),'A');
-            setMnemonic(document.getElementById("export-button"),'S');
-            setMnemonic(document.getElementById("import-button"),'I');
+            setMnemonic(document.getElementById("help-on"),true,'H');
+            setMnemonic(document.getElementById("help"),false,'H');
+            setMnemonic(document.getElementById("ok-button"),false,'O');
+            setMnemonic(document.getElementById("cancel-button"),false,'C','Escape');
+            setMnemonic(document.getElementById("apply-button"),false,'A');
+            setMnemonic(document.getElementById("export-button"),false,'S');
+            setMnemonic(document.getElementById("import-button"),false,'I');
           });
         </script>
       </div>
@@ -91,18 +95,27 @@
   </div>
   <script>initialize_popup();</script>
   <div id="accessibility-labels" style="display:none">
+    <span id="help-on-label">Help On</span>
+    <span id="help-on-description"></span>
+    <span id="help-on-help"><svgfile noimport src="/images/ui/help-on.svg"></svgfile>(Help on): Use this button to enter Help On mode, which allows you to get help on items by clicking on them.</span>
     <span id="help-label">Help</span>
     <span id="help-description"></span>
+    <span id="help-help"><svgfile noimport src="/images/ui/help.svg"></svgfile>(Help): Use this button to open the help dialog, which provides information about the icon buttons.</span>
     <span id="ok-button-label">OK</span>
     <span id="ok-button-description"></span>
+    <span id="ok-button-help"><svgfile noimport src="/images/ui/ok.svg"></svgfile>(OK): Use this button to save the settings, reload the main page, and close the dialog.</span>
     <span id="cancel-button-label">Cancel</span>
     <span id="cancel-button-description"></span>
+    <span id="cancel-button-help"><svgfile noimport src="/images/ui/cancel.svg"></svgfile>(Cancel): Use this button to discard changes and close the dialog.</span>
     <span id="apply-button-label">Apply</span>
     <span id="apply-button-description"></span>
+    <span id="apply-button-help"><svgfile noimport src="/images/ui/apply.svg"></svgfile>(Apply): Use this button to apply the settings and reload the main page without closing the dialog.</span>
     <span id="export-button-label">Export</span>
     <span id="export-button-description"></span>
+    <span id="export-button-help"><svgfile noimport src="/images/ui/export.svg"></svgfile>(Export): Use this button to export the current settings to settings.json.</span>
     <span id="import-button-label">Import</span>
     <span id="import-button-description"></span>
+    <span id="import-button-help"><svgfile noimport src="/images/ui/import.svg"></svgfile>(Import): Use this button to import settings from a JSON file.</span>
 </body>
 
 </html>

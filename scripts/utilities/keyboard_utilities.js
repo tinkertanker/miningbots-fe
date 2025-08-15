@@ -34,8 +34,11 @@ KeyboardUtilities.joinKeys = function(...keys) {
     return output;
 }
 
-KeyboardUtilities.joinMnemonic = function(letter) {
-    return KeyboardUtilities.isMac?KeyboardUtilities.joinKeys('Primary', 'Shift', letter):KeyboardUtilities.joinKeys('Primary','Alt',letter);
+KeyboardUtilities.joinMnemonic = function(useSecondary, letter) {
+    if(useSecondary === true)
+        return KeyboardUtilities.isMac ? KeyboardUtilities.joinKeys('Primary', 'Alt', 'Shift', letter):KeyboardUtilities.joinKeys('Primary', 'Alt', 'Shift', letter);
+    else
+        return KeyboardUtilities.isMac?KeyboardUtilities.joinKeys('Primary', 'Shift', letter):KeyboardUtilities.joinKeys('Primary','Alt',letter);
 }
 
 function setTabIndices() {
