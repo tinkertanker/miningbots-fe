@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             },200);
         } else if (hostname == "current.invalid") {
             hostname=location.hostname;
+            port=CONFIG["localhost_port"];
             custom_server="current";
             server_assigned();
         } else {
