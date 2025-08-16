@@ -177,8 +177,7 @@ function import_settings() {
 }
 
 function reset_settings_clicked() {
-    if (confirm(`Are you sure you want to reset all settings to their defaults?
-This cannot be undone!`)) {
+    DialogUtilities.showDialog("Are you sure you want to reset all settings to default? This will overwrite your current settings.","Reset Settings",[{"text":"OK","action":()=>{
         write_default_settings(()=>{
             window.opener.location.reload();
             location.reload();
