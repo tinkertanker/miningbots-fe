@@ -170,13 +170,8 @@ function import_settings() {
     dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",[{"text":"OK","action": ()=>{
         JSONDownloader.importJSON((json_string)=>{
             //confirmation dialog
-            if(!confirm("Are you sure you want to import these settings? This will overwrite your current settings!")){
-                return;
-            }
-            write_settings(JSON.parse(json_string),()=>{
-                window.opener.location.reload();
-                location.reload();
-            });
+            display_settings(JSON.parse(json_string));
+            DialogUtilities.showDialog('Settings imported successfully! Please verify and apply using the <svgfile src="/images/ui/apply.svg"></svgfile> (Apply) button',"Import Settings");
         });
     }}]);
 }
@@ -188,7 +183,7 @@ This cannot be undone!`)) {
             window.opener.location.reload();
             location.reload();
         });
-    }
+    }},{"text":"Cancel","action":()=>true}]);
 }
 function apply_clicked() {
     write_displayed_settings(()=>{
