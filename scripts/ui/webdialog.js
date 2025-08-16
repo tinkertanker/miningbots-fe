@@ -104,6 +104,9 @@ function showDialog_(html,title,buttons,hasSVGFiles){
     if(hasSVGFiles)
         SVGImporter.reimport();
     dialog_showing_=true;
+    return {
+        close: close_dialog
+    }
 }
 let DialogUtilities = {
     showDialog: function (html,title,buttons){
@@ -126,6 +129,6 @@ let DialogUtilities = {
             }
         });
         cleanHTML=tempDiv.innerHTML;
-        showDialog_(cleanHTML,title,buttons,hasSVGFiles);
+        return showDialog_(cleanHTML,title,buttons,hasSVGFiles);
     }
 }
