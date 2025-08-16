@@ -1,6 +1,6 @@
 function show_help() {
     if (isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
-    showDialog(
+    DialogUtilities.showDialog(
         `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Open this help<br>
         <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
         <svgfile src="/images/ui/settings.svg"></svgfile> (Settings): Open Settings panel<br></span>`
@@ -9,7 +9,7 @@ function show_help() {
 
 function show_settings_help() {
     if (isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
-    showDialog(
+    DialogUtilities.showDialog(
         `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Show this help<br>
         <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
         <svgfile src="/images/ui/ok.svg"></svgfile> (OK): Save settings, reload main page, and close this window<br>
@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (helpText) {
                     currentHelponMode = null; // Exit helpon mode
                     onHelponDeactivated();
-                    showDialog(helpText, `Help on "${name}"`);
+                    DialogUtilities.showDialog(helpText, `Help on "${name}"`);
                 }
             }
         }

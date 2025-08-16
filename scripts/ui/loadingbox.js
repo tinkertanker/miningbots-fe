@@ -1,36 +1,40 @@
-const LB_LOADING_COMPLETED = 0;
-const LB_SERVER_NO_SELECTION = 4;
-const LB_LOADING = 1;
-const LB_SERVER_UNAVAILABLE = 2;
-const LB_NO_INTERNET = 3;
-const LB_NO_GAME = 5;
-let LB_OBJECT = null;
+let LoadingBox = {
+    Status: {
+        LOADING_COMPLETED: 0,
+        SERVER_NO_SELECTION: 4,
+        LOADING: 1,
+        SERVER_UNAVAILABLE: 2,
+        NO_INTERNET: 3,
+        NO_GAME: 5
+    }
+}
+let LB_OBJECT_ = null;
 document.addEventListener("DOMContentLoaded",()=>{
-    LB_OBJECT = document.getElementById("loadingbox");
+    LB_OBJECT_ = document.getElementById("loadingbox");
 });
 function setLoadingBoxStatus_(status) {
     switch (status) {
-        case LB_LOADING_COMPLETED:
-        case LB_SERVER_NO_SELECTION:
-            LB_OBJECT.classList.add("loading-completed");
-            LB_OBJECT.innerHTML="";
+        case LoadingBox.Status.LOADING_COMPLETED:
+        case LoadingBox.Status.SERVER_NO_SELECTION:
+            LB_OBJECT_.classList.add("loading-completed");
+            LB_OBJECT_.innerHTML="";
             break;
 
-        case LB_LOADING:
-            LB_OBJECT.innerHTML = "Please wait while we connect to the selected server";
+        case LoadingBox.Status.LOADING:
+            LB_OBJECT_.innerHTML = "Please wait while we connect to the selected server";
             break;
 
-        case LB_NO_GAME:
-            LB_OBJECT.innerHTML = "No active games are available on the server";
-            LB_OBJECT.classList.remove("loading-completed");
+        case LoadingBox.Status.NO_GAME:
+            LB_OBJECT_.innerHTML = "No active games are available on the server";
+            LB_OBJECT_.classList.remove("loading-completed");
             break;
 
-        case LB_SERVER_UNAVAILABLE:
-            LB_OBJECT.innerHTML = "Please select another server from the Server Selector";
+        case LoadingBox.Status.SERVER_UNAVAILABLE:
+            LB_OBJECT_.innerHTML = "Please select another server from the Server Selector";
             break;
 
-        case LB_NO_INTERNET:
-            LB_OBJECT.innerHTML = "Please connect to the Internet";
+        case LoadingBox.Status.NO_INTERNET:
+            LB_OBJECT_.innerHTML = "Please connect to the Internet";
         
 
         default:
@@ -38,8 +42,8 @@ function setLoadingBoxStatus_(status) {
     }
 }
 
-function setLoadingBoxStatus(status) {
-    if(LB_OBJECT){
+LoadingBox.setStatus = function (status) {
+    if(LB_OBJECT_){
         setLoadingBoxStatus_(status);
     } else {
         document.addEventListener("DOMContentLoaded",()=>{

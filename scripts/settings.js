@@ -162,12 +162,12 @@ function write_default_settings(complete_handler) {
 
 function export_settings() {
     let json_settings=dump_settings();
-    downloadJSON(JSON.stringify(json_settings),"settings.json");
+    JSONDownloader.exportJSON(JSON.stringify(json_settings),"settings.json");
     alert("Settings exported to settings.json");
 }
 
 function import_settings() {
-    importJSON((json_string)=>{
+    JSONDownloader.importJSON((json_string)=>{
         //confirmation dialog
         if(!confirm("Are you sure you want to import these settings? This will overwrite your current settings!")){
             return;
@@ -323,7 +323,7 @@ function populate_settings(){
     let reset_all_button=document.getElementById("reset_button_container");
     root_container.removeChild(reset_all_button);
     root_container.appendChild(reset_all_button);
-    reimportSVGFiles(); // reimport SVG files after the settings are populated
+    SVGImporter.reimport(); // reimport SVG files after the settings are populated
 }
 
 function update_reset_button(setting_update){

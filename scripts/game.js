@@ -40,13 +40,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     if (!navigator.onLine) {
         document.getElementById("navbar").classList.add("no-internet");
         document.getElementById("game-info-container").classList.add("no-internet");
-        setLoadingBoxStatus(LB_NO_INTERNET);
+        LoadingBox.setStatus(LoadingBox.Status.NO_INTERNET);
         window.addEventListener("online", (e) => {
             location.reload();
         });
         return;
     } else {
-        setLoadingBoxStatus(LB_LOADING);
+        LoadingBox.setStatus(LoadingBox.Status.LOADING);
     }
 
     // Get hostname from cookie, otherwise leave as null
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             server_assigned();
         }
     } else {
-        setLoadingBoxStatus(LB_SERVER_NO_SELECTION);
+        LoadingBox.setStatus(LoadingBox.Status.SERVER_NO_SELECTION);
     }
 
     // Function to populate the dropdown menu (server list)
@@ -338,7 +338,7 @@ function drawGame() {
             // return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
-                setLoadingBoxStatus(LB_LOADING_COMPLETED);
+                LoadingBox.setStatus(LoadingBox.Status.LOADING_COMPLETED);
                 return response.json();
             } else {
                 throw new Error(response.statusText);
@@ -366,7 +366,7 @@ function drawGame() {
                 // make sure the game is running
                 if (gameStatus == 'kEnded') {
                     console.log('failed to subscribe because game has ended');
-                    setLoadingBoxStatus(LB_NO_GAME);
+                    LoadingBox.setStatus(LoadingBox.Status.NO_GAME);
                     throw new Error("cancelled");
                     //return;
                 }
@@ -379,7 +379,7 @@ function drawGame() {
                 // pass the map_config and game id to the prepper
                 return { response: fetch_map_config, game_id: gameId };
             } else {
-                setLoadingBoxStatus(LB_NO_GAME);
+                LoadingBox.setStatus(LoadingBox.Status.NO_GAME);
                 throw new Error("cancelled");
             }
         })
@@ -753,7 +753,7 @@ function drawGame() {
             function showWinner(playerId) {
                 let name_insert = playername_cache[playerId]["insert"];
                 let text = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
-                showDialog(text,"Game Won");
+                DialogUtilities.showDialog(text,"Game Won");
             }
 
             //shows a row for each player showing each bot and their data
@@ -866,7 +866,7 @@ function drawGame() {
         .catch((error) => {
             if(error.message=="cancelled")return;
             console.error("Error:", error);
-            setLoadingBoxStatus(LB_SERVER_UNAVAILABLE);
+            LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
             setTimeout(function () {
                 if (server != undefined) {
                     // if the custom option is selected but the user canceled the selection, don't show an error dialog

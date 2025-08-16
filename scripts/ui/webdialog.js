@@ -102,29 +102,30 @@ function showDialog_(html,title,buttons,hasSVGFiles){
     document.body.appendChild(dialog);
     document.body.style.overflow="hidden";
     if(hasSVGFiles)
-        reimportSVGFiles();
+        SVGImporter.reimport();
     dialog_showing_=true;
 }
-
-function showDialog(html,title,buttons){
-    //ensure security
-    let cleanHTML=DOMPurify.sanitize(html,{
-        ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p','b','i','em','strong','br','img','svgfile'],
-        ALLOWED_ATTR:['src','id','class','style']
-    });
-    let tempDiv=document.createElement("div");
-    tempDiv.innerHTML=cleanHTML;
-    let hasSVGFiles=false;
-    Array.from(tempDiv.querySelectorAll('*')).forEach((elem)=>{
-        switch(elem.tagName.toLowerCase()){
-            case "svgfile":
-                hasSVGFiles=true;
-            case "img":
-                break;
-            default:
-                elem.removeAttribute('src');
-        }
-    });
-    cleanHTML=tempDiv.innerHTML;
-    showDialog_(cleanHTML,title,buttons,hasSVGFiles);
+let DialogUtilities = {
+    showDialog: function (html,title,buttons){
+        //ensure security
+        let cleanHTML=DOMPurify.sanitize(html,{
+            ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p','b','i','em','strong','br','img','svgfile'],
+            ALLOWED_ATTR:['src','id','class','style']
+        });
+        let tempDiv=document.createElement("div");
+        tempDiv.innerHTML=cleanHTML;
+        let hasSVGFiles=false;
+        Array.from(tempDiv.querySelectorAll('*')).forEach((elem)=>{
+            switch(elem.tagName.toLowerCase()){
+                case "svgfile":
+                    hasSVGFiles=true;
+                case "img":
+                    break;
+                default:
+                    elem.removeAttribute('src');
+            }
+        });
+        cleanHTML=tempDiv.innerHTML;
+        showDialog_(cleanHTML,title,buttons,hasSVGFiles);
+    }
 }
