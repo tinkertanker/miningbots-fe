@@ -314,11 +314,6 @@ function populate_settings(){
         setting_div.appendChild(right_box);
         root_container.appendChild(setting_div);
     });
-
-    // move the reset button to the bottom
-    let reset_all_button=document.getElementById("reset_button_container");
-    root_container.removeChild(reset_all_button);
-    root_container.appendChild(reset_all_button);
     SVGImporter.reimport(); // reimport SVG files after the settings are populated
 }
 
@@ -356,6 +351,9 @@ function initialize_popup() {
         } else if(KeyboardUtilities.isMnemonicPressed(event,'h')) {
             event.preventDefault();
             show_settings_help();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,'d')) {
+            event.preventDefault();
+            reset_settings_clicked();
         }
     });
 }

@@ -46,6 +46,8 @@
         <a onclick="show_settings_help()" title="Help" role="button" id="help">
           <svgfile aria-hidden="true" src="/images/ui/help.svg" alt="help icon"></svgfile>
         </a>
+        <a role="button" onclick="reset_settings_clicked();" title="Reset all settings"
+          id="reset-all-button"><svgfile aria-hidden="true" src="/images/ui/reset.svg"></svgfile></a>
         <a role="button"  onclick="ok_clicked();" title="OK"
           id="ok-button"><svgfile aria-hidden="true" src="/images/ui/ok.svg"></svgfile></a>
         <a role="button" onclick="cancel_clicked();" title="Cancel"
@@ -68,6 +70,7 @@
             }
             setMnemonic(document.getElementById("help-on"),true,'H');
             setMnemonic(document.getElementById("help"),false,'H');
+            setMnemonic(document.getElementById("reset-all-button"),false,'D');
             setMnemonic(document.getElementById("ok-button"),false,'O');
             setMnemonic(document.getElementById("cancel-button"),false,'C','Escape');
             setMnemonic(document.getElementById("apply-button"),false,'A');
@@ -81,9 +84,6 @@
 
     <div id="settings-megacontainer">
       <!-- Items will be auto-populated by settings.js -->
-      <div id="reset_button_container">
-        <button onclick="reset_settings_clicked();" id="reset_button">Reset all to default</button>
-      </div>
     </div>
   </div>
   <div id="saving-cover-board" style="display:none">
@@ -101,6 +101,9 @@
     <span id="help-label">Help</span>
     <span id="help-description"></span>
     <span id="help-help"><svgfile noimport src="/images/ui/help.svg"></svgfile>(Help): Use this button to open the help dialog, which provides information about the icon buttons.</span>
+    <span id="reset-all-button-label">Reset All</span>
+    <span id="reset-all-button-description"></span>
+    <span id="reset-all-button-help"><svgfile noimport src="/images/ui/reset.svg"></svgfile>(Reset All): Use this button to reset all settings to their default values. This action cannot be undone!</span>
     <span id="ok-button-label">OK</span>
     <span id="ok-button-description"></span>
     <span id="ok-button-help"><svgfile noimport src="/images/ui/ok.svg"></svgfile>(OK): Use this button to save the settings, reload the main page, and close the dialog.</span>
