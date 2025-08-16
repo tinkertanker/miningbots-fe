@@ -167,16 +167,18 @@ function export_settings() {
 }
 
 function import_settings() {
-    JSONDownloader.importJSON((json_string)=>{
-        //confirmation dialog
-        if(!confirm("Are you sure you want to import these settings? This will overwrite your current settings!")){
-            return;
-        }
-        write_settings(JSON.parse(json_string),()=>{
-            window.opener.location.reload();
-            location.reload();
+    dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",[{"text":"OK","action": ()=>{
+        JSONDownloader.importJSON((json_string)=>{
+            //confirmation dialog
+            if(!confirm("Are you sure you want to import these settings? This will overwrite your current settings!")){
+                return;
+            }
+            write_settings(JSON.parse(json_string),()=>{
+                window.opener.location.reload();
+                location.reload();
+            });
         });
-    });
+    }}]);
 }
 
 function reset_settings_clicked() {
