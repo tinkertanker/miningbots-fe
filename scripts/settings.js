@@ -333,25 +333,28 @@ function initialize_popup() {
     pairDarkMode(json_settings);
     setDarkMode(darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
-        if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,'c'))) {
+        if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,false,'c'))) {
             event.preventDefault();
             cancel_clicked();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,'o')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'o')) {
             event.preventDefault();
             ok_clicked();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,'a')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'a')) {
             event.preventDefault();
             apply_clicked();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,'s')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'s')) {
             event.preventDefault();
             export_settings();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,'i')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'i')) {
             event.preventDefault();
             import_settings();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,'h')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
+            event.preventDefault();
+            activate_helpon_settings();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'h')) {
             event.preventDefault();
             show_settings_help();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,'d')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
             event.preventDefault();
             reset_settings_clicked();
         }
@@ -360,10 +363,13 @@ function initialize_popup() {
 function initialize_main(production_status) {
     if (navigator.onLine && !production_status) {
         window.addEventListener("keydown", (event) => {
-            if (KeyboardUtilities.isMnemonicPressed(event,'e')) {
+            if (KeyboardUtilities.isMnemonicPressed(event,false,'e')) {
                 settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
-            }  else if (KeyboardUtilities.isMnemonicPressed(event,'h')) {
+            } else if (KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
+                activate_helpon();
+                event.preventDefault();
+            } else if (KeyboardUtilities.isMnemonicPressed(event,false,'h')) {
                 show_help();
                 event.preventDefault();
             }
