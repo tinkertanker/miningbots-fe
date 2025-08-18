@@ -6,16 +6,20 @@ KeyboardUtilities.isPrimaryPressed=function (event){
     return (KeyboardUtilities.isMac ? event.metaKey:event.ctrlKey);
 }
 
-KeyboardUtilities.isMnemonicBasePressed = function(event) {
-    if (KeyboardUtilities.isMac) {
-        return KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey;
+KeyboardUtilities.isMnemonicBasePressed = function(event,usesSecondary) {
+    if(usesSecondary) {
+        return KeyboardUtilities.isPrimaryPressed(event) && event.altKey && event.shiftKey;
     } else {
-        return KeyboardUtilities.isPrimaryPressed(event) && event.altKey;
+        if (KeyboardUtilities.isMac) {
+            return KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey;
+        } else {
+            return KeyboardUtilities.isPrimaryPressed(event) && event.altKey;
+        }
     }
 }
 
-KeyboardUtilities.isMnemonicPressed = function(event, letter) {
-    return KeyboardUtilities.isMnemonicBasePressed(event) && event.key.toLowerCase() === letter.toLowerCase();
+KeyboardUtilities.isMnemonicPressed = function(event, usesSecondary, letter) {
+    return KeyboardUtilities.isMnemonicBasePressed(event, usesSecondary) && event.key.toLowerCase() === letter.toLowerCase();
 }
 
 KeyboardUtilities.joinKeys = function(...keys) {
