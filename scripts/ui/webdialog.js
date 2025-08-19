@@ -11,7 +11,7 @@ function isAnotherDialogShowing(){
     return dialog_showing_;
 }
 let upcoming_dialogs_=[];
-function showDialog_(html,title,buttons,hasSVGFiles){
+function showDialog_(html,title,buttons,onClose,hasSVGFiles){
     // Queue upcoming dialogs if one is already showing
     if(dialog_showing_){
         upcoming_dialogs_.push({"html":html, "title":title, "button":buttons});
@@ -44,6 +44,7 @@ function showDialog_(html,title,buttons,hasSVGFiles){
         document.body.removeChild(coverBoard);
         document.body.style.overflow=overflow_prev;
         dialog_showing_=false;
+        onClose();
         // If there are more dialogs queued, show the next one
         if(upcoming_dialogs_.length>0){
             let next_dialog=upcoming_dialogs_.shift();
@@ -129,6 +130,41 @@ let DialogUtilities = {
             }
         });
         cleanHTML=tempDiv.innerHTML;
-        return showDialog_(cleanHTML,title,buttons,hasSVGFiles);
-    }
+        return showDialog_(cleanHTML,title,buttons,()=>{},hasSVGFiles);
+    },
+    prompt: function (html, title, ok_handler, cancel_handler) {
+        //ensure security
+        let cleanHTML=DOMPurify.sanitize(html,{
+            ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p','b','i','em','strong','br','img','svgfile'],
+            ALLOWED_ATTR:['src','id','class','style']
+        });
+        let tempDiv=document.createElement("div");
+        let innerDiv=document.createElement("div");
+        innerDiv.innerHTML=cleanHTML;
+        let hasSVGFiles=false;
+        Array.from(tempDiv.querySelectorAll('*')).forEach((elem)=>{
+            switch(elem.tagName.toLowerCase()){
+                case "svgfile":
+                    hasSVGFiles=true;
+                case "img":
+                    break;
+                default:
+                    elem.removeAttribute('src');
+            }
+        });
+        input_elem=document.createElement("input");
+        input_elem.type="text";
+        input_elem.classList.add("dialog-input");
+        input_elem.classList.add("nodark");
+        tempDiv.appendChild(innerDiv);
+        tempDiv.appendChild(input_elem);
+        cleanHTML=tempDiv.innerHTML;
+        function cancel_wrapper(){
+            if(cancel_handler) cancel_handler();
+        }
+        dialog=showDialog_(cleanHTML,title,[{"text":"OK","action":()=>{
+            ok_handler(input_elem.value);
+        }},{"text":"Cancel","action":cancel_wrapper}],cancel_wrapper,hasSVGFiles);
+        return dialog;
+    },
 }

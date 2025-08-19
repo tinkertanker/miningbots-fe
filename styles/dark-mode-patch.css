@@ -55,7 +55,7 @@ a.dropdown-item:hover,a.dropdown-item:focus {
   color: rgb(204, 204, 204) ! important;
 }
 
-input:not([type="checkbox"]) {
+input:not([type="checkbox"]):not(.nodark) {
   background-color: #1f1f1f;   /* Dark background */
   color: #f0f0f0;              /* Light text */
   border: 1px solid #888;
