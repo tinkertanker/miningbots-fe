@@ -171,12 +171,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         switch (hostname) {
             case "custom.invalid":
                 setServerName(servers["custom.invalid"].name);
-                setTimeout(()=>{
-                    let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
-                    while (socket===undefined){
-                        socket = prompt("Enter socket of server:");
-                    }
-                    servers["custom.invalid"].url=socket;
+                function empty_handler() {
+                    setServerName("Custom");
+                    LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
+                }
+                function socket_obtained(socket) {
+                    servers["custom.invalid"].url = socket.trim();
                     if (servers["custom.invalid"].url) {
                         hostname = getNameOfSocket(servers["custom.invalid"].url);
                         setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
@@ -185,11 +185,16 @@ document.addEventListener("DOMContentLoaded",()=>{
                         custom_server = "custom";
                         server_assigned();
                     } else {
-                        setServerName("Custom");
-                        LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
+                        empty_handler();
                     }
-                },200);
-                break
+                }
+                let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
+                if(socket) {
+                    socket_obtained(socket);
+                } else {
+                    DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", socket_obtained, empty_handler);
+                }
+                break;
             case "current.invalid":
                 hostname=location.hostname;
                 port=CONFIG["localhost_port"];
