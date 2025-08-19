@@ -168,35 +168,38 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     //set the hostname to the correct hostname if the cookie value is a special one
     if (hostname && servers.hasOwnProperty(hostname)) {
-        if (hostname == "custom.invalid") {
-            setServerName(servers["custom.invalid"].name);
-            setTimeout(()=>{
-                let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
-                while (socket===undefined){
-                    socket = prompt("Enter socket of server:");
-                }
-                servers["custom.invalid"].url=socket;
-                if (servers["custom.invalid"].url) {
-                    hostname = getNameOfSocket(servers["custom.invalid"].url);
-                    setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
-                    console.log("URL: " + servers["custom.invalid"].url);
-                    port = getPortNumber(http_type, servers["custom.invalid"].url);
-                    custom_server = "custom";
-                    server_assigned();
-                } else {
-                    setServerName("Custom");
-                    LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
-                }
-            },200);
-        } else if (hostname == "current.invalid") {
-            hostname=location.hostname;
-            port=CONFIG["localhost_port"];
-            custom_server="current";
-            server_assigned();
-        } else {
-            console.log("URL: " + servers[hostname].url);
-            port = getPortNumber(http_type, servers[hostname].url);
-            server_assigned();
+        switch (hostname) {
+            case "custom.invalid":
+                setServerName(servers["custom.invalid"].name);
+                setTimeout(()=>{
+                    let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
+                    while (socket===undefined){
+                        socket = prompt("Enter socket of server:");
+                    }
+                    servers["custom.invalid"].url=socket;
+                    if (servers["custom.invalid"].url) {
+                        hostname = getNameOfSocket(servers["custom.invalid"].url);
+                        setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
+                        console.log("URL: " + servers["custom.invalid"].url);
+                        port = getPortNumber(http_type, servers["custom.invalid"].url);
+                        custom_server = "custom";
+                        server_assigned();
+                    } else {
+                        setServerName("Custom");
+                        LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
+                    }
+                },200);
+                break
+            case "current.invalid":
+                hostname=location.hostname;
+                port=CONFIG["localhost_port"];
+                custom_server="current";
+                server_assigned();
+                break;
+            default:
+                console.log("URL: " + servers[hostname].url);
+                port = getPortNumber(http_type, servers[hostname].url);
+                server_assigned();
         }
     } else {
         LoadingBox.setStatus(LoadingBox.Status.SERVER_NO_SELECTION);
