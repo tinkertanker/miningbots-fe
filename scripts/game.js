@@ -185,6 +185,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     server_assigned();
                 } else {
                     setServerName("Custom");
+                    LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
                 }
             },200);
         } else if (hostname == "current.invalid") {
