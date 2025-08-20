@@ -183,11 +183,11 @@ document.addEventListener("DOMContentLoaded",()=>{
                     servers["custom.invalid"].url = socket.trim();
                     try {
                         if(servers["custom.invalid"].url.length==0) throw new Error("Socket URL cannot be empty");
-                        if(!(isValidSocket(servers["custom.invalid"].url))) throw new Error("Invalid socket URL format");
-                        hostname = getNameOfSocket(servers["custom.invalid"].url);
+                        if(!(SocketUtilities.isValidSocket(servers["custom.invalid"].url))) throw new Error("Invalid socket URL format");
+                        hostname = SocketUtilities.getNameOfSocket(servers["custom.invalid"].url);
                         setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + servers["custom.invalid"].url);
-                        port = getPortNumber(http_type, servers["custom.invalid"].url);
+                        port = SocketUtilities.getPortNumber(http_type, servers["custom.invalid"].url);
                         custom_server = "custom";
                         server_assigned();
                     } catch (e){
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 break;
             default:
                 console.log("URL: " + servers[hostname].url);
-                port = getPortNumber(http_type, servers[hostname].url);
+                port = SocketUtilities.getPortNumber(http_type, servers[hostname].url);
                 server_assigned();
         }
     } else {
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 //    selectedServerName;
                 deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
                 // Save to cookie first
-                setCookie("lastServer", getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
+                setCookie("lastServer", SocketUtilities.getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
                 location.reload();
                 // drawGame();
             });
