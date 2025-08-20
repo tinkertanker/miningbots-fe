@@ -19,10 +19,10 @@ const SocketUtilities = {
         let url;
         if(string.indexOf('/')!=-1) 
             return false; // Invalid if it contains a slash (protocol or virtual path in socket)
-        string="http://"+string;
+        let urlString="http://"+string;
         
         try {
-            url = new URL(string);
+            url = new URL(urlString);
         } catch (_) {
             return false;  
         }
