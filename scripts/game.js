@@ -175,24 +175,30 @@ document.addEventListener("DOMContentLoaded",()=>{
                     setServerName("Custom");
                     LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
                 }
-                function socket_obtained(socket) {
+                let socket_obtained;
+                function prompt_socket() {
+                    DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", socket_obtained, empty_handler);
+                }
+                socket_obtained=function(socket) {
                     servers["custom.invalid"].url = socket.trim();
-                    if (servers["custom.invalid"].url) {
+                    try {
+                        if(servers["custom.invalid"].url.length==0) throw new Error("Socket URL cannot be empty");
+                        if(!(isValidSocket(servers["custom.invalid"].url))) throw new Error("Invalid socket URL format");
                         hostname = getNameOfSocket(servers["custom.invalid"].url);
                         setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + servers["custom.invalid"].url);
                         port = getPortNumber(http_type, servers["custom.invalid"].url);
                         custom_server = "custom";
                         server_assigned();
-                    } else {
-                        empty_handler();
+                    } catch (e){
+                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{"text": "OK", "action": prompt_socket}]);
                     }
                 }
                 let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
                 if(socket) {
                     socket_obtained(socket);
                 } else {
-                    DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", socket_obtained, empty_handler);
+                    prompt_socket();
                 }
                 break;
             case "current.invalid":

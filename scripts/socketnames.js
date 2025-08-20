@@ -15,3 +15,21 @@ function getPortNumber(protocol,socket){
     }
     return null;
 }
+
+function isValidSocket(string) {
+  let url;
+  if(string.indexOf('/')!=-1) 
+    return false; // Invalid if it contains a slash (protocol or virtual path in socket)
+  string="http://"+string;
+  
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;  
+  }
+
+  if(string.indexOf(':')!=-1 && url.port.length==0) 
+    return false; // Invalid if it has a :(port specifier) but no port number
+
+  return true;
+}
