@@ -57,11 +57,13 @@ function onHelponDeactivated() {
 
 let currentHelponMode = null; // Track the current helpon mode
 function activate_helpon() {
+    if(DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
     currentHelponMode = "main";
     onHelponActivated();
 }
 
 function activate_helpon_settings() {
+    if(DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
     currentHelponMode = "settings";
     onHelponActivated();
 }
