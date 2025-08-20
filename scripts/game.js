@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     }
                 }
                 let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
-                if(socket) {
+                if(socket && SocketUtilities.isValidSocket(socket)) {
                     socket_obtained(socket);
                 } else {
                     prompt_socket();
