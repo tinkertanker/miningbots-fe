@@ -1,5 +1,5 @@
 function show_help() {
-    if (isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
+    if (DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
     DialogUtilities.showDialog(
         `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Open this help<br>
         <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
@@ -8,7 +8,7 @@ function show_help() {
 }
 
 function show_settings_help() {
-    if (isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
+    if (DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
     DialogUtilities.showDialog(
         `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Show this help<br>
         <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>

@@ -7,9 +7,6 @@ function getTextWidth_(text, font) {
 }
 
 let dialog_showing_=false;
-function isAnotherDialogShowing(){
-    return dialog_showing_;
-}
 let upcoming_dialogs_=[];
 function showDialog_(html,title,buttons,onClose,hasSVGFiles){
     // Queue upcoming dialogs if one is already showing
@@ -110,6 +107,9 @@ function showDialog_(html,title,buttons,onClose,hasSVGFiles){
     }
 }
 let DialogUtilities = {
+    isAnotherDialogShowing: function (){
+        return dialog_showing_;
+    },
     showDialog: function (html,title,buttons){
         //ensure security
         let cleanHTML=DOMPurify.sanitize(html,{
