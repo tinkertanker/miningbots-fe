@@ -56,24 +56,19 @@ function onHelponDeactivated_() {
     restoreBootstrapTogglers_(); // Restore Bootstrap togglers
 }
 
-let currentHelponMode_ = null; // Track the current helpon mode
+let isHelponActive = false; // Track the current helpon mode
 HelpManager.activate_helpon = function() {
     if(DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
-    currentHelponMode_ = "main";
+    isHelponActive = true;
     onHelponActivated_();
 }
 
-HelpManager.activate_helpon_settings=function() {
-    if(DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
-    currentHelponMode_ = "settings";
-    onHelponActivated_();
-}
 
 document.addEventListener("keydown", (event) => {
-    if (currentHelponMode_ != null) {
+    if (isHelponActive) {
         event.stopPropagation();
         if (event.key == "Escape") {
-            currentHelponMode_ = null; // Exit helpon mode
+            isHelponActive = false; // Exit helpon mode
             onHelponDeactivated_();
         }
     }
@@ -81,7 +76,7 @@ document.addEventListener("keydown", (event) => {
 
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("click", (event) => {
-        if (currentHelponMode_ != null) {
+        if (isHelponActive) {
             event.stopPropagation();
             event.preventDefault();
             console.log("launching help dialog");
@@ -90,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let name = document.querySelector(`#accessibility-labels #${target.id}-label`).textContent || target.id; // Get from accessibility-labels, otherwise use ID
                 let helpText = document.querySelector(`#accessibility-labels #${target.id}-help`).innerHTML.replace("noimport", ""); // Get help text from accessibility-labels, removing noimport
                 if (helpText) {
-                    currentHelponMode_ = null; // Exit helpon mode
+                    isHelponActive = false; // Exit helpon mode
                     onHelponDeactivated_();
                     DialogUtilities.showDialog(helpText, `Help on "${name}"`);
                 }
