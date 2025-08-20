@@ -36,19 +36,20 @@ function showDialog_(html,title,buttons,onClose,hasSVGFiles){
     x.innerHTML="x";
     closeButton.appendChild(x);
     let overflow_prev=document.body.style.overflow;
-    function close_dialog(){ 
+    function close_dialog(callOnClose=false){ 
         document.body.removeChild(dialog);
         document.body.removeChild(coverBoard);
         document.body.style.overflow=overflow_prev;
         dialog_showing_=false;
-        onClose();
+        if(callOnClose)
+            onClose();
         // If there are more dialogs queued, show the next one
         if(upcoming_dialogs_.length>0){
             let next_dialog=upcoming_dialogs_.shift();
             showDialog_(next_dialog["html"],next_dialog["title"],next_dialog["buttons"]);
         }
     }
-    closeButton.addEventListener('click',close_dialog);
+    closeButton.addEventListener('click',()=>{close_dialog(true);});
 
     //create the dialog title
     const dialogTitle=document.createElement("h3");
@@ -86,7 +87,7 @@ function showDialog_(html,title,buttons,onClose,hasSVGFiles){
     // add escape handler
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && dialog_showing_) {
-            close_dialog();
+            close_dialog(true);
             event.stopPropagation();
         }
     });
