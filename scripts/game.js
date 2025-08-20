@@ -180,15 +180,16 @@ document.addEventListener("DOMContentLoaded",()=>{
                     DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", socket_obtained, empty_handler);
                 }
                 socket_obtained=function(socket) {
-                    servers["custom.invalid"].url = socket.trim();
+                    socket = socket.trim();
                     try {
-                        if(servers["custom.invalid"].url.length==0) throw new Error("Socket URL cannot be empty");
-                        if(!(SocketUtilities.isValidSocket(servers["custom.invalid"].url))) throw new Error("Invalid socket URL format");
-                        hostname = SocketUtilities.getNameOfSocket(servers["custom.invalid"].url);
-                        setCookie("custom_server",servers["custom.invalid"].url,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
-                        console.log("URL: " + servers["custom.invalid"].url);
-                        port = SocketUtilities.getPortNumber(http_type, servers["custom.invalid"].url);
+                        if(socket.length==0) throw new Error("Socket URL cannot be empty");
+                        if(!(SocketUtilities.isValidSocket(socket))) throw new Error("Invalid socket URL format");
+                        hostname = SocketUtilities.getNameOfSocket(socket);
+                        setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
+                        console.log("URL: " + socket);
+                        port = SocketUtilities.getPortNumber(http_type, socket);
                         custom_server = "custom";
+                        servers["custom.invalid"].url = socket; // set the URL to the custom server URL
                         server_assigned();
                     } catch (e){
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{"text": "OK", "action": prompt_socket}]);
