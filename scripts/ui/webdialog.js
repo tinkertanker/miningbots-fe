@@ -153,7 +153,7 @@ let DialogUtilities = {
                     elem.removeAttribute('src');
             }
         });
-        input_elem=document.createElement("input");
+        let input_elem=document.createElement("input");
         input_elem.type="text";
         input_elem.classList.add("dialog-input");
         input_elem.classList.add("nodark");
@@ -166,6 +166,7 @@ let DialogUtilities = {
         dialog=showDialog_(cleanHTML,title,[{"text":"OK","action":()=>{
             ok_handler(input_elem.value);
         }},{"text":"Cancel","action":cancel_wrapper}],cancel_wrapper,hasSVGFiles);
+        input_elem=document.querySelector(".dialog-input");
         return dialog;
     },
 }
