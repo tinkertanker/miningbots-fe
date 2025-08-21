@@ -215,9 +215,9 @@ function read_settings_cookie(raw) {
     }
     if (!raw){
         object_forEach(settings,(name,setting)=>{
-        if (is_value_forced(setting)){
-            current_settings[name]=setting.force_value.value;
-        }
+            if (is_value_forced(setting)){
+                current_settings[name]=setting.force_value.value;
+            }
         });
     }
     return current_settings;
