@@ -1,4 +1,4 @@
-async function read_config_file() {
+async function read_config_file_() {
     var file_content = `UI_MODE=debug`;
     await fetch("/browsersettings.conf").then(async (response) => {
         //If the status is not "good", do not process the body
@@ -13,7 +13,7 @@ async function read_config_file() {
     return file_content;
 }
 
-function parse_config_file(file_content) {
+function parse_config_file_(file_content) {
     var entries = {};
     var file_lines = file_content.split(/\r?\n|\r|\n/g); // split the lines (https://stackoverflow.com/a/21712066)
     file_lines.forEach((line) => {
@@ -27,7 +27,11 @@ function parse_config_file(file_content) {
     return entries;
 }
 
-async function is_production() {
-    let config_file = parse_config_file(await read_config_file());
+async function is_production_() {
+    let config_file = parse_config_file_(await read_config_file_());
     return config_file["UI_MODE"] == "fullscreen"; // MiningBots is deployed in full screen, hence full screen = production
+}
+
+const ModeManager = {
+    is_production: is_production_
 }
