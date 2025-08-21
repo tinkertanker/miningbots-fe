@@ -8,7 +8,7 @@ function getTextWidth_(text, font) {
 
 let dialog_showing_=false;
 let upcoming_dialogs_=[];
-function showDialog_(html,title,buttons,onClose,hasSVGFiles){
+function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
     // Queue upcoming dialogs if one is already showing
     if(dialog_showing_){
         upcoming_dialogs_.push({"html":html, "title":title, "button":buttons});
@@ -85,10 +85,18 @@ function showDialog_(html,title,buttons,onClose,hasSVGFiles){
     });
 
     // add escape handler
-    document.addEventListener('keydown', (event) => {
+    dialog.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && dialog_showing_) {
             close_dialog(true);
             event.stopPropagation();
+        }
+        if (event.key === 'Enter' && dialog_showing_){
+            document.querySelectorAll("button.dialog-button").forEach((button)=>{
+                if(button.textContent===submitButton){
+                    button.dispatchEvent(new Event("click"));
+                    event.stopPropagation();
+                }
+            })
         }
     });
 
@@ -131,7 +139,7 @@ let DialogUtilities = {
             }
         });
         cleanHTML=tempDiv.innerHTML;
-        return showDialog_(cleanHTML,title,buttons,()=>{},hasSVGFiles);
+        return showDialog_(cleanHTML,title,buttons,()=>{},null,hasSVGFiles);
     },
     prompt: function (html, title, ok_handler, cancel_handler) {
         //ensure security
@@ -165,7 +173,7 @@ let DialogUtilities = {
         }
         dialog=showDialog_(cleanHTML,title,[{"text":"OK","action":()=>{
             ok_handler(input_elem.value);
-        }},{"text":"Cancel","action":cancel_wrapper}],cancel_wrapper,hasSVGFiles);
+        }},{"text":"Cancel","action":cancel_wrapper}],cancel_wrapper,"OK",hasSVGFiles);
         input_elem=document.querySelector(".dialog-input");
         return dialog;
     },
