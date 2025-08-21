@@ -12,6 +12,7 @@ let HelpManager = {
         DialogUtilities.showDialog(
             `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Show this help<br>
             <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
+            <svgfile src="/images/ui/reset.svg"></svgfile> (Reset all): Reset all settings to their default values<br>
             <svgfile src="/images/ui/ok.svg"></svgfile> (OK): Save settings, reload main page, and close this window<br>
             <svgfile src="/images/ui/cancel.svg"></svgfile> (Cancel): Close this window without saving the settings<br>
             <svgfile src="/images/ui/apply.svg"></svgfile> (Apply): Save settings and reload main page<br>
