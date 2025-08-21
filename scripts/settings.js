@@ -1,112 +1,114 @@
-var settings_window;
-const settings = {
-    "enable_security": {
-        type:"boolean",
-        default:false,
-        title:"Use secure protocols",
-        description:"Use HTTPS and WSS over HTTP and WS",
-        force_value:location.protocol.indexOf('https:')!=-1
-                      ? {"value":true}
-                      : null
-    },
-    "game_port": {
-        type:"number",
-        default:9001,
-        title:"Game Port number",
-        description:"Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers",
-        range: {
-            minimum:1,
-            maximum:65535
+let SettingsManager={
+    settings: {
+        "enable_security": {
+            type:"boolean",
+            default:false,
+            title:"Use secure protocols",
+            description:"Use HTTPS and WSS over HTTP and WS",
+            force_value:location.protocol.indexOf('https:')!=-1
+                        ? {"value":true}
+                        : null
         },
-        force_value:null
-    },
-    "localhost_port": {
-        type:"number",
-        default:9003,
-        title:"Testing Port number",
-        description:"Port number used when connecting to the &quot;Testing&quot; server",
-        range: {
-            minimum:1,
-            maximum:65535
+        "game_port": {
+            type:"number",
+            default:9001,
+            title:"Game Port number",
+            description:"Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers",
+            range: {
+                minimum:1,
+                maximum:65535
+            },
+            force_value:null
         },
-        force_value:null
+        "localhost_port": {
+            type:"number",
+            default:9003,
+            title:"Testing Port number",
+            description:"Port number used when connecting to the &quot;Testing&quot; server",
+            range: {
+                minimum:1,
+                maximum:65535
+            },
+            force_value:null
+        },
+        "observer_key": {
+            type:"number",
+            title: "Observer key",
+            description:"Observer key used to subscribe to the server",
+            default:514525537,
+            range:"unbound",
+            force_value:null
+        },
+        "show_player_names": {
+            type:"boolean",
+            title:"Show player names",
+            description:`Show player names next to the player IDs in the sidebars and Winner Display
+            Dialog.<br>
+            When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
+            When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;`,
+            default:true,
+            force_value:null
+        },
+        "show_gameid": {
+            type:"boolean",
+            title: "Debugging: Display Game ID",
+            description:`Display the Game ID in the top right corner.<br>
+            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.`,
+            default:true,
+            force_value:null
+        },
+        "show_game_status": {
+            type:"boolean",
+            title: "Debugging: Display Game Status",
+            description:`Display the Game Status in the top right corner.<br>
+            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.`,
+            default:true,
+            force_value:null
+        },
+        "show_notifications": {
+            type:"boolean",
+            title:"Debugging: Enable push notifications",
+            description:`Enable push notifications when certain events happen (e.g. player
+            joined)<br>
+            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.`,
+            default:true,
+            force_value:null
+        },
+        "theme": {
+            type:"setpicker",
+            default:"auto",
+            title:"Theme",
+            description:"Set the application theme",
+            range: [
+                {name:"light",display:"Light"},
+                {name:"dark",display:"Dark"},
+                {name:"auto",display:"Automatic (follow browser theme)"}
+            ],
+            force_value:null
+        },
     },
-    "observer_key": {
-        type:"number",
-        title: "Observer key",
-        description:"Observer key used to subscribe to the server",
-        default:514525537,
-        range:"unbound",
-        force_value:null
-    },
-    "show_player_names": {
-        type:"boolean",
-        title:"Show player names",
-        description:`Show player names next to the player IDs in the sidebars and Winner Display
-          Dialog.<br>
-          When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
-          When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;`,
-        default:true,
-        force_value:null
-    },
-    "show_gameid": {
-        type:"boolean",
-        title: "Debugging: Display Game ID",
-        description:`Display the Game ID in the top right corner.<br>
-          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.`,
-        default:true,
-        force_value:null
-    },
-    "show_game_status": {
-        type:"boolean",
-        title: "Debugging: Display Game Status",
-        description:`Display the Game Status in the top right corner.<br>
-          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.`,
-        default:true,
-        force_value:null
-    },
-    "show_notifications": {
-        type:"boolean",
-        title:"Debugging: Enable push notifications",
-        description:`Enable push notifications when certain events happen (e.g. player
-          joined)<br>
-          NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.`,
-        default:true,
-        force_value:null
-    },
-    "theme": {
-        type:"setpicker",
-        default:"auto",
-        title:"Theme",
-        description:"Set the application theme",
-        range: [
-            {name:"light",display:"Light"},
-            {name:"dark",display:"Dark"},
-            {name:"auto",display:"Automatic (follow browser theme)"}
-        ],
-        force_value:null
-    },
+    ClickHandlers: {}
 }
-const default_settings=object_map_values(settings,(key,setting)=>setting["default"]);
+SettingsManager.default_settings=object_map_values(SettingsManager.settings,(_key,setting)=>setting["default"]);
 
-function write_settings(json_settings,complete_handler) {
+function write_settings_(json_settings,complete_handler) {
     function finish_ui(){
         document.getElementById("saving-cover-board").style.display="none";
     }
     document.getElementById("saving-cover-board").style.display="flex";
     setTimeout(()=>{
-        let updated_settings=Object.assign(read_settings_cookie(/*raw=*/true),json_settings);
+        let updated_settings=Object.assign(SettingsManager.read_settings_cookie(/*raw=*/true),json_settings);
         let cookie_value = encodeURI(JSON.stringify(updated_settings));
-        setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
+        CookieUtilities.setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
         if(json_settings["show_notifications"]){
             switch(Notification.permission){
                 case "default":
                     // code from https://riptutorial.com/javascript/example/2305/requesting-permission-to-send-notifications
-                    askForNotificationPermission().then((permission)=>{
+                    NotificationUtilities.askForNotificationPermission().then((permission)=>{
                         if (!('permission' in Notification)) {
                             Notification.permission = permission;
                         }
-                        if(!notificationPermissionGranted()){
+                        if(!NotificationUtilities.notificationPermissionGranted()){
                             alert("Notifications are unavailable");
                             update_setting("show_notifications",false);
                             finish_ui();
@@ -137,10 +139,10 @@ function write_settings(json_settings,complete_handler) {
     },10);
 }
 
-function dump_settings() {
+SettingsManager.dump_settings=function() {
     let json_settings={};
-    object_forEach(settings,(key,setting)=>{
-        if(!is_value_forced(setting)){ // only store values that are not forced
+    object_forEach(SettingsManager.settings,(key,setting)=>{
+        if(!SettingsManager.is_value_forced(setting)){ // only store values that are not forced
             let source=document.getElementById(key+'_input');
             source_property=setting.type=="boolean" ? "checked" : "value";
             value=source[source_property];
@@ -151,90 +153,90 @@ function dump_settings() {
     return json_settings;
 }
 
-function write_displayed_settings(complete_handler) {
-    let json_settings=dump_settings();
-    write_settings(json_settings,complete_handler);
+function write_displayed_settings_(complete_handler) {
+    let json_settings=SettingsManager.dump_settings();
+    write_settings_(json_settings,complete_handler);
 }
 
-function write_default_settings(complete_handler) {
-    write_settings(default_settings,complete_handler);
+function write_default_settings_(complete_handler) {
+    write_settings_(SettingsManager.default_settings,complete_handler);
 }
 
-function export_settings() {
-    let json_settings=dump_settings();
+SettingsManager.export_settings=function() {
+    let json_settings=SettingsManager.dump_settings();
     JSONDownloader.exportJSON(JSON.stringify(json_settings),"settings.json");
     alert("Settings exported to settings.json");
 }
 
-function import_settings() {
+SettingsManager.import_settings=function() {
     dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",[{text:"OK",action: ()=>{
         JSONDownloader.importJSON((json_string)=>{
             //confirmation dialog
-            display_settings(JSON.parse(json_string));
+            display_settings_(JSON.parse(json_string));
             DialogUtilities.showDialog('Settings imported successfully! Please verify and apply using the <svgfile src="/images/ui/apply.svg"></svgfile> (Apply) button',"Import Settings");
         });
     }}]);
 }
 
-function reset_settings_clicked() {
+SettingsManager.ClickHandlers.reset_settings_clicked=function() {
     DialogUtilities.showDialog("Are you sure you want to reset all settings to default? This will overwrite your current settings.","Reset Settings",[{"text":"OK","action":()=>{
-        write_default_settings(()=>{
+        SettingsManager.write_default_settings_(()=>{
             window.opener.location.reload();
             location.reload();
         });
     }},{text:"Cancel",action:()=>true}]);
 }
-function apply_clicked() {
-    write_displayed_settings(()=>{
+SettingsManager.ClickHandlers.apply_clicked=function() {
+    write_displayed_settings_(()=>{
         window.opener.location.reload();
     });
 }
 
-function cancel_clicked() {
+SettingsManager.ClickHandlers.cancel_clicked=function() {
     window.close();
 }
 
-function ok_clicked() {
-    write_displayed_settings(()=>{
+SettingsManager.ClickHandlers.ok_clicked=function() {
+    write_displayed_settings_(()=>{
         window.opener.location.reload();
         window.close();
     });
 }
 
-function is_value_forced(setting){
+SettingsManager.is_value_forced=function(setting){
     //HACK: use eval to defer parsing
     return (setting.force_value!=null) && eval(`typeof setting.force_value.value != "undefined"`);
 }
 
-function read_settings_cookie(raw) {
-    let current_settings=Object.assign({},default_settings);
-    let cookie_value = getCookie("settings");
+SettingsManager.read_settings_cookie=function(raw) {
+    let current_settings=Object.assign({},SettingsManager.default_settings);
+    let cookie_value = CookieUtilities.getCookie("settings");
     if (cookie_value){
         let cookie=JSON.parse(decodeURI(cookie_value));
         current_settings=Object.assign(current_settings,cookie);
     }
     if (!raw){
-        object_forEach(settings,(name,setting)=>{
-            if (is_value_forced(setting)){
+        object_forEach(SettingsManager.settings,(name,setting)=>{
+            if (SettingsManager.is_value_forced(setting)){
                 current_settings[name]=setting.force_value.value;
             }
         });
     }
     return current_settings;
 }
-function display_settings(json_settings) {
+function display_settings_(json_settings) {
     object_forEach(json_settings,(key,value)=>{
         let destination=document.getElementById(key+'_input');
-        destination_property=settings[key].type=="boolean" ? "checked" : "value"
+        destination_property=SettingsManager.settings[key].type=="boolean" ? "checked" : "value"
         destination[destination_property]=value;
-        update_reset_button({key:key,value:value});
+        update_reset_button_({key:key,value:value});
     });
 }
-function populate_settings(){
+function populate_settings_(){
     const root_container=document.getElementById("settings-megacontainer");
 
-    object_forEach(settings,(key,setting)=>{
-        let value_forced = is_value_forced(setting);
+    object_forEach(SettingsManager.settings,(key,setting)=>{
+        let value_forced = SettingsManager.is_value_forced(setting);
 
         let setting_div=document.createElement("div");
         setting_div.classList.add("setting-container");
@@ -308,7 +310,7 @@ function populate_settings(){
         input_element.addEventListener('change',(e)=>{
             let property=setting.type=="boolean"?"checked":"value";
             let update={key:key,value:e.target[property]};
-            onChange(update);
+            onChange_(update);
         })
         right_box.appendChild(input_element);
         setting_div.appendChild(right_box);
@@ -317,34 +319,34 @@ function populate_settings(){
     SVGImporter.reimport(); // reimport SVG files after the settings are populated
 }
 
-function update_reset_button(setting_update){
-    let show=setting_update.value!=settings[setting_update.key].default; // true if the value is not equal to the default
+function update_reset_button_(setting_update){
+    let show=setting_update.value!=SettingsManager.settings[setting_update.key].default; // true if the value is not equal to the default
     document.getElementById(setting_update.key+'_reset').style.display=show?"block":"none";
 }
 
-function reset_setting(setting_key){
-    update_setting(setting_key,settings[setting_key].default);
+function reset_setting_(setting_key){
+    update_setting_(setting_key,SettingsManager.settings[setting_key].default);
 }
 
-function initialize_popup() {
-    populate_settings();
-    let json_settings = read_settings_cookie();
-    display_settings(json_settings);
-    pairDarkMode(json_settings);
-    setDarkMode(darkModeEnabled(json_settings));
+SettingsManager.initialize_popup=function() {
+    populate_settings_();
+    let json_settings = SettingsManager.read_settings_cookie();
+    display_settings_(json_settings);
+    DarkModeManager.pairDarkMode(json_settings);
+    DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
         if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,false,'c'))) {
             event.preventDefault();
-            cancel_clicked();
+            SettingsManager.ClickHandlers.cancel_clicked();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'o')) {
             event.preventDefault();
-            ok_clicked();
+            SettingsManager.ClickHandlers.ok_clicked();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'a')) {
             event.preventDefault();
-            apply_clicked();
+            SettingsManager.ClickHandlers.apply_clicked();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'s')) {
             event.preventDefault();
-            export_settings();
+            SettingsManager.ClickHandlers.export_settings();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'i')) {
             event.preventDefault();
             import_settings();
@@ -356,15 +358,15 @@ function initialize_popup() {
             show_settings_help();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
             event.preventDefault();
-            reset_settings_clicked();
+            SettingsManager.ClickHandlers.reset_settings_clicked();
         }
     });
 }
-function initialize_main(production_status) {
+SettingsManager.initialize_main=function(production_status) {
     if (navigator.onLine && !production_status) {
         window.addEventListener("keydown", (event) => {
             if (KeyboardUtilities.isMnemonicPressed(event,false,'e')) {
-                settings_window = open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
+                SettingsManager.open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
             } else if (KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
                 activate_helpon();
@@ -377,22 +379,22 @@ function initialize_main(production_status) {
     }
 }
 
-function onChange(setting_update){
+function onChange_(setting_update){
     if(setting_update.key=="theme"){
-        setDarkMode(darkModeEnabled({"theme":setting_update.value}));
+        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled({"theme":setting_update.value}));
     }
 
-    update_reset_button(setting_update);
+    update_reset_button_(setting_update);
 }
 
-function update_setting(setting,value){
-    let property=settings[setting].type=="boolean"?"checked":"value";
+function update_setting_(setting,value){
+    let property=SettingsManager.settings[setting].type=="boolean"?"checked":"value";
     let element=document.getElementById(setting+"_input");
     element[property]=value;
     element.dispatchEvent(new Event("change"));//force the change handler to run
 }
 
-function open_popup() {
+SettingsManager.open_popup=function() {
     // Position of popup
     let width = 700;
     let height = 600;

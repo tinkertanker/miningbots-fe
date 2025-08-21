@@ -7,7 +7,7 @@ console.log("script loaded");
 
 var server=null;
 var port;
-var CONFIG=default_settings;
+var CONFIG=SettingsManager.default_settings;
 var http_type="http";var ws_type="ws";
 var custom_server = false;
 var gameId;
@@ -30,11 +30,11 @@ function CancelLoading(){return CancelLoading};
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
 
-    CONFIG = read_settings_cookie();
+    CONFIG = SettingsManager.read_settings_cookie();
 
     // set dark mode
-    pairDarkMode(CONFIG);
-    setDarkMode(darkModeEnabled(CONFIG));
+    DarkModeManager.pairDarkMode(CONFIG);
+    DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG));
 
     //require internet access
     if (!navigator.onLine) {
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     // Get hostname from cookie, otherwise leave as null
-    server = getCookie("lastServer");
+    server = CookieUtilities.getCookie("lastServer");
     if (server !== null) hostname = server;
 
     console.log('host name: ' + hostname);
@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         if(socket.length==0) throw new Error("Socket URL cannot be empty");
                         if(!(SocketUtilities.isValidSocket(socket))) throw new Error("Invalid socket URL format");
                         hostname = SocketUtilities.getNameOfSocket(socket);
-                        setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
+                        CookieUtilities.setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + socket);
                         port = SocketUtilities.getPortNumber(http_type, socket);
                         custom_server = "custom";
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
                     }
                 }
-                let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;
+                let socket=CookieUtilities.hasCookie("custom_server")?CookieUtilities.getCookie("custom_server"):undefined;
                 if(socket && SocketUtilities.isValidSocket(socket)) {
                     socket_obtained(socket);
                 } else {
@@ -236,9 +236,9 @@ document.addEventListener("DOMContentLoaded",()=>{
                 //let selectedServerName = this.textContent;
                 //document.getElementById("navbarDropdownMenuLink").textContent =
                 //    selectedServerName;
-                deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
+                CookieUtilities.deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
                 // Save to cookie first
-                setCookie("lastServer", SocketUtilities.getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
+                CookieUtilities.setCookie("lastServer", SocketUtilities.getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
                 location.reload();
                 // drawGame();
             });
@@ -794,7 +794,7 @@ function drawGame() {
                     playername_cache[player_id] = {"raw":name,"insert":name_insert}; // Store names in hash table. Used by showWinner
                     console.log("before call");
                     if (CONFIG["show_notifications"] && !PRODUCTION_MODE)
-                        sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
+                        NotificationUtilities.sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
                 }
 
                 const playerIndex = players[player_id];
@@ -891,7 +891,7 @@ function drawGame() {
                     // auto show the dropdown menu
                     setTimeout(function () {
                         let link=document.getElementById("navbarDropdownMenuLink");
-                        if(link.ariaExpanded=="false")showNavigation(); 
+                        if(link.ariaExpanded=="false")NavigationManager.showNavigation(); 
                     }, 400);
                 }
             }, 400);

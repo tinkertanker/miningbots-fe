@@ -1,22 +1,24 @@
-function notificationPermissionGranted() {
-    return (Notification.permission == "granted");
+let NotificationUtilities = {
+    notificationPermissionGranted: function() {
+        return (Notification.permission == "granted");
+    },
+    askForNotificationPermission: Notification.requestPermission,
 }
 
-askForNotificationPermission=Notification.requestPermission;
-function sendNotification__(title, content, icon) {
-    if (notificationPermissionGranted()) {
+function sendNotification_(title, content, icon) {
+    if (NotficationUtilities.notificationPermissionGranted()) {
         let notification = new Notification(title, { body: content, icon: icon });
         return notification;
     }
 }
 
 //send a notification. doesn't block
-function sendNotification(title, content, icon) {
+NotificationUtilities.sendNotification=function(title, content, icon) {
     console.log("notification send attempted");
-    let notification = sendNotification__(title, content, icon);
+    let notification = sendNotification_(title, content, icon);
     if (notification) return notification;
     const checkLoop = setInterval(() => {
-        notification = sendNotification__(title, content, icon);
+        notification = sendNotification_(title, content, icon);
         if (notification) {
             clearInterval(checkLoop);
             return notification;

@@ -43,7 +43,7 @@
         Mining Bots
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleNavigation(event);">
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" onclick="NavigationManager.toggleNavigation(event);">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="navbar-collapse" id="navbarNavDropdown">
@@ -67,7 +67,7 @@
       <a onclick="HelpManager.show_help()" title="Help" role="button" id="help">
         <svgfile aria-hidden="true" src="/images/ui/help.svg" alt="help icon"></svgfile>
       </a>
-      <a role="button" title="Settings" onclick="settings_window=open_popup();" id="settings-button"><svgfile aria-hidden="true" src="/images/ui/settings.svg"></svgfile></a>
+      <a role="button" title="Settings" onclick="SettingsManager.open_popup();" id="settings-button"><svgfile aria-hidden="true" src="/images/ui/settings.svg"></svgfile></a>
       <script>document.addEventListener("DOMContentLoaded",()=> {
               function setMnemonic(element, useSecondary, key,additional_key) {
                 let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')

@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded",(_e)=>{
       PRODUCTION_MODE = production_mode;
     });
     setTimeout(() => {
-      initialize_main(PRODUCTION_MODE);
+      SettingsManager.initialize_main(PRODUCTION_MODE);
       if (PRODUCTION_MODE) {
         document.getElementById("navbar").classList.add("production-hidden");
       }

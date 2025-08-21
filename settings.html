@@ -47,17 +47,17 @@
         <a onclick="HelpManager.show_settings_help()" title="Help" role="button" id="help">
           <svgfile aria-hidden="true" src="/images/ui/help.svg" alt="help icon"></svgfile>
         </a>
-        <a role="button" onclick="reset_settings_clicked();" title="Reset all settings"
+        <a role="button" onclick="SettingsManager.ClickHandlers.reset_settings_clicked();" title="Reset all settings"
           id="reset-all-button"><svgfile aria-hidden="true" src="/images/ui/reset.svg"></svgfile></a>
-        <a role="button"  onclick="ok_clicked();" title="OK"
+        <a role="button"  onclick="SettingsManager.ClickHandlers.ok_clicked();" title="OK"
           id="ok-button"><svgfile aria-hidden="true" src="/images/ui/ok.svg"></svgfile></a>
-        <a role="button" onclick="cancel_clicked();" title="Cancel"
+        <a role="button" onclick="SettingsManager.ClickHandlers.cancel_clicked();" title="Cancel"
           id="cancel-button"><svgfile aria-hidden="true" src="/images/ui/cancel.svg" style="width:20px;"></svgfile></a>
-        <a role="button" onclick="apply_clicked();" title="Apply"
+        <a role="button" onclick="SettingsManager.ClickHandlers.apply_clicked();" title="Apply"
           id="apply-button"><svgfile aria-hidden="true" src="/images/ui/apply.svg"></svgfile></a>
-        <a role="button" onclick="export_settings();" title="Export settings"
+        <a role="button" onclick="SettingsManager.export_settings();" title="Export settings"
           id="export-button"><svgfile aria-hidden="true" src="/images/ui/export.svg"></svgfile></a>
-        <a role="button" onclick="import_settings();" title="Import settings"
+        <a role="button" onclick="SettingsManager.import_settings();" title="Import settings"
           id="import-button"><svgfile aria-hidden="true" src="/images/ui/import.svg"></svgfile></a>
         <script>
           document.addEventListener("DOMContentLoaded",()=> {
@@ -94,7 +94,7 @@
       </b>
     </div>
   </div>
-  <script>initialize_popup();</script>
+  <script>SettingsManager.initialize_popup();</script>
   <div id="accessibility-labels" style="display:none">
     <span id="help-on-label">Help On</span>
     <span id="help-on-description"></span>
