@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         servers["custom.invalid"].url = socket; // set the URL to the custom server URL
                         server_assigned();
                     } catch (e){
-                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{"text": "OK", "action": prompt_socket}]);
+                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
                     }
                 }
                 let socket=hasCookie("custom_server")?getCookie("custom_server"):undefined;

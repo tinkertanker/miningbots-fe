@@ -72,8 +72,8 @@ function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
     buttons.forEach(button_descriptor => {
         let button=document.createElement("button");
         button.classList.add("dialog-button");
-        button.innerHTML=button_descriptor["text"];
-        let action=button_descriptor["action"];
+        button.innerHTML=button_descriptor.text;
+        let action=button_descriptor.action;
         if (typeof action!="function"){
             action=()=>true;
         }
@@ -173,7 +173,7 @@ let DialogUtilities = {
         }
         dialog=showDialog_(cleanHTML,title,[{"text":"OK","action":()=>{
             ok_handler(input_elem.value);
-        }},{"text":"Cancel","action":cancel_wrapper}],cancel_wrapper,"OK",hasSVGFiles);
+        }},{text:"Cancel",action:cancel_wrapper}],cancel_wrapper,"OK",hasSVGFiles);
         input_elem=document.querySelector(".dialog-input");
         return dialog;
     },

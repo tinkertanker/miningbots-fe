@@ -167,7 +167,7 @@ function export_settings() {
 }
 
 function import_settings() {
-    dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",[{"text":"OK","action": ()=>{
+    dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",[{text:"OK",action: ()=>{
         JSONDownloader.importJSON((json_string)=>{
             //confirmation dialog
             display_settings(JSON.parse(json_string));
@@ -182,7 +182,7 @@ function reset_settings_clicked() {
             window.opener.location.reload();
             location.reload();
         });
-    }},{"text":"Cancel","action":()=>true}]);
+    }},{text:"Cancel",action:()=>true}]);
 }
 function apply_clicked() {
     write_displayed_settings(()=>{
