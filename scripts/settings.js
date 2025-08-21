@@ -380,7 +380,6 @@ function initialize_main(production_status) {
 function onChange(setting_update){
     if(setting_update.key=="theme"){
         setDarkMode(darkModeEnabled({"theme":setting_update.value}));
-        setDarkMode(darkModeEnabled({"theme":setting_update.value}));
     }
 
     update_reset_button(setting_update);
