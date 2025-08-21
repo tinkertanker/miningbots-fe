@@ -1,88 +1,88 @@
 var settings_window;
 const settings = {
     "enable_security": {
-        "type":"boolean",
-        "default":false,
-        "title":"Use secure protocols",
-        "description":"Use HTTPS and WSS over HTTP and WS",
-        "force_value":location.protocol.indexOf('https:')!=-1
+        type:"boolean",
+        default:false,
+        title:"Use secure protocols",
+        description:"Use HTTPS and WSS over HTTP and WS",
+        force_value:location.protocol.indexOf('https:')!=-1
                       ? {"value":true}
                       : null
     },
     "game_port": {
-        "type":"number",
-        "default":9001,
-        "title":"Game Port number",
-        "description":"Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers",
-        "range": {
-            "minimum":1,
-            "maximum":65535
+        type:"number",
+        default:9001,
+        title:"Game Port number",
+        description:"Port number used when connecting to the &quot;Staging&quot;, &quot;Main Game&quot;, &quot;Game&quot; servers",
+        range: {
+            minimum:1,
+            maximum:65535
         },
         force_value:null
     },
     "localhost_port": {
-        "type":"number",
-        "default":9003,
-        "title":"Testing Port number",
-        "description":"Port number used when connecting to the &quot;Testing&quot; server",
-        "range": {
-            "minimum":1,
-            "maximum":65535
+        type:"number",
+        default:9003,
+        title:"Testing Port number",
+        description:"Port number used when connecting to the &quot;Testing&quot; server",
+        range: {
+            minimum:1,
+            maximum:65535
         },
         force_value:null
     },
     "observer_key": {
-        "type":"number",
-        "title": "Observer key",
-        "description":"Observer key used to subscribe to the server",
-        "default":514525537,
-        "range":"unbound",
+        type:"number",
+        title: "Observer key",
+        description:"Observer key used to subscribe to the server",
+        default:514525537,
+        range:"unbound",
         force_value:null
     },
     "show_player_names": {
-        "type":"boolean",
-        "title":"Show player names",
-        "description":`Show player names next to the player IDs in the sidebars and Winner Display
+        type:"boolean",
+        title:"Show player names",
+        description:`Show player names next to the player IDs in the sidebars and Winner Display
           Dialog.<br>
           When on, player sidebar headers will look like this: &quot;Player: 3067498284 (Team's Team)&quot;<br>
           When off,player sidebar headers will look like this: &quot;Player: 3067498284&quot;`,
-        "default":true,
+        default:true,
         force_value:null
     },
     "show_gameid": {
-        "type":"boolean",
-        "title": "Debugging: Display Game ID",
-        "description":`Display the Game ID in the top right corner.<br>
+        type:"boolean",
+        title: "Debugging: Display Game ID",
+        description:`Display the Game ID in the top right corner.<br>
           NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.`,
-        "default":true,
+        default:true,
         force_value:null
     },
     "show_game_status": {
-        "type":"boolean",
-        "title": "Debugging: Display Game Status",
-        "description":`Display the Game Status in the top right corner.<br>
+        type:"boolean",
+        title: "Debugging: Display Game Status",
+        description:`Display the Game Status in the top right corner.<br>
           NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.`,
-        "default":true,
+        default:true,
         force_value:null
     },
     "show_notifications": {
-        "type":"boolean",
-        "title":"Debugging: Enable push notifications",
-        "description":`Enable push notifications when certain events happen (e.g. player
+        type:"boolean",
+        title:"Debugging: Enable push notifications",
+        description:`Enable push notifications when certain events happen (e.g. player
           joined)<br>
           NOTE: If the UI Mode is set to &quot;fullscreen&quot;, Push Notifications will be disabled.`,
-        "default":true,
+        default:true,
         force_value:null
     },
     "theme": {
-        "type":"setpicker",
-        "default":"auto",
-        "title":"Theme",
-        "description":"Set the application theme",
-        "range": [
-            {"name":"light","display":"Light"},
-            {"name":"dark","display":"Dark"},
-            {"name":"auto","display":"Automatic (follow browser theme)"}
+        type:"setpicker",
+        default:"auto",
+        title:"Theme",
+        description:"Set the application theme",
+        range: [
+            {name:"light",display:"Light"},
+            {name:"dark",display:"Dark"},
+            {name:"auto",display:"Automatic (follow browser theme)"}
         ],
         force_value:null
     },
@@ -203,7 +203,7 @@ function ok_clicked() {
 
 function is_value_forced(setting){
     //HACK: use eval to defer parsing
-    return (setting["force_value"]!=null) && eval(`typeof setting["force_value"]["value"] != "undefined"`);
+    return (setting.force_value!=null) && eval(`typeof setting.force_value.value != "undefined"`);
 }
 
 function read_settings_cookie(raw) {
@@ -216,7 +216,7 @@ function read_settings_cookie(raw) {
     if (!raw){
         object_forEach(settings,(name,setting)=>{
         if (is_value_forced(setting)){
-            current_settings[name]=setting["force_value"]["value"];
+            current_settings[name]=setting.force_value.value;
         }
         });
     }
@@ -227,7 +227,7 @@ function display_settings(json_settings) {
         let destination=document.getElementById(key+'_input');
         destination_property=settings[key].type=="boolean" ? "checked" : "value"
         destination[destination_property]=value;
-        update_reset_button({"key":key,"value":value});
+        update_reset_button({key:key,value:value});
     });
 }
 function populate_settings(){
@@ -244,18 +244,18 @@ function populate_settings(){
         text_container.setAttribute('for',key+'_input');
         let title=document.createElement("span");
         title.classList.add("setting-text-name");
-        title.innerHTML=setting["title"];
+        title.innerHTML=setting.title;
         text_container.appendChild(title);
         let description=document.createElement("p");
         description.classList.add("setting-text-description");
-        description.innerHTML=setting["description"];
+        description.innerHTML=setting.description;
         text_container.appendChild(description);
         setting_div.appendChild(text_container);
 
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
         let reset_button=document.createElement("a");
-        let accessibility_text=`Reset the ${setting['title']} setting to default`;
+        let accessibility_text=`Reset the ${setting.title} setting to default`;
         reset_button.id=key+'_reset';
         reset_button.role="button";
         reset_button.setAttribute("title",accessibility_text);
@@ -277,23 +277,23 @@ function populate_settings(){
         right_box.appendChild(reset_button);
 
         let input_element=document.createElement("input");
-        switch(setting["type"]){
+        switch(setting.type){
             case "boolean":
                 input_element.type="checkbox";
                 break;
             case "number":
                 input_element.type="number";
-                if(typeof setting["range"]=="object"){
-                    input_element.min=setting["range"]["minimum"];
-                    input_element.max=setting["range"]["maximum"];
+                if(typeof setting.range=="object"){
+                    input_element.min=setting.range.minimum;
+                    input_element.max=setting.range.maximum;
                 }
                 break;
             case "setpicker":
                 input_element=document.createElement("select");
-                setting["range"].forEach(option=>{
+                setting.range.forEach(option=>{
                     let option_element=document.createElement("option");
-                    option_element.setAttribute("value",option["name"]);
-                    option_element.innerHTML=option["display"];
+                    option_element.setAttribute("value",option.name);
+                    option_element.innerHTML=option.display;
                     input_element.appendChild(option_element);
                 });
                 break;
@@ -306,8 +306,8 @@ function populate_settings(){
         input_element.disabled=value_forced;
         input_element.style.cursor=value_forced?"not-allowed":"default";
         input_element.addEventListener('change',(e)=>{
-            let property=setting["type"]=="boolean"?"checked":"value";
-            let update={"key":key,"value":e.target[property]};
+            let property=setting.type=="boolean"?"checked":"value";
+            let update={key:key,value:e.target[property]};
             onChange(update);
         })
         right_box.appendChild(input_element);
@@ -318,12 +318,12 @@ function populate_settings(){
 }
 
 function update_reset_button(setting_update){
-    let show=setting_update["value"]!=settings[setting_update["key"]]["default"]; // true if the value is not equal to the default
-    document.getElementById(setting_update["key"]+'_reset').style.display=show?"block":"none";
+    let show=setting_update.value!=settings[setting_update.key].default; // true if the value is not equal to the default
+    document.getElementById(setting_update.key+'_reset').style.display=show?"block":"none";
 }
 
 function reset_setting(setting_key){
-    update_setting(setting_key,settings[setting_key]["default"]);
+    update_setting(setting_key,settings[setting_key].default);
 }
 
 function initialize_popup() {
@@ -378,16 +378,16 @@ function initialize_main(production_status) {
 }
 
 function onChange(setting_update){
-    if(setting_update["key"]=="theme"){
-        setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
-        setDarkMode(darkModeEnabled({"theme":setting_update["value"]}));
+    if(setting_update.key=="theme"){
+        setDarkMode(darkModeEnabled({"theme":setting_update.value}));
+        setDarkMode(darkModeEnabled({"theme":setting_update.value}));
     }
 
     update_reset_button(setting_update);
 }
 
 function update_setting(setting,value){
-    let property=settings[setting]["type"]=="boolean"?"checked":"value";
+    let property=settings[setting].type=="boolean"?"checked":"value";
     let element=document.getElementById(setting+"_input");
     element[property]=value;
     element.dispatchEvent(new Event("change"));//force the change handler to run
