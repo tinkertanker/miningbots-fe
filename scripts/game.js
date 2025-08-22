@@ -170,6 +170,23 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     //set the hostname to the correct hostname if the cookie value is a special one
     if (hostname && servers.hasOwnProperty(hostname)) {
+        // callback for when a valid server socket is obtained
+        function server_assigned() {
+            console.log(servers["localhost"].name);
+            switch(custom_server){
+                case false:
+                    setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
+                    break;
+                case "current":
+                    setServerName(servers["current.invalid"].name);
+                    break;
+                case "custom":
+                    setServerName("Custom");
+                    break;
+            }
+            drawGame();
+        }
+        // handle the special domains
         switch (hostname) {
             case "custom.invalid":
                 setServerName(servers["custom.invalid"].name);
@@ -898,19 +915,4 @@ function drawGame() {
                 }
             }, 400);
         });
-}
-function server_assigned() {
-    console.log(servers["localhost"].name);
-    switch(custom_server){
-        case false:
-            setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
-            break;
-        case "current":
-            setServerName(servers["current.invalid"].name);
-            break;
-        case "custom":
-            setServerName("Custom");
-            break;
-    }
-    drawGame();
 }
