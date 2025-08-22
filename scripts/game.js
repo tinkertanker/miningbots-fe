@@ -19,8 +19,6 @@ function should_confirm_unload() {
     return Object.keys(playername_cache).length > 0;
 }
 
-function CancelLoading(){return CancelLoading};
-
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
 
