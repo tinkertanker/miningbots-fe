@@ -15,10 +15,12 @@ var playername_cache = {};
 var gameStatus = "kNotStarted";
 var servers={};
 
-// NOTE: not so secure
 function mapName(name,key){
-    //HACK: pass a variable as a string so the reading is deferred
-    return eval(`typeof ${name} != 'undefined' ? ${name}['${key}'] : '${key}'`);
+    if(typeof NameMaps=="object" && NameMaps.hasOwnProperty(name) && NameMaps[name].hasOwnProperty(key)){
+        return NameMaps[name][key];
+    } else {
+        return key;
+    }
 }
 
 function should_confirm_unload() {
@@ -793,7 +795,7 @@ function drawGame() {
                 if (!playername_cache[player_id]) { // make sure player isn't already cached
                     playername_cache[player_id] = {"raw":name,"insert":name_insert}; // Store names in hash table. Used by showWinner
                     console.log("before call");
-                    if (CONFIG["show_notifications"] && !PRODUCTION_MODE)
+                    if (CONFIG["show_notifications"] && !ModeManager.IS_PRODUCTION_MODE)
                         NotificationUtilities.sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
                 }
 
