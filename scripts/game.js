@@ -7,7 +7,7 @@ console.log("script loaded");
 
 var server=null;
 var port;
-var CONFIG=SettingsManager.default_settings;
+var CONFIG_=SettingsManager.default_settings;
 var http_type="http";var ws_type="ws";
 var custom_server = false;
 var gameId;
@@ -24,11 +24,11 @@ function CancelLoading(){return CancelLoading};
 document.addEventListener("DOMContentLoaded",()=>{
     console.log("script activated");
 
-    CONFIG = SettingsManager.read_settings_cookie();
+    CONFIG_ = SettingsManager.read_settings_cookie();
 
     // set dark mode
-    DarkModeManager.pairDarkMode(CONFIG);
-    DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG));
+    DarkModeManager.pairDarkMode(CONFIG_);
+    DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_));
 
     //require internet access
     if (!navigator.onLine) {
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     console.log('host name: ' + hostname);
     
     //set protocols
-    if (CONFIG["enable_security"]) {
+    if (CONFIG_["enable_security"]) {
         http_type = "https";
         ws_type = "wss";
     } else {
@@ -59,8 +59,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
     //Dictionary of servers and respective names, urls
     servers = (()=>{
-        const gport=CONFIG["game_port"];
-        const lport = CONFIG["localhost_port"];
+        const gport=CONFIG_["game_port"];
+        const lport = CONFIG_["localhost_port"];
         return {
         "p1.bootcamp.tk.sg": {
             name: "Game 1",
@@ -215,7 +215,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 break;
             case "current.invalid":
                 hostname=location.hostname;
-                port=CONFIG["localhost_port"];
+                port=CONFIG_["localhost_port"];
                 custom_server="current";
                 server_assigned();
                 break;
@@ -344,12 +344,12 @@ function drawGame() {
     function updateGameState(gameStatus_new) {
         gameStatus=gameStatus_new || gameStatus;
         console.log("raw game status: " + gameStatus);
-        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + NameMaps.mapName("gameStatusMap",gameStatus);
+        if (CONFIG_["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + NameMaps.mapName("gameStatusMap",gameStatus);
     }
 
     function updateGameId(game_id) {
         gameId = game_id || gameId;
-        if (CONFIG["show_gameid"])
+        if (CONFIG_["show_gameid"])
         document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
     }
 
@@ -607,7 +607,7 @@ function drawGame() {
             // subscribe to the websocket as soon as it connects
             ws.onopen = function () {
                 console.log('Connected to WebSocket server');
-                const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: CONFIG["observer_key"], observer_name: 'Observer' });
+                const subscribeRequest = JSON.stringify({ game_id: result.game_id, observer_key: CONFIG_["observer_key"], observer_name: 'Observer' });
                 ws.send(subscribeRequest);
             };
 
@@ -800,11 +800,11 @@ function drawGame() {
                 let playerInfo = await fetchPlayerNames(gameId, [player_id]);
                 console.log(playerInfo);
                 var name = playerInfo[0].name;
-                let name_insert = CONFIG["show_player_names"] ? ` (${name})` : "";
+                let name_insert = CONFIG_["show_player_names"] ? ` (${name})` : "";
                 if (!playername_cache[player_id]) { // make sure player isn't already cached
                     playername_cache[player_id] = {"raw":name,"insert":name_insert}; // Store names in hash table. Used by showWinner
                     console.log("before call");
-                    if (CONFIG["show_notifications"] && !ModeManager.IS_PRODUCTION_MODE)
+                    if (CONFIG_["show_notifications"] && !ModeManager.IS_PRODUCTION_MODE)
                         NotificationUtilities.sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
                 }
 
