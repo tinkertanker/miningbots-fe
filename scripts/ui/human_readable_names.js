@@ -5,7 +5,7 @@ const actionMap = {
     "kScan": "Scanning for nearby resources",
     "kMine": "Mining resources",
     "kTransfer": "Transferring cargo",
-    "kBuildBot": "Building new mining bot",
+    "kBuildBot": "Building new bot",
     "kExplode": "Exploding",
     "kNumberOfActions": "Enumerating actions"
 }
