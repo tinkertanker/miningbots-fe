@@ -33,3 +33,13 @@ const NameMaps = {
         undefined: "Unknown"
     }
 }
+NameMaps.mapName=function(table,key){
+    if(typeof NameMaps=="object"        &&
+       NameMaps.hasOwnProperty(table)   &&
+       typeof NameMaps[table]=="object" &&
+       NameMaps[table].hasOwnProperty(key)){
+        return NameMaps[table][key];
+    } else {
+        return key;
+    }
+}

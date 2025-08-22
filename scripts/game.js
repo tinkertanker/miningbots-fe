@@ -15,14 +15,6 @@ var playername_cache = {};
 var gameStatus = "kNotStarted";
 var servers={};
 
-function mapName(name,key){
-    if(typeof NameMaps=="object" && NameMaps.hasOwnProperty(name) && NameMaps[name].hasOwnProperty(key)){
-        return NameMaps[name][key];
-    } else {
-        return key;
-    }
-}
-
 function should_confirm_unload() {
     return Object.keys(playername_cache).length > 0;
 }
@@ -352,7 +344,7 @@ function drawGame() {
     function updateGameState(gameStatus_new) {
         gameStatus=gameStatus_new || gameStatus;
         console.log("raw game status: " + gameStatus);
-        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + mapName("gameStatusMap",gameStatus);
+        if (CONFIG["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + NameMaps.mapName("gameStatusMap",gameStatus);
     }
 
     function updateGameId(game_id) {
@@ -698,11 +690,11 @@ function drawGame() {
                 // update the displayed job information
                 // It won't be displayed yet however
                 if (current_job_id == 0) {
-                    job = { action: mapName('actionMap','kNoAction'), status: mapName('statusMap','kNotStarted') };
+                    job = { action: NameMaps.mapName('actionMap','kNoAction'), status: NameMaps.mapName('statusMap','kNotStarted') };
                 } else if (jobMap.has(current_job_id)) {
                     job = jobMap.get(current_job_id);
                 } else {
-                    job = { action: mapName('actionMap','kNoAction'), status: mapName('statusMap','kNotStarted') };
+                    job = { action: NameMaps.mapName('actionMap','kNoAction'), status: NameMaps.mapName('statusMap','kNotStarted') };
                 }
                 botMap.set(id, [position, variant, current_energy, job, cargo, playerIndex]);
                 var newRow = ROWS - position.y - 1;
@@ -717,7 +709,7 @@ function drawGame() {
             //save the display text of a job
             function updateJob(data) {
                 const { id, action, status } = data;
-                var job = { action: mapName('actionMap',action), status: mapName('statusMap',status) }
+                var job = { action: NameMaps.mapName('actionMap',action), status: NameMaps.mapName('statusMap',status) }
                 jobMap.set(id, job);
             }
 
@@ -840,7 +832,7 @@ function drawGame() {
                         const botDiv = document.createElement('div');
                         console.log('cargo: ', cargo);
                         botDiv.classList.add('bot-info');
-                        let variantLabel = mapName('variantMap',variant);
+                        let variantLabel = NameMaps.mapName('variantMap',variant);
                         botDiv.innerHTML = `
             <h4><b>${variantLabel}</b> ${id}</h4>
             <hr>
