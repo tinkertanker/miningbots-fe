@@ -6,7 +6,7 @@ let NotificationUtilities = {
 }
 
 function sendNotification_(title, content, icon) {
-    if (NotficationUtilities.notificationPermissionGranted()) {
+    if (NotificationUtilities.notificationPermissionGranted()) {
         let notification = new Notification(title, { body: content, icon: icon });
         return notification;
     }

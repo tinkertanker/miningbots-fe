@@ -573,7 +573,7 @@ function drawGame() {
                                 const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
                                 const botImage = images[variant];
                                 const playerIndex = Math.floor(element_ / 2);
-                                const color = (DM_ENABLED?inverted_colors:colors)[playerIndex];
+                                const color = (DarkModeManager.isDarkMode()?inverted_colors:colors)[playerIndex];
                                 console.log(color, " ", variant);
                                 drawABot(col, row, color, botImage);
                         }
@@ -805,7 +805,7 @@ function drawGame() {
                 const sidebar = getSidebar(playerIndex);
                 console.log('sidebar:', sidebar);
 
-                const color = (DM_ENABLED?inverted_colors:colors)[playerIndex];
+                const color = (DarkModeManager.isDarkMode()?inverted_colors:colors)[playerIndex];
 
                 sidebar.innerHTML = ''; // Clear the existing sidebar content
 

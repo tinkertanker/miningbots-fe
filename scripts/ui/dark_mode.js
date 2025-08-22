@@ -1,7 +1,10 @@
 const DM_DEVICE_=window.matchMedia('(prefers-color-scheme: dark)');
 let DM_ENABLED_=false;
-let DarkModeManager={};
-DarkModeManager.darkModeEnabled=function(settings){
+let DarkModeManager={
+    isDarkMode: function(){
+        return DM_ENABLED_;
+    },
+    darkModeEnabled: function(settings){
     switch (settings["theme"]){
         case "dark":
             return true;
@@ -11,6 +14,7 @@ DarkModeManager.darkModeEnabled=function(settings){
             return DM_DEVICE_.matches;
     }
 }
+};
 DarkModeManager.setDarkMode=function(enabled){
     if(enabled==DM_ENABLED_)return;
     if(enabled){
