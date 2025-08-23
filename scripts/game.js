@@ -160,6 +160,10 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     //set the hostname to the correct hostname if the cookie value is a special one
     if (hostname && servers.hasOwnProperty(hostname)) {
+        // helper to update lael in navbar
+        function setServerName(name){
+            document.getElementById("navbarDropdownMenuLink").textContent=`Server: ${name}`;
+        }
         // callback for when a valid server socket is obtained
         function server_assigned() {
             console.log(servers["localhost"].name);
