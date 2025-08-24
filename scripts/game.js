@@ -240,6 +240,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             menuItem.classList.add("dropdown-item");
             menuItem.innerText=server.name;
             menuItem.href="#";
+            //if custom is selected, store "custom.invalid" literally, not the current custom server.
+            //this is required as we have to store a key valid in the servers object
             menuItem.setAttribute("data-url",key=="custom.invalid"?"custom.invalid":server.url);
 
             // add click handlers
