@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 function empty_handler() {
                     setServerName("Custom");
                     LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
+                    setTimeout(NavigationManager.showNavigation,200);
                 }
                 let socket_obtained;
                 function prompt_socket() {
