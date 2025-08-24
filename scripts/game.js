@@ -13,7 +13,6 @@ var custom_server = false;
 var gameId;
 var playername_cache = {};
 var gameStatus = "kNotStarted";
-var servers={};
 
 function should_confirm_unload() {
     return Object.keys(playername_cache).length > 0;
@@ -56,7 +55,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         ws_type = "ws";
     }
     //Dictionary of servers and respective names, urls
-    servers = (()=>{
+    const servers = (()=>{
         const gport=CONFIG_["game_port"];
         const lport = CONFIG_["localhost_port"];
         return {
@@ -203,7 +202,6 @@ document.addEventListener("DOMContentLoaded",()=>{
                         console.log("URL: " + socket);
                         port = SocketUtilities.getPortNumber(http_type, socket);
                         custom_server = "custom";
-                        servers["custom.invalid"].url = socket; // set the URL to the custom server URL
                         server_assigned();
                     } catch (e){
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
@@ -240,9 +238,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             menuItem.classList.add("dropdown-item");
             menuItem.innerText=server.name;
             menuItem.href="#";
-            //if custom is selected, store "custom.invalid" literally, not the current custom server.
-            //this is required as we have to store a key valid in the servers object
-            menuItem.setAttribute("data-url",key=="custom.invalid"?"custom.invalid":server.url);
+            menuItem.setAttribute("data-url",server.url);
 
             // add click handlers
             menuItem.addEventListener("click", function (event) {
