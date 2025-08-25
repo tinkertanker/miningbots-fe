@@ -232,13 +232,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     // Function to populate the dropdown menu (server list)
     function populateDropdown() {
         let dropdownMenu = document.getElementById("dropdown-menu");
-        object_forEach(servers,(key,server) => {
+        object_forEach(servers,(hostname,server) => {
             //create the links and set the text on them
             let menuItem=document.createElement('a');
             menuItem.classList.add("dropdown-item");
             menuItem.innerText=server.name;
             menuItem.href="#";
-            menuItem.setAttribute("data-url",server.url);
+            menuItem.setAttribute("data-hostname",hostname);
         
             //attach them to the UI
             dropdownMenu.appendChild(menuItem);
@@ -247,15 +247,15 @@ document.addEventListener("DOMContentLoaded",()=>{
         // add click handlers
         dropdownMenu.addEventListener("click", function (event) {
             event.preventDefault();
-            if(!event.target.hasAttribute("data-url"))return;
-            let selectedServerUrl = event.target.getAttribute("data-url");
-            console.log(selectedServerUrl);
+            if(!event.target.hasAttribute("data-hostname"))return;
+            let selectedServerHostname = event.target.getAttribute("data-hostname");
+            console.log(selectedServerHostname);
             //let selectedServerName = this.textContent;
             //document.getElementById("navbarDropdownMenuLink").textContent =
             //    selectedServerName;
             CookieUtilities.deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
             // Save to cookie first
-            CookieUtilities.setCookie("lastServer", SocketUtilities.getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
+            CookieUtilities.setCookie("lastServer", selectedServerHostname, "Fri, 31 Dec 9999 23:59:59 GMT", "/");
             location.reload();
             // drawGame();
         });
