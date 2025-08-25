@@ -239,24 +239,25 @@ document.addEventListener("DOMContentLoaded",()=>{
             menuItem.innerText=server.name;
             menuItem.href="#";
             menuItem.setAttribute("data-url",server.url);
-
-            // add click handlers
-            menuItem.addEventListener("click", function (event) {
-                event.preventDefault();
-                let selectedServerUrl = this.getAttribute("data-url");
-                console.log(selectedServerUrl);
-                //let selectedServerName = this.textContent;
-                //document.getElementById("navbarDropdownMenuLink").textContent =
-                //    selectedServerName;
-                CookieUtilities.deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
-                // Save to cookie first
-                CookieUtilities.setCookie("lastServer", SocketUtilities.getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
-                location.reload();
-                // drawGame();
-            });
         
             //attach them to the UI
             dropdownMenu.appendChild(menuItem);
+        });
+
+        // add click handlers
+        dropdownMenu.addEventListener("click", function (event) {
+            event.preventDefault();
+            if(!event.target.hasAttribute("data-url"))return;
+            let selectedServerUrl = event.target.getAttribute("data-url");
+            console.log(selectedServerUrl);
+            //let selectedServerName = this.textContent;
+            //document.getElementById("navbarDropdownMenuLink").textContent =
+            //    selectedServerName;
+            CookieUtilities.deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
+            // Save to cookie first
+            CookieUtilities.setCookie("lastServer", SocketUtilities.getNameOfSocket(selectedServerUrl), "Fri, 31 Dec 9999 23:59:59 GMT", "/");
+            location.reload();
+            // drawGame();
         });
     }
     populateDropdown();
