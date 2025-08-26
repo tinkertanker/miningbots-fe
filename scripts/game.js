@@ -61,99 +61,98 @@ document.addEventListener("DOMContentLoaded",()=>{
         return {
         "p1.bootcamp.tk.sg": {
             name: "Game 1",
-            url: `p1.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p2.bootcamp.tk.sg": {
             name: "Game 2",
-            url: `p2.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p3.bootcamp.tk.sg": {
             name: "Game 3",
-            url: `p3.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p4.bootcamp.tk.sg": {
             name: "Game 4",
-            url: `p4.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p5.bootcamp.tk.sg": {
             name: "Game 5",
-            url: `p5.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p6.bootcamp.tk.sg": {
             name: "Game 6",
-            url: `p6.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p7.bootcamp.tk.sg": {
             name: "Main Game",
-            url: `p7.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p8.bootcamp.tk.sg": {
             name: "Game 8",
-            url: `p8.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p9.bootcamp.tk.sg": {
             name: "Game 9",
-            url: `p9.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "p10.bootcamp.tk.sg": {
             name: "Game 10",
-            url: `p10.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s1.bootcamp.tk.sg": {
             name: "Staging 1",
-            url: `s1.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s2.bootcamp.tk.sg": {
             name: "Staging 2",
-            url: `s2.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s3.bootcamp.tk.sg": {
             name: "Staging 3",
-            url: `s3.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s4.bootcamp.tk.sg": {
             name: "Staging 4",
-            url: `s4.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s5.bootcamp.tk.sg": {
             name: "Staging 5",
-            url: `s5.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s6.bootcamp.tk.sg": {
             name: "Staging 6",
-            url: `s6.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s7.bootcamp.tk.sg": {
             name: "Staging 7",
-            url: `s7.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s8.bootcamp.tk.sg": {
             name: "Staging 8",
-            url: `s8.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s9.bootcamp.tk.sg": {
             name: "Staging 9",
-            url: `s9.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "s10.bootcamp.tk.sg": {
             name: "Staging 10",
-            url: `s10.bootcamp.tk.sg:${gport}`,
+            port: gport,
         },
         "current.invalid": {
             name: "Testing (on frontend server)",
-            url: "current.invalid",
+            type:"fe_host"
         },
         "localhost": {
             name: "Testing (on localhost)",
-            url: `localhost:${lport}`,
+            port: lport,
         },
         "miningbots-api.dev.tk.sg": {
             name: "Development",
-            url: "miningbots-api.dev.tk.sg",
         },
         "custom.invalid": { // invalid special domain by IANA
             name: "Custom...",
-            url: "custom.invalid",
+            type: "custom"
         }
     }})();
 
@@ -180,8 +179,8 @@ document.addEventListener("DOMContentLoaded",()=>{
             drawGame();
         }
         // handle the special domains
-        switch (hostname) {
-            case "custom.invalid":
+        switch (servers[hostname].type) {
+            case "custom":
                 setServerName(servers["custom.invalid"].name);
                 function empty_handler() {
                     setServerName("Custom");
@@ -215,7 +214,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     prompt_socket();
                 }
                 break;
-            case "current.invalid":
+            case "fe_host":
                 hostname=location.hostname;
                 port=CONFIG_["localhost_port"];
                 custom_server="current";
@@ -223,7 +222,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 break;
             default:
                 console.log("URL: " + servers[hostname].url);
-                port = SocketUtilities.getPortNumber(http_type, servers[hostname].url);
+                port = SocketUtilities.applyDefaultPort(http_type, servers[hostname].port);
                 server_assigned();
         }
     } else {

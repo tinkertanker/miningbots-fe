@@ -2,18 +2,19 @@ const SocketUtilities = {
     getNameOfSocket: function(socket) {
         return socket.split(":", 1)[0];
     },
-    getPortNumber: function(protocol,socket){
-        var socket_parts=socket.split(":",2);
-        if(socket_parts.length>1){
-            return parseInt(socket_parts[1]);
+    applyDefaultPort: function(protocol, port) {
+        if (port && (typeof port == "number" || (typeof port == "string" && port.length >= 0))) {
+            if(typeof port == "string")
+                return parseInt(port);
+            else
+                return port;
         } else {
-            if (protocol=="https"){
+            if (protocol === "https") {
                 return 443;
-            } else if (protocol=="http") {
+            } else {
                 return 80;
             }
         }
-        return null;
     },
     isValidSocket: function(string) {
         let url;
@@ -32,4 +33,9 @@ const SocketUtilities = {
 
         return true;
     }
+};
+
+SocketUtilities.getPortNumber=function(protocol,socket){
+    var socket_parts=socket.split(":",2);
+    return SocketUtilities.applyDefaultPort(protocol, socket_parts[1]);
 };
