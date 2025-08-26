@@ -207,7 +207,8 @@ document.addEventListener("DOMContentLoaded",()=>{
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
                     }
                 }
-                let socket=CookieUtilities.hasCookie("custom_server")?CookieUtilities.getCookie("custom_server"):undefined;
+                // we don't need to check if the cookie exists, since getCookie will return undefined if it doesn't exist anyways
+                let socket=CookieUtilities.getCookie("custom_server");
                 if(socket && SocketUtilities.isValidSocket(socket)) {
                     socket_obtained(socket);
                 } else {
