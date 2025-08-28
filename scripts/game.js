@@ -54,7 +54,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         http_type = "http";
         ws_type = "ws";
     }
-    //Dictionary of servers and respective names, urls
+    //Dictionary of servers. The key is the hostname, the value is an object with name and port
+    //The port can be left undefined if the server uses the default ports (80 for http, 443 for https)
+    //The name is what will be displayed in the server selection dropdown
+    //The type can be left undefined for normal servers. Special types are:
+    //  "custom": prompts the user for a custom socket URL. The URL is saved in a separate cookie "custom_server"
+    //  "fe_host": uses the hostname of the frontend server (the one serving this webpage)
     const servers = (()=>{
         const gport=CONFIG_["game_port"];
         const lport = CONFIG_["localhost_port"];
