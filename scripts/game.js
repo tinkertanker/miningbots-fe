@@ -9,7 +9,6 @@ var server=null;
 var port;
 var CONFIG_=SettingsManager.default_settings;
 var http_type="http";var ws_type="ws";
-var custom_server = false;
 var gameId;
 var playername_cache = {};
 var gameStatus = "kNotStarted";
@@ -170,16 +169,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         // callback for when a valid server socket is obtained
         function server_assigned() {
             console.log(servers["localhost"].name);
-            switch(custom_server){
-                case false:
-                    setServerName(hostname !== null ? servers[hostname].name : "Choose a server");
-                    break;
-                case "current":
-                    setServerName(servers["current.invalid"].name);
-                    break;
-                case "custom":
+            switch(hostname){
+                case "custom.invalid":
                     setServerName("Custom");
                     break;
+                default:
+                    setServerName(servers[hostname].name);
             }
             drawGame();
         }
