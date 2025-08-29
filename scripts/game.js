@@ -167,15 +167,12 @@ document.addEventListener("DOMContentLoaded",()=>{
             document.getElementById("navbarDropdownMenuLink").textContent=`Server: ${name}`;
         }
         // callback for when a valid server socket is obtained
-        function server_assigned() {
+        function server_assigned(isCustomServer) {
             console.log(servers["localhost"].name);
-            switch(hostname){
-                case "custom.invalid":
-                    setServerName("Custom");
-                    break;
-                default:
-                    setServerName(servers[hostname].name);
-            }
+            if(isCustomServer)
+                setServerName("Custom");
+            else
+                setServerName(servers[hostname].name);
             drawGame();
         }
         // handle the special domains
@@ -200,8 +197,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         CookieUtilities.setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + socket);
                         port = SocketUtilities.getPortNumber(http_type, socket);
-                        custom_server = "custom";
-                        server_assigned();
+                        server_assigned(true);
                     } catch (e){
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
                     }
