@@ -5,7 +5,7 @@ console.log("script loaded");
 // var port = 443;
 // var hostname = "localhost";
 
-var port;
+var hostname, port;
 var CONFIG_=SettingsManager.default_settings;
 var http_type="http";var ws_type="ws";
 var gameId;
