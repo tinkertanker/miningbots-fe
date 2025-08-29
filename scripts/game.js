@@ -8,9 +8,7 @@ console.log("script loaded");
 var hostname, port;
 var CONFIG_=SettingsManager.default_settings;
 var http_type="http";var ws_type="ws";
-var gameId;
 var playername_cache = {};
-var gameStatus = "kNotStarted";
 
 function should_confirm_unload() {
     return Object.keys(playername_cache).length > 0;
@@ -337,6 +335,9 @@ function drawGame() {
     terrainImages.grasslands.src = 'images/grassland.jpg';
     terrainImages.hills.src = 'images/hills.jpg';
     terrainImages.mountains.src = 'images/mountain.jpg';*/
+
+    var gameId;
+    var gameStatus = "kNotStarted";
 
     // display the value of the gameStatus on the webpage
     function updateGameState(gameStatus_new) {
