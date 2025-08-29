@@ -340,7 +340,7 @@ function drawGame() {
     var gameStatus = "kNotStarted";
 
     // display the value of the gameStatus on the webpage
-    function updateGameState(gameStatus_new) {
+    function updateGameStatus(gameStatus_new) {
         gameStatus=gameStatus_new || gameStatus;
         console.log("raw game status: " + gameStatus);
         if (CONFIG_["show_gameStatus"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + NameMaps.mapName("gameStatusMap",gameStatus);
@@ -382,7 +382,7 @@ function drawGame() {
                 gameStatus = game_info.game_status;
 
                 //post the game status on the DOM
-                updateGameState();
+                updateGameStatus();
 
                 //show the game ID in the navbar
                 setTimeout(()=>{
@@ -639,18 +639,18 @@ function drawGame() {
                                             updateLand(landUpdate);
                                         })
                                     }
-                                    updateGameState(data.game_status);
+                                    updateGameStatus(data.game_status);
                                     updateUI(data.player_id);
                                     render();
                                     break;
                                 case 'kEndInWin':
                                     console.log(`game ended player id ${data.player_id} won`);
-                                    updateGameState(data.game_status);
+                                    updateGameStatus(data.game_status);
                                     showWinner(data.player_id);
                                     break;
                                 case 'kEndInDraw':
                                     console.log('game ended in draw');
-                                    updateGameState(data.game_status);
+                                    updateGameStatus(data.game_status);
                                     break;
                                 default:
                                     console.log(data.UpdateType);
