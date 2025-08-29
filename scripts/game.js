@@ -5,7 +5,6 @@ console.log("script loaded");
 // var port = 443;
 // var hostname = "localhost";
 
-var server=null;
 var port;
 var CONFIG_=SettingsManager.default_settings;
 var http_type="http";var ws_type="ws";
@@ -40,8 +39,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     // Get hostname from cookie, otherwise leave as null
-    server = CookieUtilities.getCookie("lastServer");
-    if (server !== null) hostname = server;
+    (()=>{
+        let server=CookieUtilities.getCookie("lastServer");
+        if (server !== null) hostname = server;
+    })();
 
     console.log('host name: ' + hostname);
     
