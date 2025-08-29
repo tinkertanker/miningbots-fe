@@ -897,16 +897,12 @@ function drawGame() {
             console.error("Error:", error);
             LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
             setTimeout(function () {
-                if (server != undefined) {
-                    // if the custom option is selected but the user canceled the selection, don't show an error dialog
-                    if (hostname != "custom.invalid")
-                        alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                    // auto show the dropdown menu
-                    setTimeout(function () {
-                        let link=document.getElementById("navbarDropdownMenuLink");
-                        if(link.ariaExpanded=="false")NavigationManager.showNavigation(); 
-                    }, 400);
-                }
+                alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
+                // auto show the dropdown menu
+                setTimeout(function () {
+                    let link=document.getElementById("navbarDropdownMenuLink");
+                    if(link.ariaExpanded=="false")NavigationManager.showNavigation(); 
+                }, 400);
             }, 400);
         });
 }
