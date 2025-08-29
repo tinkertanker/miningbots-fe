@@ -27,3 +27,13 @@ function object_map_values(object,f){
     });
     return target;
 }
+
+// helper to create a subscope for intermediate values, without passing any arguments
+function in_private_scope(f){
+    return f();
+}
+
+// helper to create a subscope for intermediate values
+function with_value(value,f){
+    return f(value);
+}

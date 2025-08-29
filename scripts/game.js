@@ -39,10 +39,9 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     // Get hostname from cookie, otherwise leave as null
-    (()=>{
-        let server=CookieUtilities.getCookie("lastServer");
+    with_value(CookieUtilities.getCookie("lastServer"),(server)=>{
         if (server !== null) hostname = server;
-    })();
+    });
 
     console.log('host name: ' + hostname);
     
@@ -60,7 +59,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     //The type can be left undefined for normal servers. Special types are:
     //  "custom": prompts the user for a custom socket URL. The URL is saved in a separate cookie "custom_server"
     //  "fe_host": uses the hostname of the frontend server (the one serving this webpage)
-    const servers = (()=>{
+    const servers = in_private_scope(()=>{
         const gport=CONFIG_["game_port"];
         const lport = CONFIG_["localhost_port"];
         return {
@@ -159,7 +158,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             name: "Custom...",
             type: "custom"
         }
-    }})();
+    }});
 
     //set the hostname to the correct hostname if the cookie value is a special one
     if (hostname && servers.hasOwnProperty(hostname)) {
