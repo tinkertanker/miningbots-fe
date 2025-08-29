@@ -49,7 +49,7 @@ let SettingsManager={
             default:true,
             force_value:null
         },
-        "show_gameid": {
+        "show_gameId": {
             type:"boolean",
             title: "Debugging: Display Game ID",
             description:`Display the Game ID in the top right corner.<br>
@@ -57,7 +57,7 @@ let SettingsManager={
             default:true,
             force_value:null
         },
-        "show_game_status": {
+        "show_gameStatus": {
             type:"boolean",
             title: "Debugging: Display Game Status",
             description:`Display the Game Status in the top right corner.<br>

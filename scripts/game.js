@@ -343,13 +343,13 @@ function drawGame() {
     function updateGameState(gameStatus_new) {
         gameStatus=gameStatus_new || gameStatus;
         console.log("raw game status: " + gameStatus);
-        if (CONFIG_["show_game_status"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + NameMaps.mapName("gameStatusMap",gameStatus);
+        if (CONFIG_["show_gameStatus"]) document.getElementById("gameStatus").innerHTML = "Game Status: " + NameMaps.mapName("gameStatusMap",gameStatus);
     }
 
     function updateGameId(game_id) {
         gameId = game_id || gameId;
-        if (CONFIG_["show_gameid"])
-        document.getElementById("gameID").innerHTML = "Game ID: " + gameId;
+        if (CONFIG_["show_gameId"])
+        document.getElementById("gameId").innerHTML = "Game ID: " + gameId;
     }
 
     // connect to the server to fetch the list of games
