@@ -385,9 +385,9 @@ function drawGame() {
                 updateGameStatus();
 
                 //show the game ID in the navbar
-                setTimeout(()=>{
+                //setTimeout(()=>{
                     updateGameId();
-                },0);
+                //},0);
 
                 // make sure the game is running
                 if (gameStatus == 'kEnded') {
