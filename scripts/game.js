@@ -891,13 +891,11 @@ function drawGame() {
             if(error.message=="cancelled")return;
             console.error("Error:", error);
             LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
-            setTimeout(function () {
-                alert(`Error connecting to ${http_type}://${hostname}:${port}: ` + error + "\nThe server might be offline.\nTry selecting another server from the menu."); // If a server is selected, check if it exists
-                // auto show the dropdown menu
-                setTimeout(function () {
+            DialogUtilities.showDialog(`Error connecting to ${http_type}://${hostname}:${port}: <br><br>` + error + "<br><br>The server might be offline.<br>Try selecting another server from the menu.","Connection Failed",[{"text":"OK","action":()=>{
+                setTimeout(()=>{
                     let link=document.getElementById("navbarDropdownMenuLink");
                     if(link.ariaExpanded=="false")NavigationManager.showNavigation(); 
-                }, 400);
-            }, 400);
+                },0);
+            }}]);
         });
 }
