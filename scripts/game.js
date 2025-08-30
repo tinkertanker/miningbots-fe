@@ -469,13 +469,13 @@ function drawGame() {
 
             // browser window dimensions
             updateDimensions(true);
-            (()=> {
+            in_private_scope(()=> {
                 let resizeTimeout = null;
                 window.addEventListener("resize",(_e)=>{
                     if(resizeTimeout) clearTimeout(resizeTimeout); // clear the timeout if it exists
                     resizeTimeout = setTimeout(updateDimensions,100);
                 });
-            })();
+            });
 
             let resource_configs = map_config.resource_configs;
 
