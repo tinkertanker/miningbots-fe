@@ -360,8 +360,8 @@ function drawGame() {
             // console.log(response);
             // make the UI ready
             document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
-
-            // return the games as a JS object
+            // ensure the response is OK
+            // if it is, return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
                 LoadingBox.setStatus(LoadingBox.Status.LOADING_COMPLETED);
@@ -408,6 +408,7 @@ function drawGame() {
             }
         })
         // prep the map_config for the next function
+        // wait for it to return and decode it as json
         .then(async result => {
             let response = await result.response;
 
@@ -419,6 +420,7 @@ function drawGame() {
             }
         })
         //result= Map config and game ID taken from server data
+        //this is where the actual rendering occurs
         .then(async result => {
             let map_config = await result.map_config;
             console.log('map_config:', map_config);
