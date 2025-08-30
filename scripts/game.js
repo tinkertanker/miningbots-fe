@@ -381,13 +381,11 @@ function drawGame() {
                 gameId = game_info.game_id;
                 gameStatus = game_info.game_status;
 
-                //post the game status on the DOM
+                //show the game status in the navbar
                 updateGameStatus();
 
                 //show the game ID in the navbar
-                //setTimeout(()=>{
-                    updateGameId();
-                //},0);
+                updateGameId();
 
                 // make sure the game is running
                 if (gameStatus == 'kEnded') {
