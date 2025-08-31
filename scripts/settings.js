@@ -258,27 +258,26 @@ function populate_settings_(){
 
         let right_box=document.createElement("div");
         right_box.classList.add("settings-right-box");
-        let reset_button=document.createElement("a");
-        let accessibility_text=`Reset the ${setting.title} setting to default`;
-        reset_button.id=key+'_reset';
-        reset_button.role="button";
-        reset_button.setAttribute("title",accessibility_text);
         if(!value_forced) {
+            let reset_button=document.createElement("a");
+            let accessibility_text=`Reset the ${setting.title} setting to default`;
+            reset_button.id=key+'_reset';
+            reset_button.role="button";
+            reset_button.setAttribute("title",accessibility_text);
             reset_button.addEventListener("click",(e)=>{
                 e.preventDefault();
-                reset_setting(key);
+                reset_setting_(key);
             });
+            reset_button.classList.add("reset-button");
+            let reset_icon=document.createElement('svgfile');
+            reset_icon.setAttribute("src","/images/ui/reset.svg"); //src= cannot be used since it is not an image
+            reset_icon.setAttribute("aria-hidden","true");
+            reset_icon.alt=accessibility_text;
+            reset_icon.title=accessibility_text;
+            reset_icon.classList.add("reset-icon");
+            reset_button.appendChild(reset_icon);
+            right_box.appendChild(reset_button);
         }
-        reset_button.style.cursor=value_forced?"not-allowed":"pointer";
-        reset_button.classList.add("reset-button");
-        let reset_icon=document.createElement('svgfile');
-        reset_icon.setAttribute("src","/images/ui/reset.svg"); //src= cannot be used since it is not an image
-        reset_icon.setAttribute("aria-hidden","true");
-        reset_icon.alt=accessibility_text;
-        reset_icon.title=accessibility_text;
-        reset_icon.classList.add("reset-icon");
-        reset_button.appendChild(reset_icon);
-        right_box.appendChild(reset_button);
 
         let input_element=document.createElement("input");
         switch(setting.type){
@@ -323,7 +322,10 @@ function populate_settings_(){
 
 function update_reset_button_(setting_update){
     let show=setting_update.value!=SettingsManager.settings[setting_update.key].default; // true if the value is not equal to the default
-    document.getElementById(setting_update.key+'_reset').style.display=show?"block":"none";
+    with_value(document.getElementById(setting_update.key+'_reset'),(reset_button)=>{
+        if(reset_button)
+            reset_button.style.display=show?"block":"none";
+    });
 }
 
 function reset_setting_(setting_key){
