@@ -7,7 +7,7 @@ console.log("script loaded");
 
 var hostname, port;
 var CONFIG_=SettingsManager.default_settings;
-var http_type="http";var ws_type="ws";
+var http_type, ws_type;
 var playername_cache = {};
 
 function should_confirm_unload() {
@@ -43,14 +43,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     console.log('host name: ' + hostname);
     
-    //set protocols
-    if (CONFIG_["enable_security"]) {
-        http_type = "https";
-        ws_type = "wss";
-    } else {
-        http_type = "http";
-        ws_type = "ws";
-    }
+    
     //Dictionary of servers. The key is the hostname, the value is an object with name and port
     //The port can be left undefined if the server uses the default ports (80 for http, 443 for https)
     //The name is what will be displayed in the server selection dropdown
@@ -151,12 +144,24 @@ document.addEventListener("DOMContentLoaded",()=>{
         },
         "miningbots-api.dev.tk.sg": {
             name: "Development",
+            tls_mode: "required"
         },
         "custom.invalid": { // invalid special domain by IANA
             name: "Custom...",
             type: "custom"
         }
     }});
+
+    //set protocols
+    function set_protocols(){
+        if (CONFIG_["enable_security"]) {
+            http_type = "https";
+            ws_type = "wss";
+        } else {
+            http_type = "http";
+            ws_type = "ws";
+        }
+    }
 
     //set the hostname to the correct hostname if the cookie value is a special one
     if (hostname && servers.hasOwnProperty(hostname)) {
@@ -195,6 +200,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         CookieUtilities.setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + socket);
                         port = SocketUtilities.getPortNumber(http_type, socket);
+                        set_protocols();
                         server_assigned(true);
                     } catch (e){
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
@@ -212,10 +218,17 @@ document.addEventListener("DOMContentLoaded",()=>{
                 hostname=location.hostname;
                 port=CONFIG_["localhost_port"];
                 custom_server="current";
+                set_protocols();
                 server_assigned();
                 break;
             default:
                 console.log("URL: " + servers[hostname].url);
+                with_value(servers[hostname].tls_mode,(mode)=>{
+                    if(mode && mode == "required"){
+                        CONFIG_["enable_security"]=true;
+                    }
+                });
+                set_protocols();
                 port = SocketUtilities.applyDefaultPort(http_type, servers[hostname].port);
                 server_assigned();
         }
