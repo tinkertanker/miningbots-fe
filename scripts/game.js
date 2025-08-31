@@ -367,7 +367,7 @@ function drawGame() {
                 LoadingBox.setStatus(LoadingBox.Status.LOADING_COMPLETED);
                 return response.json();
             } else {
-                throw new Error(response.statusText);
+                throw new Error(`Failed to fetch list of games: ${response.statusText}`);
             }
         })
         // games= list of games, as a JS object
@@ -417,7 +417,7 @@ function drawGame() {
                 console.log('Map config fetch response:', response);
                 return { map_config: response.json(), game_id: result.game_id }; // pass down the game_id
             } else {
-                throw new Error(response.statusText);
+                throw new Error(`Failed to fetch map_config: ${response.statusText}`);
             }
         })
         //result= Map config and game ID taken from server data
