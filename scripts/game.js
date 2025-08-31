@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     //set protocols
     function set_protocols(){
-        if (CONFIG_["enable_security"]) {
+        if (CONFIG_["require_security"]) {
             http_type = "https";
             ws_type = "wss";
         } else {
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 console.log("URL: " + servers[hostname].url);
                 with_value(servers[hostname].tls_mode,(mode)=>{
                     if(mode && mode == "required"){
-                        CONFIG_["enable_security"]=true;
+                        CONFIG_["require_security"]=true;
                     }
                 });
                 set_protocols();
