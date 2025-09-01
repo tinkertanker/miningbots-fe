@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         },
         "miningbots-api.dev.tk.sg": {
             name: "Development",
-            tls_mode: "required"
+            require_security: true
         },
         "custom.invalid": { // invalid special domain by IANA
             name: "Custom...",
@@ -153,8 +153,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     }});
 
     //set protocols
-    function set_protocols(){
-        if (CONFIG_["require_security"]) {
+    function set_protocols(upgrade_connection){
+        if (CONFIG_["require_security"] || upgrade_connection) {
             http_type = "https";
             ws_type = "wss";
         } else {
@@ -195,12 +195,15 @@ document.addEventListener("DOMContentLoaded",()=>{
                     socket = socket.trim();
                     try {
                         if(socket.length==0) throw new Error("Socket URL cannot be empty");
-                        if(!(SocketUtilities.isValidSocket(socket))) throw new Error("Invalid socket URL format");
-                        hostname = SocketUtilities.getNameOfSocket(socket);
+                        url=SocketUtilities.breakUpSocket(socket);
+                        hostname = url.hostname;
                         CookieUtilities.setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + socket);
-                        port = SocketUtilities.getPortNumber(http_type, socket);
-                        set_protocols();
+                        let protocol=url.protocol.substring(0,url.protocol.length-1);
+                        with_value((protocol=="https"||protocol=="wss")||CONFIG_["require_security"],(is_secure_protocol)=>{
+                            port=SocketUtilities.applyDefaultPort(is_secure_protocol?"https":"http",url.port);
+                            set_protocols(is_secure_protocol);
+                        });
                         server_assigned(true);
                     } catch (e){
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
@@ -218,17 +221,12 @@ document.addEventListener("DOMContentLoaded",()=>{
                 hostname=location.hostname;
                 port=CONFIG_["localhost_port"];
                 custom_server="current";
-                set_protocols();
+                set_protocols(servers["localhost"].require_security);
                 server_assigned();
                 break;
             default:
                 console.log("URL: " + servers[hostname].url);
-                with_value(servers[hostname].tls_mode,(mode)=>{
-                    if(mode && mode == "required"){
-                        CONFIG_["require_security"]=true;
-                    }
-                });
-                set_protocols();
+                set_protocols(servers[hostname].require_security);
                 port = SocketUtilities.applyDefaultPort(http_type, servers[hostname].port);
                 server_assigned();
         }

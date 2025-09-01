@@ -36,6 +36,11 @@ p1.bootcamp.tk.sg {
 }
 ```
 
+## Custom Server function
+
+Specify a custom server by using the Custom... option in the Server Selector.
+NOTE: If Strict Security is enabled, the protocol specified in the Socket URL box is ignored.
+
 ## UI note
 
 Mnemonics are triggered in an unusual way to prevent clashing with system shortcuts:
