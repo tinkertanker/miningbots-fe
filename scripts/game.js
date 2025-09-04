@@ -28,9 +28,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         document.getElementById("navbar").classList.add("no-internet");
         document.getElementById("game-info-container").classList.add("no-internet");
         LoadingBox.setStatus(LoadingBox.Status.NO_INTERNET);
-        window.addEventListener("online", (e) => {
-            location.reload();
-        });
+        window.addEventListener("online", ()=>{location.reload();});
         return;
     } else {
         LoadingBox.setStatus(LoadingBox.Status.LOADING);
