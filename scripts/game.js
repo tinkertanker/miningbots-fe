@@ -8,10 +8,10 @@ console.log("script loaded");
 var hostname, port;
 var CONFIG_=SettingsManager.default_settings;
 var http_type, ws_type;
-var playername_cache = {};
+var playername_map = {};
 
 function should_confirm_unload() {
-    return Object.keys(playername_cache).length > 0;
+    return Object.keys(playername_map).length > 0;
 }
 
 document.addEventListener("DOMContentLoaded",()=>{
@@ -787,7 +787,7 @@ function drawGame() {
 
             //Display a dialog box in the middle of the screen indicating the winner
             function showWinner(playerId) {
-                let name_insert = playername_cache[playerId]["insert"];
+                let name_insert = playername_map[playerId]["insert"];
                 let text = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
                 DialogUtilities.showDialog(text,"Game Won");
             }
@@ -810,8 +810,8 @@ function drawGame() {
                 console.log(playerInfo);
                 var name = playerInfo[0].name;
                 let name_insert = CONFIG_["show_player_names"] ? ` (${name})` : "";
-                if (!playername_cache[player_id]) { // make sure player isn't already cached
-                    playername_cache[player_id] = {"raw":name,"insert":name_insert}; // Store names in hash table. Used by showWinner
+                if (!playername_map[player_id]) { // make sure player isn't already cached
+                    playername_map[player_id] = {"raw":name,"insert":name_insert}; // Store names in hash table. Used by showWinner
                     console.log("before call");
                     if (CONFIG_["show_notifications"] && !ModeManager.IS_PRODUCTION_MODE)
                         NotificationUtilities.sendNotification(`Player ${player_id}${name_insert} joined.`, "", "favicon.ico");
