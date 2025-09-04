@@ -4,7 +4,7 @@ let SettingsManager={
             type:"boolean",
             default:false,
             title:"Strict Security",
-            description:`Force the use of secure connections (HTTPS/WSS).<br>
+            description:`Require the use of secure connections (HTTPS/WSS).<br>
                          If enabled, the application will only connect to servers that support secure connections.<br>
                          Note: If your browser is using HTTPS, this setting will be forced to ON.`,
             force_value:location.protocol.indexOf('https:')!=-1
