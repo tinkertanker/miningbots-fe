@@ -8,7 +8,7 @@ let SettingsManager={
                          If enabled, the application will only connect to servers that support secure connections.<br>
                          NOTE: If your browser is using HTTPS, this setting will be forced to ON.`,
             force_value:location.protocol.indexOf('https:')!=-1
-                        ? {"value":true}
+                        ? {value:true,tooltip:"Site opened via HTTPS. HTTPS sites can only connect to TLS secured servers."}
                         : null
         },
         "game_port": {
@@ -307,6 +307,7 @@ function populate_settings_(){
         input_element.setAttribute("id",key+'_input');
         input_element.classList.add("setting-value");
         input_element.disabled=value_forced;
+        if(value_forced)input_element.title=setting.force_value.tooltip;
         input_element.style.cursor=value_forced?"not-allowed":"default";
         input_element.addEventListener('change',(e)=>{
             let property=setting.type=="boolean"?"checked":"value";
