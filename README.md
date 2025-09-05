@@ -52,6 +52,16 @@ Mnemonics are triggered in an unusual way to prevent clashing with system shortc
 		On PC: Ctrl + &lt;letter&gt;
 	</li>
 </ul>
+There are also four-key shortcuts, triggered using:
+<ul>
+	<li>
+		On Mac: Cmd + Alt + Shift + &lt;letter&gt;
+	</li>
+	<li>
+		On PC: Ctrl + Alt + Shift + %&lt;letter&gt;
+	</li>
+</ul>
+
 
 ## ``` init.sh ```
 
