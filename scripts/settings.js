@@ -228,10 +228,12 @@ SettingsManager.read_settings_cookie=function(raw) {
 }
 function display_settings_(json_settings) {
     object_forEach(json_settings,(key,value)=>{
-        let destination=document.getElementById(key+'_input');
-        destination_property=SettingsManager.settings[key].type=="boolean" ? "checked" : "value"
-        destination[destination_property]=value;
-        update_reset_button_({key:key,value:value});
+        if(SettingsManager.settings.hasOwnProperty(key)){
+            let destination=document.getElementById(key+'_input');
+            destination_property=SettingsManager.settings[key].type=="boolean" ? "checked" : "value"
+            destination[destination_property]=value;
+            update_reset_button_({key:key,value:value});
+        }
     });
 }
 function populate_settings_(){
