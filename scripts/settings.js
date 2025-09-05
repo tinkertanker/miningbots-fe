@@ -182,7 +182,7 @@ SettingsManager.import_settings=function() {
 
 SettingsManager.ClickHandlers.reset_settings_clicked=function() {
     DialogUtilities.showDialog("Are you sure you want to reset all settings to default? This will overwrite your current settings.","Reset Settings",[{"text":"OK","action":()=>{
-        SettingsManager.write_default_settings_(()=>{
+        write_default_settings_(()=>{
             window.opener.location.reload();
             location.reload();
         });
