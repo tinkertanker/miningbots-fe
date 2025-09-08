@@ -49,7 +49,7 @@
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle collapse-if-minified" href="#" id="navbarDropdownMenuLink" role="button"
-              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" helpon-available>
               Select a server
             </a>
             <div id="dropdown-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -58,15 +58,15 @@
           </li>
         </ul>
       </div>
-      <span role="presentation" id="gameStatus"></span>
-      <span role="presentation" id="gameId"></span>
-      <a onclick="HelpManager.activate_helpon()" title="Help on..." role="button" id="help-on">
+      <span role="presentation" id="gameStatus" helpon-available></span>
+      <span role="presentation" id="gameId" helpon-available></span>
+      <a onclick="HelpManager.activate_helpon()" title="Help on..." role="button" id="help-on" helpon-available>
         <svgfile aria-hidden="true" src="/images/ui/help-on.svg" alt="help on icon"></svgfile>
       </a>
-      <a onclick="HelpManager.show_help()" title="Help" role="button" id="help">
+      <a onclick="HelpManager.show_help()" title="Help" role="button" id="help" helpon-available>
         <svgfile aria-hidden="true" src="/images/ui/help.svg" alt="help icon"></svgfile>
       </a>
-      <a role="button" title="Settings" onclick="SettingsManager.open_popup();" id="settings-button"><svgfile aria-hidden="true" src="/images/ui/settings.svg"></svgfile></a>
+      <a role="button" title="Settings" onclick="SettingsManager.open_popup();" id="settings-button" helpon-available><svgfile aria-hidden="true" src="/images/ui/settings.svg"></svgfile></a>
       <script>document.addEventListener("DOMContentLoaded",()=> {
               function setMnemonic(element, useSecondary, key,additional_key) {
                 let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')
