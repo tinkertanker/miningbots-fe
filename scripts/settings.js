@@ -369,8 +369,8 @@ SettingsManager.initialize_popup=function() {
         }
     });
 }
-SettingsManager.initialize_main=function(production_status) {
-    if (navigator.onLine && !production_status) {
+document.addEventListener("DOMContentLoaded",() => {
+    if (navigator.onLine) { // only add the listener if we are online
         window.addEventListener("keydown", (event) => {
             if (KeyboardUtilities.isMnemonicPressed(event,false,'e')) {
                 SettingsManager.open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
@@ -384,7 +384,7 @@ SettingsManager.initialize_main=function(production_status) {
             }
         });
     }
-}
+});
 
 function onChange_(setting_update){
     if(setting_update.key=="theme"){
