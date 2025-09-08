@@ -5,7 +5,7 @@ let HelpManager = {
             `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Open this help<br>
             <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
             <svgfile src="/images/ui/settings.svg"></svgfile> (Settings): Open Settings panel<br></span>`
-            , "Help");
+            , "Help", undefined, "OK");
     },
     show_settings_help: function() {
         if (DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
@@ -18,7 +18,7 @@ let HelpManager = {
             <svgfile src="/images/ui/apply.svg"></svgfile> (Apply): Save settings and reload main page<br>
             <svgfile src="/images/ui/export.svg"></svgfile> (Export): Export settings to settings.json<br>
             <svgfile src="/images/ui/import.svg"></svgfile> (Import): Load settings from a JSON file<br></span>`
-            , "Help");
+            , "Help", undefined, "OK");
     }
 }
 
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (helpText) {
                     isHelponActive = false; // Exit helpon mode
                     onHelponDeactivated_();
-                    DialogUtilities.showDialog(helpText, `Help on "${name}"`);
+                    DialogUtilities.showDialog(helpText, `Help on "${name}"`, undefined, "OK"); // undefined means default buttons
                 }
             }
         }

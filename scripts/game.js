@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         });
                         server_assigned(true);
                     } catch (e){
-                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}]);
+                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}], "OK");
                     }
                 }
                 // we don't need to check if the cookie exists, since getCookie will return undefined if it doesn't exist anyways

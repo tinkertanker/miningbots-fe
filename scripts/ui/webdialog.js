@@ -7,6 +7,7 @@ function getTextWidth_(text, font) {
 }
 
 let dialog_showing_=false;
+let active_dialog_=null;
 let upcoming_dialogs_=[];
 function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
     // Queue upcoming dialogs if one is already showing
@@ -84,22 +85,6 @@ function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
         buttonBox.appendChild(button);
     });
 
-    // add escape handler
-    dialog.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && dialog_showing_) {
-            close_dialog(true);
-            event.stopPropagation();
-        }
-        if (event.key === 'Enter' && dialog_showing_){
-            document.querySelectorAll("button.dialog-button").forEach((button)=>{
-                if(button.textContent===submitButton){
-                    button.dispatchEvent(new Event("click"));
-                    event.stopPropagation();
-                }
-            })
-        }
-    });
-
     //add the elements
     buttonBoxContainer.appendChild(buttonBox);
     dialog.appendChild(buttonBoxContainer);
@@ -111,15 +96,17 @@ function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
     if(hasSVGFiles)
         SVGImporter.reimport();
     dialog_showing_=true;
-    return {
+    active_dialog_ = {
+        submitButton: submitButton,
         close: close_dialog
-    }
+    };
+    return active_dialog_;
 }
 let DialogUtilities = {
     isAnotherDialogShowing: function (){
         return dialog_showing_;
     },
-    showDialog: function (html,title,buttons){
+    showDialog: function (html,title,buttons,defaultButton){
         //ensure security
         let cleanHTML=DOMPurify.sanitize(html,{
             ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p','b','i','em','strong','br','img','svgfile'],
@@ -139,7 +126,7 @@ let DialogUtilities = {
             }
         });
         cleanHTML=tempDiv.innerHTML;
-        return showDialog_(cleanHTML,title,buttons,()=>{},null,hasSVGFiles);
+        return showDialog_(cleanHTML,title,buttons,()=>{},defaultButton,hasSVGFiles);
     },
     prompt: function (html, title, ok_handler, cancel_handler) {
         //ensure security
@@ -178,3 +165,19 @@ let DialogUtilities = {
         return dialog;
     },
 }
+
+// add key handlers
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && dialog_showing_) {
+        active_dialog_.close(true);
+        event.stopPropagation();
+    }
+    if (event.key === 'Enter' && dialog_showing_){
+        document.querySelectorAll("button.dialog-button").forEach((button)=>{
+            if(button.textContent===active_dialog_.submitButton){
+                button.dispatchEvent(new Event("click"));
+                event.stopPropagation();
+            }
+        })
+    }
+});
