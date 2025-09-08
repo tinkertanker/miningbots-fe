@@ -128,7 +128,7 @@ let DialogUtilities = {
         cleanHTML=tempDiv.innerHTML;
         return showDialog_(cleanHTML,title,buttons,()=>{},defaultButton,hasSVGFiles);
     },
-    prompt: function (html, title, ok_handler, cancel_handler) {
+    prompt: function (html, title, defaultValue, ok_handler, cancel_handler) {
         //ensure security
         let cleanHTML=DOMPurify.sanitize(html,{
             ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p','b','i','em','strong','br','img','svgfile'],
@@ -150,6 +150,7 @@ let DialogUtilities = {
         });
         let input_elem=document.createElement("input");
         input_elem.type="text";
+        input_elem.defaultValue=defaultValue||"";
         input_elem.classList.add("dialog-input");
         input_elem.classList.add("nodark");
         tempDiv.appendChild(innerDiv);

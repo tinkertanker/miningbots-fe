@@ -186,8 +186,8 @@ document.addEventListener("DOMContentLoaded",()=>{
                     setTimeout(NavigationManager.showNavigation,200);
                 }
                 let socket_obtained;
-                function prompt_socket() {
-                    DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", socket_obtained, empty_handler);
+                function prompt_socket(previous_socket) {
+                    DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", previous_socket, socket_obtained, empty_handler);
                 }
                 socket_obtained=function(socket) {
                     socket = socket.trim();
@@ -204,7 +204,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         });
                         server_assigned(true);
                     } catch (e){
-                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: prompt_socket}], "OK");
+                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: ()=>{prompt_socket(socket)}}], "OK");
                     }
                 }
                 // we don't need to check if the cookie exists, since getCookie will return undefined if it doesn't exist anyways
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 if(socket && SocketUtilities.isValidSocket(socket)) {
                     socket_obtained(socket);
                 } else {
-                    prompt_socket();
+                    prompt_socket("");
                 }
                 break;
             case "fe_host":
