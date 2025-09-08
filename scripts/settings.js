@@ -376,10 +376,10 @@ document.addEventListener("DOMContentLoaded",() => {
                 SettingsManager.open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
             } else if (KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
-                activate_helpon();
+                HelpManager.activate_helpon();
                 event.preventDefault();
             } else if (KeyboardUtilities.isMnemonicPressed(event,false,'h')) {
-                show_help();
+                HelpManager.show_help();
                 event.preventDefault();
             }
         });
