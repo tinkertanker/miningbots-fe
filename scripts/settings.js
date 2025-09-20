@@ -351,18 +351,18 @@ SettingsManager.initialize_popup=function() {
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'a')) {
             event.preventDefault();
             SettingsManager.ClickHandlers.apply_clicked();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'s')) {
+        } else if(KeyboardUtilities.isMnemonicPressed(event,true,'x')) {
             event.preventDefault();
-            SettingsManager.ClickHandlers.export_settings();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'i')) {
+            SettingsManager.export_settings();
+        } else if(KeyboardUtilities.isMnemonicPressed(event,true,'m')) {
             event.preventDefault();
-            import_settings();
+            SettingsManager.import_settings();
         } else if(KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
             event.preventDefault();
-            activate_helpon_settings();
+            HelpManager.activate_helpon_settings();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'h')) {
             event.preventDefault();
-            show_settings_help();
+            HelpManager.show_settings_help();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
             event.preventDefault();
             SettingsManager.ClickHandlers.reset_settings_clicked();
@@ -372,7 +372,7 @@ SettingsManager.initialize_popup=function() {
 document.addEventListener("DOMContentLoaded",() => {
     if (navigator.onLine) { // only add the listener if we are online
         window.addEventListener("keydown", (event) => {
-            if (KeyboardUtilities.isMnemonicPressed(event,false,'e')) {
+            if (KeyboardUtilities.isMnemonicPressed(event,true,'c')) {
                 SettingsManager.open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
                 event.preventDefault();
             } else if (KeyboardUtilities.isMnemonicPressed(event,true,'h')) {

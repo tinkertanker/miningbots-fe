@@ -8,13 +8,9 @@ KeyboardUtilities.isPrimaryPressed=function (event){
 
 KeyboardUtilities.isMnemonicBasePressed = function(event,usesSecondary) {
     if(usesSecondary) {
-        return KeyboardUtilities.isPrimaryPressed(event) && event.altKey && event.shiftKey;
+        return KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey;
     } else {
-        if (KeyboardUtilities.isMac) {
-            return KeyboardUtilities.isPrimaryPressed(event) && event.shiftKey;
-        } else {
-            return KeyboardUtilities.isPrimaryPressed(event) && event.altKey;
-        }
+        return KeyboardUtilities.isPrimaryPressed(event);
     }
 }
 
@@ -40,9 +36,9 @@ KeyboardUtilities.joinKeys = function(...keys) {
 
 KeyboardUtilities.joinMnemonic = function(useSecondary, letter) {
     if(useSecondary === true)
-        return KeyboardUtilities.isMac ? KeyboardUtilities.joinKeys('Primary', 'Alt', 'Shift', letter):KeyboardUtilities.joinKeys('Primary', 'Alt', 'Shift', letter);
+        return KeyboardUtilities.joinKeys('Primary', 'Shift', letter);
     else
-        return KeyboardUtilities.isMac?KeyboardUtilities.joinKeys('Primary', 'Shift', letter):KeyboardUtilities.joinKeys('Primary','Alt',letter);
+        return KeyboardUtilities.joinKeys('Primary',letter);
 }
 
 function setTabIndices() {
