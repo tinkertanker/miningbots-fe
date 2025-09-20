@@ -35,9 +35,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     // Get hostname from cookie, otherwise leave as null
-    with_value(CookieUtilities.getCookie("lastServer"),(server)=>{
-        if (server !== null) hostname = server;
-    });
+    let server=CookieUtilities.getCookie("lastServer");
+    if (server !== null) hostname = server;
 
     console.log('host name: ' + hostname);
     
@@ -173,7 +172,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             if(isCustomServer)
                 setServerName("Custom");
             else
-                setServerName(servers[hostname].name);
+                setServerName(servers[server].name);
             drawGame();
         }
         // handle the special domains
