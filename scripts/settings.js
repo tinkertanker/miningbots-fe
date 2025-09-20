@@ -369,7 +369,7 @@ SettingsManager.initialize_popup=function() {
         }
     });
 }
-function initialize_main(){
+SettingsManager.initialize_main=function(){
     if (navigator.onLine) { // only add the listener if we are online
         window.addEventListener("keydown", (event) => {
             if (KeyboardUtilities.isMnemonicPressed(event,true,'c')) {
