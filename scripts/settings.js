@@ -369,7 +369,7 @@ SettingsManager.initialize_popup=function() {
         }
     });
 }
-document.addEventListener("DOMContentLoaded",() => {
+function initialize_main(){
     if (navigator.onLine) { // only add the listener if we are online
         window.addEventListener("keydown", (event) => {
             if (KeyboardUtilities.isMnemonicPressed(event,true,'c')) {
@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded",() => {
             }
         });
     }
-});
+}
 
 function onChange_(setting_update){
     if(setting_update.key=="theme"){
