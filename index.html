@@ -68,20 +68,19 @@
       </a>
       <a role="button" title="Settings" onclick="SettingsManager.open_popup();" id="settings-button" helpon-available><svgfile aria-hidden="true" src="/images/ui/settings.svg"></svgfile></a>
       <script>document.addEventListener("DOMContentLoaded",()=> {
-              function setMnemonic(element, useSecondary, key,additional_key) {
-                let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')
-                element.title += ` (${keyTag})`;
-                let describerId=`${element.id}-description`;
-                element.setAttribute("aria-labelledby", `${element.id}-label`);
-                document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
-                element.setAttribute("aria-describedby", describerId);
-              }
-              setMnemonic(document.getElementById("help-on"),true,'H');
-              setMnemonic(document.getElementById("help"),false,'H');
-              setMnemonic(document.getElementById("settings-button"),true,'C');
-            });
-          </script>
+        function setMnemonic(element, useSecondary, key,additional_key) {
+          let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')
+          element.title += ` (${keyTag})`;
+          let describerId=`${element.id}-description`;
+          element.setAttribute("aria-labelledby", `${element.id}-label`);
+          document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
+          element.setAttribute("aria-describedby", describerId);
+        }
+        setMnemonic(document.getElementById("help-on"),true,'H');
+        setMnemonic(document.getElementById("help"),false,'H');
+        setMnemonic(document.getElementById("settings-button"),true,'C');
         SettingsManager.initialize_main();
+      });</script>
     </nav>
 
     <!--Allows the game canvas and a collection of players' bots to be aligned side-by-side horizontally-->
