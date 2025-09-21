@@ -357,12 +357,6 @@ SettingsManager.initialize_popup=function() {
         } else if(KeyboardUtilities.isMnemonicPressed(event,true,'m')) {
             event.preventDefault();
             SettingsManager.import_settings();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
-            event.preventDefault();
-            HelpManager.activate_helpon_settings();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'h')) {
-            event.preventDefault();
-            HelpManager.show_settings_help();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
             event.preventDefault();
             SettingsManager.ClickHandlers.reset_settings_clicked();
@@ -374,12 +368,6 @@ SettingsManager.initialize_main=function(){
         window.addEventListener("keydown", (event) => {
             if (KeyboardUtilities.isMnemonicPressed(event,true,'c')) {
                 SettingsManager.open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
-                event.preventDefault();
-            } else if (KeyboardUtilities.isMnemonicPressed(event,true,'h')) {
-                HelpManager.activate_helpon();
-                event.preventDefault();
-            } else if (KeyboardUtilities.isMnemonicPressed(event,false,'h')) {
-                HelpManager.show_help();
                 event.preventDefault();
             }
         });
