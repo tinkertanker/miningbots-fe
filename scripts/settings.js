@@ -342,24 +342,24 @@ SettingsManager.initialize_popup=function() {
     DarkModeManager.pairDarkMode(json_settings);
     DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
-        if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,false,'c'))) {
+        if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
             event.preventDefault();
-            SettingsManager.ClickHandlers.cancel_clicked();
+            SettingsManager.ClickHandlers.reset_settings_clicked();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'o')) {
             event.preventDefault();
             SettingsManager.ClickHandlers.ok_clicked();
         } else if(KeyboardUtilities.isMnemonicPressed(event,false,'a')) {
             event.preventDefault();
             SettingsManager.ClickHandlers.apply_clicked();
+        } else if (event.key == "Escape" || (KeyboardUtilities.isMnemonicPressed(event,false,'c'))) {
+            event.preventDefault();
+            SettingsManager.ClickHandlers.cancel_clicked();
         } else if(KeyboardUtilities.isMnemonicPressed(event,true,'x')) {
             event.preventDefault();
             SettingsManager.export_settings();
         } else if(KeyboardUtilities.isMnemonicPressed(event,true,'m')) {
             event.preventDefault();
             SettingsManager.import_settings();
-        } else if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
-            event.preventDefault();
-            SettingsManager.ClickHandlers.reset_settings_clicked();
         }
     });
 }
