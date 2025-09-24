@@ -95,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     },{capture: true}); // Use capture phase to ensure it catches the event before other handlers
     let hasHelp=document.getElementById("help");
     let hasHelpOn=document.getElementById("help-on");
-    console.log(!!hasHelp);console.log(!!hasHelpOn)
     document.addEventListener("keydown", (event) => {
         if (KeyboardUtilities.isMnemonicPressed(event,true,'h') && hasHelpOn) {
             HelpManager.activate_helpon();
