@@ -88,8 +88,7 @@ let SettingsManager={
             ],
             force_value:null
         },
-    },
-    ClickHandlers: {}
+    }
 }
 SettingsManager.default_settings=object_map_values(SettingsManager.settings,(_key,setting)=>setting["default"]);
 
@@ -180,29 +179,29 @@ SettingsManager.import_settings=function() {
     }}]);
 }
 
-SettingsManager.ClickHandlers.reset_settings_clicked=function() {
-    DialogUtilities.showDialog("Are you sure you want to reset all settings to default? This will overwrite your current settings.","Reset Settings",[{"text":"OK","action":()=>{
-        write_default_settings_(()=>{
+SettingsManager.ClickHandlers = {
+    reset_settings_clicked: function() {
+        DialogUtilities.showDialog("Are you sure you want to reset all settings to default? This will overwrite your current settings.","Reset Settings",[{"text":"OK","action":()=>{
+            write_default_settings_(()=>{
+                window.opener.location.reload();
+                location.reload();
+            });
+        }},{text:"Cancel",action:()=>true}]);
+    },
+    apply_clicked: function() {
+        write_displayed_settings_(()=>{
             window.opener.location.reload();
-            location.reload();
         });
-    }},{text:"Cancel",action:()=>true}]);
-}
-SettingsManager.ClickHandlers.apply_clicked=function() {
-    write_displayed_settings_(()=>{
-        window.opener.location.reload();
-    });
-}
-
-SettingsManager.ClickHandlers.cancel_clicked=function() {
-    window.close();
-}
-
-SettingsManager.ClickHandlers.ok_clicked=function() {
-    write_displayed_settings_(()=>{
-        window.opener.location.reload();
+    },
+    cancel_clicked: function() {
         window.close();
-    });
+    },
+    ok_clicked: function() {
+        write_displayed_settings_(()=>{
+            window.opener.location.reload();
+            window.close();
+        });
+    }
 }
 
 SettingsManager.is_value_forced=function(setting){
