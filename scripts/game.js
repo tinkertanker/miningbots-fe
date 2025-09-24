@@ -50,104 +50,47 @@ document.addEventListener("DOMContentLoaded",()=>{
     const servers = in_private_scope(()=>{
         const gport=CONFIG_["game_port"];
         const lport = CONFIG_["localhost_port"];
-        return {
-        "p1.bootcamp.tk.sg": {
-            name: "Game 1",
-            port: gport,
-        },
-        "p2.bootcamp.tk.sg": {
-            name: "Game 2",
-            port: gport,
-        },
-        "p3.bootcamp.tk.sg": {
-            name: "Game 3",
-            port: gport,
-        },
-        "p4.bootcamp.tk.sg": {
-            name: "Game 4",
-            port: gport,
-        },
-        "p5.bootcamp.tk.sg": {
-            name: "Game 5",
-            port: gport,
-        },
-        "p6.bootcamp.tk.sg": {
-            name: "Game 6",
-            port: gport,
-        },
-        "p7.bootcamp.tk.sg": {
-            name: "Main Game",
-            port: gport,
-        },
-        "p8.bootcamp.tk.sg": {
-            name: "Game 8",
-            port: gport,
-        },
-        "p9.bootcamp.tk.sg": {
-            name: "Game 9",
-            port: gport,
-        },
-        "p10.bootcamp.tk.sg": {
-            name: "Game 10",
-            port: gport,
-        },
-        "s1.bootcamp.tk.sg": {
-            name: "Staging 1",
-            port: gport,
-        },
-        "s2.bootcamp.tk.sg": {
-            name: "Staging 2",
-            port: gport,
-        },
-        "s3.bootcamp.tk.sg": {
-            name: "Staging 3",
-            port: gport,
-        },
-        "s4.bootcamp.tk.sg": {
-            name: "Staging 4",
-            port: gport,
-        },
-        "s5.bootcamp.tk.sg": {
-            name: "Staging 5",
-            port: gport,
-        },
-        "s6.bootcamp.tk.sg": {
-            name: "Staging 6",
-            port: gport,
-        },
-        "s7.bootcamp.tk.sg": {
-            name: "Staging 7",
-            port: gport,
-        },
-        "s8.bootcamp.tk.sg": {
-            name: "Staging 8",
-            port: gport,
-        },
-        "s9.bootcamp.tk.sg": {
-            name: "Staging 9",
-            port: gport,
-        },
-        "s10.bootcamp.tk.sg": {
-            name: "Staging 10",
-            port: gport,
-        },
-        "current.invalid": {
-            name: "Testing (on frontend server)",
-            type:"fe_host"
-        },
-        "localhost": {
-            name: "Testing (on localhost)",
-            port: lport,
-        },
-        "miningbots-api.dev.tk.sg": {
-            name: "Development",
-            require_security: true
-        },
-        "custom.invalid": { // invalid special domain by IANA
-            name: "Custom...",
-            type: "custom"
-        }
-    }});
+        let servers={};
+        ["p","s"].forEach((server_type)=>{
+            for(let i=1;i<=10;i++){
+                let hostname=`miningbots-${server_type}${i}.dev.tk.sg`;
+                let name;
+                switch(server_type){
+                    case 's':
+                        name=`Staging ${i}`;
+                        break;
+                    case 'p':
+                        if (i==7)
+                            name="Main Game";
+                        else
+                            name=`Game ${i}`;
+                        break;
+                }
+                servers[hostname]={
+                    name: name,
+                    port: gport
+                };
+            }
+        });
+        return Object.assign(servers,{
+            "current.invalid": {
+                name: "Testing (on frontend server)",
+                type:"fe_host"
+            },
+            "localhost": {
+                name: "Testing (on localhost)",
+                port: lport,
+            },
+            "miningbots-api.dev.tk.sg": {
+                name: "Development",
+                require_security: true
+            },
+            "custom.invalid": { // invalid special domain by IANA
+                name: "Custom...",
+                type: "custom"
+            }
+        });
+    });
 
     //set protocols
     function set_protocols(upgrade_connection){
