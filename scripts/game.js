@@ -233,7 +233,6 @@ function drawGame() {
     const ctx = canvas.getContext("2d");
 
     //Maybe adjust this to dynamically adapt such that the whole canvas will be shown regardless of map aspect ratio?
-    const GRID_SIZE = 32;
     const elementTypes=["kFactoryBot","kMiningBot"
                        ,"mixed_ore","granite","vibranium","adamantite","unobtanium"];  
     let images = {};
