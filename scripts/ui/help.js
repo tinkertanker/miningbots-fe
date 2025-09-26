@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let target = event.target.closest("[helpon-available]"); // Get the closest element with an ID
             if (target) {
                 let name = document.querySelector(`#accessibility-labels #${target.id}-label`).textContent || target.id; // Get from accessibility-labels, otherwise use ID
-                let helpText = document.querySelector(`#accessibility-labels #${target.id}-help`).innerHTML.replace("noimport", ""); // Get help text from accessibility-labels, removing noimport
+                let helpText = document.querySelector(`#accessibility-labels #${target.id}-help`).innerHTML.replace("noimport", ""); // Get help text from accessibility-labels, removing noimport from svgfile elements (to ensure they are loaded)
                 if (helpText) {
                     isHelponActive = false; // Exit helpon mode
                     onHelponDeactivated_();
