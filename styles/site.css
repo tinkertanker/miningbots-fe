@@ -148,9 +148,18 @@ select {
   margin: 5px 5px;
 }
 
-.production-hidden {
+.production-hidden:not(:hover):not(:focus) {
   visibility: collapse;
   display: none;
+}
+
+#navbar-peek-triggerbox {
+  width: 100vw;
+  height: 20px; /* Adjust the height as needed */
+  z-index: 999; /* Ensure it's above other elements, but under the navbar */
+  position:fixed;
+  top:0;
+  left:0;
 }
 
 #game-info-container {
