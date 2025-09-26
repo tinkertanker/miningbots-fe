@@ -426,7 +426,10 @@ function drawGame() {
                 let resizeTimeout = null;
                 window.addEventListener("resize",(_e)=>{
                     if(resizeTimeout) clearTimeout(resizeTimeout); // clear the timeout if it exists
-                    resizeTimeout = setTimeout(updateDimensions,100);
+                    resizeTimeout = setTimeout(()=>{
+                        updateDimensions();
+                        resizeTimeout=null;
+                    },100);
                 });
             });
 
