@@ -443,10 +443,6 @@ function drawGame() {
                 unknown: 4,
                 traversable: 5,
                 resource: 6,
-                granite: 7,
-                vibranium: 8,
-                adamantite: 9,
-                unobtanium: 10
             };
 
             const resources = {
@@ -457,6 +453,7 @@ function drawGame() {
             //Adds new game elements from resource_configs if they do not already exist
             resource_configs.forEach(resource => {
                 resources[Object.keys(resources).length] = resource.name;
+                elements[resource.name.toLowerCase()] = 7 + Object.keys(resources).length - 1;
             });
 
             let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
@@ -530,9 +527,9 @@ function drawGame() {
                                 drawASquare(col, row, terrain, images.unobtanium);
                                 break;*/
                             default: 
-                                if (element >= 20) { // 20 or more means a bot is occupying the space
+                                if (element >= 500) { // 500 or more means a bot is occupying the space
                                     console.log("EIN: ", element);
-                                    let element_ = element - 20;
+                                    let element_ = element - 500;
                                     const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
                                     const botImage = images[variant];
                                     const playerIndex = Math.floor(element_ / 2);
@@ -668,7 +665,7 @@ function drawGame() {
                 //var playerNum = ''+(playerIndex+1);
                 //var element = String(variant) + playerNum;
                 //console.log("element "+element);
-                gameState[newRow][newCol] = 20 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
+                gameState[newRow][newCol] = 500 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
                 console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
             }
 
