@@ -517,7 +517,7 @@ function drawGame() {
                             case elements.resource:
                                 ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                                 break;
-                            case elements.granite:
+                            /*case elements.granite:
                                 drawASquare(col, row, terrain, images.granite);
                                 break;
                             case elements.vibranium:
@@ -528,16 +528,29 @@ function drawGame() {
                                 break;
                             case elements.unobtanium:
                                 drawASquare(col, row, terrain, images.unobtanium);
-                                break;
-                            default: // draw the bot
-                                console.log("EIN: ", element);
-                                let element_ = element - 20;
-                                const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
-                                const botImage = images[variant];
-                                const playerIndex = Math.floor(element_ / 2);
-                                const color = (DarkModeManager.isDarkMode()?inverted_colors:colors)[playerIndex];
-                                console.log(color, " ", variant);
-                                drawABot(col, row, color, botImage);
+                                break;*/
+                            default: 
+                                if (element >= 20) { // 20 or more means a bot is occupying the space
+                                    console.log("EIN: ", element);
+                                    let element_ = element - 20;
+                                    const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
+                                    const botImage = images[variant];
+                                    const playerIndex = Math.floor(element_ / 2);
+                                    const color = (DarkModeManager.isDarkMode()?inverted_colors:colors)[playerIndex];
+                                    console.log(color, " ", variant);
+                                    drawABot(col, row, color, botImage);
+                                } else {
+                                    object_forEach(elements,(name, value)=>{
+                                        if(value==element){
+                                            for(let i=0;i<Object.keys(resources).length;i++){
+                                                if(name.toLowerCase()==resources[i].toLowerCase()){    
+                                                    console.log("resource detected: ",name);
+                                                    drawASquare(col, row, terrain, images[name]);
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
                         }
                         //console.log("EIN OoS: ",gameState);
                         if (COLS < MAX_WHITE_WIDTH && ROWS < MAX_WHITE_HEIGHT) { //if map is small enough, show white grid
