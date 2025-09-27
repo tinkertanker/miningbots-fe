@@ -819,7 +819,7 @@ function drawGame() {
                             let mineralImage = document.createElement('img');
                             mineralImage.classList.add('mineral-image');
                             let resource = String(resources[item.id]);
-                            mineralImage.src = "./images/" + resource + ".png"
+                            mineralImage.src = "./images/" + resource.toLowerCase() + ".png"
                             mineralImage.alt = mineralImage.title = resource;
                             cargoContainer.appendChild(mineralImage);
 
