@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         let servers={};
         ["p","s"].forEach((server_type)=>{
             for(let i=1;i<=10;i++){
-                let hostname=`miningbots-${server_type}${i}.dev.tk.sg`;
+                let hostname=`${server_type}${i}.bootcamp.tk.sg`;
                 let name;
                 switch(server_type){
                     case 's':
