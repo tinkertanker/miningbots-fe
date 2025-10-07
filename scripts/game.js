@@ -463,7 +463,8 @@ function drawGame() {
             // c = column
             // r = row
             function drawASquare(c, r, background, image) {
-                ctx.drawImage(background, c * GRID_SIZE - borderWidth, r * GRID_SIZE - borderWidth, GRID_SIZE + borderWidth, GRID_SIZE + borderWidth);
+                if(background)
+                    ctx.drawImage(background, c * GRID_SIZE - borderWidth, r * GRID_SIZE - borderWidth, GRID_SIZE + borderWidth, GRID_SIZE + borderWidth);
                 if (image) { //if an element image was given
                     ctx.drawImage(image, c * GRID_SIZE, r * GRID_SIZE, GRID_SIZE, GRID_SIZE);
                 }
@@ -512,7 +513,7 @@ function drawGame() {
                                 drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
                                 break;
                             case elements.resource:
-                                ctx.drawImage(images.mixed_ore, col * GRID_SIZE, row * GRID_SIZE, GRID_SIZE, GRID_SIZE);
+                                drawASquare(col, row, null, images.mixed_ore);
                                 break;
                             /*case elements.granite:
                                 drawASquare(col, row, terrain, images.granite);
