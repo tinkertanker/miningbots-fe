@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", (_e) => {
 });
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    if (navigation_dropdown_._isShown()) {
+    if (navigation_dropdown_.classList.contains('show')) {
       navigation_dropdown_.hide();
     }
   }
