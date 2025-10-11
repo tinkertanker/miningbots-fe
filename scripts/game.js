@@ -506,7 +506,7 @@ function drawGame() {
                                 drawABot(col, row, '#AA4344', images.kMiningBot);
                                 //drawASquare(col, row, terrain, images.kMiningBot);
                                 break;*/
-                            //no element, so baground only
+                            //no element, so background only
                             case elements.unknown:
                             case elements.traversable:
                                 drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
