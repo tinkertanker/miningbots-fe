@@ -236,14 +236,8 @@ function drawGame() {
     const elementTypes=["kFactoryBot","kMiningBot"
                        ,"mixed_ore","granite","vibranium","adamantite","unobtanium"];  
     let images = {};
-    elementTypes.forEach((elementType)=>{
-        images[elementType]=new Image();
-    })
     const terrainTypes=["grasslands","hills","mountains"];
     let terrainImages={"unknown":new Image()};
-    terrainTypes.forEach((terrain)=>{
-        terrainImages[terrain]=new Image();
-    });
 
     //Assigns images (preload images)
     function transliterateElementType(elementType){
@@ -272,14 +266,16 @@ function drawGame() {
         }
         return out;
     }
-    Object.keys(images).forEach((key)=>{
-        let imageName=transliterateElementType(key);
-        images[key].src=`images/${imageName}.png`;
+    elementTypes.forEach((element)=>{
+        let imageName=transliterateElementType(element);
+        images[element]=new Image();
+        images[element].src=`images/${imageName}.png`;
     });
 
     //iterate over the keys (land types) and set the sources
-    Object.keys(terrainImages).forEach((key)=>{
-        terrainImages[key].src=`images/${key}.jpg`;
+    terrainTypes.forEach((terrain)=>{
+        terrainImages[terrain]=new Image();
+        terrainImages[terrain].src=`images/${terrain}.jpg`;
     });
     /*terrainImages.unknown.src = 'images/unknown.jpg';
     terrainImages.grasslands.src = 'images/grassland.jpg';
