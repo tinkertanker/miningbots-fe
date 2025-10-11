@@ -229,6 +229,7 @@ async function fetchPlayerNames(gameId, playerIds) {
 }
 
 function drawGame() {
+    //get the rendering surface
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
