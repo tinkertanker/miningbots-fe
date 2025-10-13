@@ -176,8 +176,7 @@ select {
 }
 
 .loading-completed,
-.no-internet,
-.sidebar-hidden {
+.no-internet {
   width: 0;
   height: 0;
   visibility: collapse;

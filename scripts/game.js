@@ -306,7 +306,6 @@ function drawGame() {
         .then(response => {
             // console.log(response);
             // make the UI ready
-            document.getElementById("bot-info-megacontainer").classList.remove("sidebar-hidden");
             // ensure the response is OK
             // if it is, return the games as a JS object
             if (response.ok) {
