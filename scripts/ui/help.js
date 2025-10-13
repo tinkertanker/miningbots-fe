@@ -1,24 +1,15 @@
 let HelpManager = {
     show_help: function() {
         if (DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
+        let content="<span style=\"white-space:nowrap;\">";
+        document.querySelectorAll('#accessibility-labels *').forEach(el => {
+            if(el.id.endsWith("-help") && !el.hasAttribute("helpon-only")){ // only include non-helpon-only elements
+                content+=el.innerHTML.replace("noimport","")+'<br>'; // remove noimport from svgfile elements (to ensure they are loaded)
+            }
+        });
+        content+="</span>";
         DialogUtilities.showDialog(
-            `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Open this help<br>
-            <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
-            <svgfile src="/images/ui/settings.svg"></svgfile> (Settings): Open Settings panel<br></span>`
-            , "Help", undefined, "OK");
-    },
-    show_settings_help: function() {
-        if (DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
-        DialogUtilities.showDialog(
-            `<span style="white-space:nowrap;"><svgfile src="/images/ui/help.svg"></svgfile> (Help): Show this help<br>
-            <svgfile src="/images/ui/help-on.svg"></svgfile> (Help on): Get help on a specific element by clicking on it<br>
-            <svgfile src="/images/ui/reset.svg"></svgfile> (Reset all): Reset all settings to their default values<br>
-            <svgfile src="/images/ui/ok.svg"></svgfile> (OK): Save settings, reload main page, and close this window<br>
-            <svgfile src="/images/ui/cancel.svg"></svgfile> (Cancel): Close this window without saving the settings<br>
-            <svgfile src="/images/ui/apply.svg"></svgfile> (Apply): Save settings and reload main page<br>
-            <svgfile src="/images/ui/export.svg"></svgfile> (Export): Export settings to settings.json<br>
-            <svgfile src="/images/ui/import.svg"></svgfile> (Import): Load settings from a JSON file<br></span>`
-            , "Help", undefined, "OK");
+            content, "Help", undefined, "OK");
     }
 }
 
