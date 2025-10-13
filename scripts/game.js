@@ -271,6 +271,8 @@ function drawGame() {
         let imageName=transliterateElementType(element);
         images[element]=new Image();
         images[element].src=`images/${imageName}.png`;
+        if(!(imageName.includes("Bot") || imageName=="Mixed_Ore"))
+            document.getElementById("legend-help").innerHTML+="&nbsp;&nbsp;<img src=\"images/"+imageName+".png\" style=\"height:1.5em;vertical-align:middle;\"> "+imageName+"<br>";
     });
 
     //iterate over the keys (land types) and set the sources
