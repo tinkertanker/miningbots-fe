@@ -12,6 +12,12 @@ function object_forEach(object,f){
     });
 }
 
+function indexed_foreach(array,f){
+    for(let i=0;i<array.length;i++){
+        f(i,array[i]);
+    }
+}
+
 function object_map(object,f){
     let array=[];
     object_forEach(object,(key,value)=>{
