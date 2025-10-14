@@ -11,6 +11,13 @@ let SettingsManager={
                         ? {value:true,tooltip:"Site opened via HTTPS. HTTPS sites can only connect to TLS secured servers."}
                         : null
         },
+        "show_legend": {
+            title:"Show element legend",
+            description:"Show the element legend in Help",
+            type:"boolean",
+            default:true,
+            force_value:null
+        },
         "game_port": {
             type:"number",
             default:9001,

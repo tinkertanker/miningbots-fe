@@ -447,14 +447,17 @@ function drawGame() {
 
             // let resource_configs = result.map_config.resource_configs;
             //Adds new game elements from resource_configs if they do not already exist
-            let legend=document.getElementById("legend-help")
+            let legend=document.getElementById("legend-help");
+            if(!CONFIG_["show_legend"])legend.remove();
             indexed_foreach(resource_configs,(id,resource) => {
                 resources[Object.keys(resources).length] = resource.name;
                 let resource_name_lower=resource.name.toLowerCase();
                 elements[resource_name_lower] = 7 + Object.keys(resources).length - 1;
-                legend.innerHTML+="&nbsp;&nbsp;";
-                if (images[resource_name_lower].src)legend.innerHTML+="<img src=\"images/"+resource_name_lower+".png\" style=\"height:1.5em;vertical-align:middle;\"> ";
-                legend.innerHTML+=`${resource.name} (${resource_name_lower}, ${id})<br>`
+                if(CONFIG_["show_legend"]){
+                    legend.innerHTML+="&nbsp;&nbsp;";
+                    if (images[resource_name_lower].src)legend.innerHTML+="<img src=\"images/"+resource_name_lower+".png\" style=\"height:1.5em;vertical-align:middle;\"> ";
+                    legend.innerHTML+=`${resource.name} (${resource_name_lower}, ${id})<br>`;
+                }
             });
 
             let gameState = Array.from({ length: ROWS }, () => Array(COLS).fill(elements.unknown)); //all squares are unknown at the start
