@@ -453,7 +453,7 @@ function drawGame() {
                 resources[Object.keys(resources).length] = resource.name;
                 let resource_name_lower=resource.name.toLowerCase();
                 elements[resource_name_lower] = 7 + Object.keys(resources).length - 1;
-                if(CONFIG_["show_legend"]){
+                if(CONFIG_["show_legend"] && legend){
                     legend.innerHTML+="&nbsp;&nbsp;";
                     if (images[resource_name_lower].src)legend.innerHTML+="<img src=\"images/"+resource_name_lower+".png\" style=\"height:1.5em;vertical-align:middle;\"> ";
                     legend.innerHTML+=`${resource.name} (${resource_name_lower}, ${id})<br>`;
