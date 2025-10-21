@@ -19,10 +19,6 @@ document.addEventListener("DOMContentLoaded",()=>{
 
     CONFIG_ = SettingsManager.read_settings_cookie();
 
-    // set dark mode
-    DarkModeManager.pairDarkMode(CONFIG_);
-    DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_));
-
     //require internet access
     if (!navigator.onLine) {
         document.getElementById("navbar").classList.add("no-internet");

@@ -345,8 +345,6 @@ SettingsManager.initialize_popup=function() {
     populate_settings_();
     let json_settings = SettingsManager.read_settings_cookie();
     display_settings_(json_settings);
-    DarkModeManager.pairDarkMode(json_settings);
-    DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(json_settings));
     window.addEventListener("keydown", (event) => {
         if(KeyboardUtilities.isMnemonicPressed(event,false,'d')) {
             event.preventDefault();

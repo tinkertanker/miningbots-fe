@@ -29,3 +29,18 @@ DarkModeManager.pairDarkMode=function (settings){
         DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(settings));
     });
 }
+
+document.addEventListener("DOMContentLoaded",()=>{
+    let interval=-1;
+    function setup(){
+        if(!SettingsManager)return;
+        CONFIG_ = SettingsManager.read_settings_cookie();
+
+        // set dark mode
+        DarkModeManager.pairDarkMode(CONFIG_);
+        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_));
+        if(interval!=-1)clearInterval(interval);
+    }
+    interval=setInterval(setup,100);
+    setup();
+});
