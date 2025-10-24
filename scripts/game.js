@@ -226,11 +226,9 @@ function drawGame() {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
-    //Maybe adjust this to dynamically adapt such that the whole canvas will be shown regardless of map aspect ratio?
-    const elementTypes=["kFactoryBot","kMiningBot"
-                       ,"mixed_ore","granite","vibranium","adamantite","unobtanium"];  
+    let elementTypes=["kFactoryBot","kMiningBot"];  
     let images = {};
-    const terrainTypes=["grasslands","hills","mountains"];
+    let terrainTypes=[];
     let terrainImages={"unknown":new Image()};
 
     //Assigns images (preload images)
@@ -260,17 +258,7 @@ function drawGame() {
         }
         return out;
     }
-    elementTypes.forEach((element)=>{
-        let imageName=transliterateElementType(element);
-        images[element]=new Image();
-        images[element].src=`images/${imageName}.png`;
-    });
 
-    //iterate over the keys (land types) and set the sources
-    terrainTypes.forEach((terrain)=>{
-        terrainImages[terrain]=new Image();
-        terrainImages[terrain].src=`images/${terrain}.jpg`;
-    });
     /*terrainImages.unknown.src = 'images/unknown.jpg';
     terrainImages.grasslands.src = 'images/grassland.jpg';
     terrainImages.hills.src = 'images/hills.jpg';
@@ -364,6 +352,24 @@ function drawGame() {
         .then(async result => {
             let map_config = await result.map_config;
             console.log('map_config:', map_config);
+
+            //load images
+            original_elementTypes=elementTypes.slice(); // make a copy of the original element types
+            elementTypes=map(map_config.resource_configs,(config)=>{return config.name.toLowerCase()});
+            elementTypes=original_elementTypes.concat(elementTypes); // append the new element types
+            elementTypes.forEach((element)=>{
+                let imageName=transliterateElementType(element);
+                images[element]=new Image();
+                images[element].src=`images/${imageName}.png`;
+            });
+
+            //iterate over the keys (land types) and set the sources
+            terrainTypes=map(map_config.terrain_configs,(config)=>{return config["name"].toLowerCase()})
+            terrainTypes.forEach((terrain)=>{
+                terrainImages[terrain]=new Image();
+                terrainImages[terrain].src=`images/${terrain}.jpg`;
+            });
+
             // rendring information
 
             let screenWidth,screenHeight;
