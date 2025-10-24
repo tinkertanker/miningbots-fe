@@ -367,6 +367,7 @@ function drawGame() {
             // rendring information
 
             let screenWidth,screenHeight;
+            var GRID_SIZE;
             function updateDimensions(lazy_render) {
                 // browser window dimensions
                 let navbarHeight=document.getElementById("navbar").offsetHeight;
@@ -394,7 +395,7 @@ function drawGame() {
             const MAX_WHITE_WIDTH = 60;
             const MAX_WHITE_HEIGHT = 60;
             const borderWidth = 1;
-            var GRID_SIZE = Math.min(screenWidth / COLS, screenHeight / ROWS); // fit the map on to the screen
+            // fit the map on to the screen
             //Possibly add more colours for >2 players too
             const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
             const inverted_colors = [
