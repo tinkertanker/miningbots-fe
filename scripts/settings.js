@@ -106,8 +106,8 @@ function write_settings_(json_settings,complete_handler) {
     document.getElementById("saving-cover-board").style.display="flex";
     setTimeout(()=>{
         let updated_settings=Object.assign(SettingsManager.read_settings_cookie(/*raw=*/true),json_settings);
-        let cookie_value = encodeURI(JSON.stringify(updated_settings));
-        CookieUtilities.setCookie("settings", cookie_value, "Fri, 31 Dec 9999 23:59:59 GMT");
+        let cookie_value =JSON.stringify(updated_settings);
+        localStorage.setItem("settings",cookie_value);
         if(json_settings["show_notifications"]){
             switch(Notification.permission){
                 case "default":
@@ -218,9 +218,9 @@ SettingsManager.is_value_forced=function(setting){
 
 SettingsManager.read_settings_cookie=function(raw) {
     let current_settings=Object.assign({},SettingsManager.default_settings);
-    let cookie_value = CookieUtilities.getCookie("settings");
+    let cookie_value = localStorage.getItem("settings");
     if (cookie_value){
-        let cookie=JSON.parse(decodeURI(cookie_value));
+        let cookie=JSON.parse(cookie_value);
         current_settings=Object.assign(current_settings,cookie);
     }
     if (!raw){
