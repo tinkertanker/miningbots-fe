@@ -170,38 +170,35 @@ document.addEventListener("DOMContentLoaded",()=>{
         LoadingBox.setStatus(LoadingBox.Status.SERVER_NO_SELECTION);
     }
 
-    // Function to populate the dropdown menu (server list)
-    function populateDropdown() {
-        let dropdownMenu = document.getElementById("dropdown-menu");
-        object_forEach(servers,(hostname,server) => {
-            //create the links and set the text on them
-            let menuItem=document.createElement('a');
-            menuItem.classList.add("dropdown-item");
-            menuItem.innerText=server.name;
-            menuItem.href="#";
-            menuItem.setAttribute("data-hostname",hostname);
-        
-            //attach them to the UI
-            dropdownMenu.appendChild(menuItem);
-        });
+    //Populate the dropdown menu (server list)
+    let dropdownMenu = document.getElementById("dropdown-menu");
+    object_forEach(servers,(hostname,server) => {
+        //create the links and set the text on them
+        let menuItem=document.createElement('a');
+        menuItem.classList.add("dropdown-item");
+        menuItem.innerText=server.name;
+        menuItem.href="#";
+        menuItem.setAttribute("data-hostname",hostname);
+    
+        //attach them to the UI
+        dropdownMenu.appendChild(menuItem);
+    });
 
-        // add click handlers
-        dropdownMenu.addEventListener("click", function (event) {
-            event.preventDefault();
-            if(!event.target.hasAttribute("data-hostname"))return;
-            let selectedServerHostname = event.target.getAttribute("data-hostname");
-            console.log(selectedServerHostname);
-            //let selectedServerName = this.textContent;
-            //document.getElementById("navbarDropdownMenuLink").textContent =
-            //    selectedServerName;
-            CookieUtilities.deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
-            // Save to cookie first
-            CookieUtilities.setCookie("lastServer", selectedServerHostname, "Fri, 31 Dec 9999 23:59:59 GMT", "/");
-            location.reload();
-            // drawGame();
-        });
-    }
-    populateDropdown();
+    // add click handlers
+    dropdownMenu.addEventListener("click", function (event) {
+        event.preventDefault();
+        if(!event.target.hasAttribute("data-hostname"))return;
+        let selectedServerHostname = event.target.getAttribute("data-hostname");
+        console.log(selectedServerHostname);
+        //let selectedServerName = this.textContent;
+        //document.getElementById("navbarDropdownMenuLink").textContent =
+        //    selectedServerName;
+        CookieUtilities.deleteCookie("custom_server"); // delete the custom server, so if it is picked again, the app will ask for the socket again
+        // Save to cookie first
+        CookieUtilities.setCookie("lastServer", selectedServerHostname, "Fri, 31 Dec 9999 23:59:59 GMT", "/");
+        location.reload();
+        // drawGame();
+    });
 });
 
 // Player Name fetch code 
