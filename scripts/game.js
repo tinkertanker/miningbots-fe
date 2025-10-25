@@ -232,32 +232,6 @@ function drawGame() {
     let terrainImages={"unknown":new Image()};
 
     //Assigns images (preload images)
-    function transliterateElementType(elementType){
-        if(elementType.charAt(0)=="k")elementType=elementType.substring(1); // example: kMiningBot -> MiningBot
-        let upper=0;
-        let out="";
-        if(elementType.indexOf('_')!=-1){ // snake case
-            let words=elementType.split('_');
-            for (let index = 0; index < words.length; index++) {
-                let word = words[index];
-                word=word[0].toUpperCase()+word.substring(1);
-                words[index]=word;
-            }
-            out=words.join('_');
-        } else { // camel case
-            for (let index = 0; index < elementType.length; index++) {
-                const element = elementType[index];
-                if(/[A-Z]/.test(element)){ // if capital letter
-                    upper++;
-                    if(upper>1){ // second or later cap letter
-                        out+='_';
-                    }
-                }
-                out+=element;
-            }
-        }
-        return out;
-    }
 
     /*terrainImages.unknown.src = 'images/unknown.jpg';
     terrainImages.grasslands.src = 'images/grassland.jpg';
@@ -354,6 +328,32 @@ function drawGame() {
             console.log('map_config:', map_config);
 
             //load images
+            function transliterateElementType(elementType){
+                if(elementType.charAt(0)=="k")elementType=elementType.substring(1); // example: kMiningBot -> MiningBot
+                let upper=0;
+                let out="";
+                if(elementType.indexOf('_')!=-1){ // snake case
+                    let words=elementType.split('_');
+                    for (let index = 0; index < words.length; index++) {
+                        let word = words[index];
+                        word=word[0].toUpperCase()+word.substring(1);
+                        words[index]=word;
+                    }
+                    out=words.join('_');
+                } else { // camel case
+                    for (let index = 0; index < elementType.length; index++) {
+                        const element = elementType[index];
+                        if(/[A-Z]/.test(element)){ // if capital letter
+                            upper++;
+                            if(upper>1){ // second or later cap letter
+                                out+='_';
+                            }
+                        }
+                        out+=element;
+                    }
+                }
+                return out;
+            }
             original_elementTypes=elementTypes.slice(); // make a copy of the original element types
             elementTypes=map(map_config.resource_configs,(config)=>{return config.name.toLowerCase()});
             elementTypes=original_elementTypes.concat(elementTypes); // append the new element types
