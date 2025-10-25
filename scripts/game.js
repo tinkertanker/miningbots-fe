@@ -26,9 +26,10 @@ document.addEventListener("DOMContentLoaded",()=>{
         LoadingBox.setStatus(LoadingBox.Status.NO_INTERNET);
         window.addEventListener("online", ()=>{location.reload();});
         return;
-    } else {
-        LoadingBox.setStatus(LoadingBox.Status.LOADING);
     }
+    
+    //Set it to loading status
+    LoadingBox.setStatus(LoadingBox.Status.LOADING);
 
     // Get hostname from cookie, otherwise leave as null
     let server=CookieUtilities.getCookie("lastServer");
