@@ -69,6 +69,8 @@ document.addEventListener("DOMContentLoaded",()=>{
                 };
             }
         });
+        
+        //add Development, Testing servers and Custom server placeholder
         return Object.assign(servers,{
             "current.invalid": {
                 name: "Testing (on frontend server)",
