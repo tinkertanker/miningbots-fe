@@ -226,12 +226,11 @@ function drawGame() {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
 
+    //Assigns images (preload images)
     let elementTypes=["kFactoryBot","kMiningBot"];  
     let images = {};
     let terrainTypes=[];
     let terrainImages={"unknown":new Image()};
-
-    //Assigns images (preload images)
 
     /*terrainImages.unknown.src = 'images/unknown.jpg';
     terrainImages.grasslands.src = 'images/grassland.jpg';
