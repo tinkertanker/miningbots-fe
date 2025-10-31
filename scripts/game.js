@@ -164,7 +164,9 @@ document.addEventListener("DOMContentLoaded",()=>{
                 server_assigned();
                 break;
             default:
-                console.log("URL: " + servers[hostname].url);
+                with_value(servers[hostname].port, (port) => {
+                    console.log("URL: " + hostname + port?(":" + port):"");
+                });
                 set_protocols(servers[hostname].require_security);
                 port = SocketUtilities.applyDefaultPort(http_type, servers[hostname].port);
                 server_assigned();
