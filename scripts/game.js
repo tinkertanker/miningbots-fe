@@ -402,6 +402,7 @@ function drawGame() {
             // rendring preferences
             const MAX_WHITE_WIDTH = 60;
             const MAX_WHITE_HEIGHT = 60;
+            const BOT_START_INDEX = 500; // any element index equal to or above this value indicates a bot is occupying the space
             const borderWidth = 1;
             // fit the map on to the screen
             //Possibly add more colours for >2 players too
@@ -533,9 +534,9 @@ function drawGame() {
                                 drawASquare(col, row, terrain, images.unobtanium);
                                 break;*/
                             default: 
-                                if (element >= 500) { // 500 or more means a bot is occupying the space
+                                if (element >= BOT_START_INDEX) {
                                     console.log("EIN: ", element);
-                                    let element_ = element - 500;
+                                    let element_ = element - BOT_START_INDEX;
                                     const variant = (element_ % 2) ? "kFactoryBot" : "kMiningBot";
                                     const botImage = images[variant];
                                     const playerIndex = Math.floor(element_ / 2);
@@ -671,7 +672,7 @@ function drawGame() {
                 //var playerNum = ''+(playerIndex+1);
                 //var element = String(variant) + playerNum;
                 //console.log("element "+element);
-                gameState[newRow][newCol] = 500 + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
+                gameState[newRow][newCol] = BOT_START_INDEX + (playerIndex * 2) + ((variant == "kFactoryBot") ? 1 : 0);
                 console.log(`gameState[${newRow}][${newCol}]=${gameState[newRow][newCol]}`);
             }
 
