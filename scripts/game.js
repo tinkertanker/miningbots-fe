@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 setServerName(servers[server].name);
             drawGame();
         }
-        // handle the special domains
+        // handle the special server types
         switch (servers[hostname].type) {
             case "custom":
                 setServerName(servers["custom.invalid"].name);
