@@ -126,11 +126,10 @@ document.addEventListener("DOMContentLoaded",()=>{
                     LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
                     setTimeout(NavigationManager.showNavigation,200);
                 }
-                let socket_obtained;
                 function prompt_socket(previous_socket) {
                     DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", previous_socket, socket_obtained, empty_handler);
                 }
-                socket_obtained=function(socket) {
+                function socket_obtained(socket) {
                     socket = socket.trim();
                     try {
                         if(socket.length==0) throw new Error("Socket URL cannot be empty");
@@ -150,9 +149,12 @@ document.addEventListener("DOMContentLoaded",()=>{
                 }
                 // we don't need to check if the cookie exists, since getCookie will return undefined if it doesn't exist anyways
                 let socket=CookieUtilities.getCookie("custom_server");
+                // use the previous custom server if it exists and is valid
                 if(socket && SocketUtilities.isValidSocket(socket)) {
                     socket_obtained(socket);
                 } else {
+                    //else prompt the user for the socket
+                    // "" is so that the field is empty by default
                     prompt_socket("");
                 }
                 break;
