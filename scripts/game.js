@@ -415,7 +415,7 @@ function drawGame() {
                 'rgb(255,255,0)',    // inverse of blue
                 'rgb(0,255,255)',    // inverse of red
                 'rgb(255,0,255)',    // inverse of green
-                'rgb(0,0,255)',      // inverse of yellow
+                'rgb(0,100,255)',      // inverse of yellow
                 'rgb(0,255,255)',    // inverse of purple
                 'rgb(0,255,255)',    // inverse of orange
                 'rgb(0,255,255)'     // inverse of pink
