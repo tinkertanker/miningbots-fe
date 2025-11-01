@@ -271,7 +271,6 @@ function drawGame() {
             // if it is, return the games as a JS object
             if (response.ok) {
                 // console.log('games:', response);
-                LoadingBox.setStatus(LoadingBox.Status.LOADING_COMPLETED);
                 return response.json();
             } else {
                 throw new Error(`Failed to fetch list of games: ${response.statusText}`);
@@ -330,6 +329,7 @@ function drawGame() {
         //result= Map config and game ID taken from server data
         //this is where the actual rendering occurs
         .then(async result => {
+            LoadingBox.setStatus(LoadingBox.Status.LOADING_COMPLETED);
             let map_config = await result.map_config;
             console.log('map_config:', map_config);
 
