@@ -6,15 +6,15 @@ let DarkModeManager={
         return DM_ENABLED_;
     },
     darkModeEnabled: function(settings){
-    switch (settings["theme"]){
-        case "dark":
-            return true;
-        case "light":
-            return false;
-        default:
-            return DM_DEVICE_.matches;
-    }
-},
+        switch (settings["theme"]){
+            case "dark":
+                return true;
+            case "light":
+                return false;
+            default:
+                return DM_DEVICE_.matches;
+        }
+    },
     addDarkModeListener: function(target,event,listener){
         if(!darkModeSwitchListeners_.includes(target))
             darkModeSwitchListeners_.push(target);
