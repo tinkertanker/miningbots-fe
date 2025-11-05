@@ -796,6 +796,12 @@ function drawGame() {
                 header.classList.add("sidebar-header");
                 header.textContent = `Player: ${player_id}${name_insert}`;
                 header.style.color = color;
+                DarkModeManager.addDarkModeListener(header,"dm.enabled",()=>{
+                    header.style.color = inverted_colors[playerIndex];
+                });
+                DarkModeManager.addDarkModeListener(header,"dm.disabled",()=>{
+                    header.style.color = colors[playerIndex];
+                });
                 sidebar.appendChild(header);
 
                 const botBox = document.createElement('div');

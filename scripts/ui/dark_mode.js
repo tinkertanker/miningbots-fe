@@ -1,5 +1,6 @@
 const DM_DEVICE_=window.matchMedia('(prefers-color-scheme: dark)');
 let DM_ENABLED_=false;
+let darkModeSwitchListeners_=[];
 let DarkModeManager={
     isDarkMode: function(){
         return DM_ENABLED_;
@@ -13,15 +14,24 @@ let DarkModeManager={
         default:
             return DM_DEVICE_.matches;
     }
-}
+},
+    addDarkModeListener: function(target,event,listener){
+        if(!darkModeSwitchListeners_.includes(target))
+            darkModeSwitchListeners_.push(target);
+        target.addEventListener(event,listener);
+    }
 };
-DarkModeManager.setDarkMode=function(enabled){
+DarkModeManager.setDarkMode=function(enabled,is_setup_call){
     if(enabled==DM_ENABLED_)return;
     if(enabled){
         document.head.innerHTML+="<link href=\"/styles/dark-mode-patch.css\" rel=\"stylesheet\" id=\"set-dark-mode\">";
     } else {
         document.head.removeChild(document.getElementById("set-dark-mode"));
     }
+    if(!is_setup_call)
+        darkModeSwitchListeners_.forEach((target)=>{
+            target.dispatchEvent(new Event("dm."+(enabled?"enabled":"disabled")))
+        });
     DM_ENABLED_=enabled;
 }
 DarkModeManager.pairDarkMode=function (settings){
@@ -38,7 +48,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         // set dark mode
         DarkModeManager.pairDarkMode(CONFIG_);
-        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_));
+        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_),true);
         if(interval!=-1)clearInterval(interval);
     }
     interval=setInterval(setup,100);
