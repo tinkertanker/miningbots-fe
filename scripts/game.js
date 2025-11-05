@@ -520,7 +520,8 @@ function drawGame() {
                             //no element, so background only
                             case elements.unknown:
                             case elements.traversable:
-                                drawASquare(col, row, terrain); //nothing occupying the space, so no additional image
+                                //terrainImages.unknown will not draw anything, so it is just a black background
+                                drawABot(col, row, '#000000',terrainImages.unknown); //nothing occupying the space, so no additional image
                                 break;
                             case elements.resource:
                                 drawASquare(col, row, null, images.mixed_ore);
