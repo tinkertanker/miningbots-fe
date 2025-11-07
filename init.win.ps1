@@ -30,6 +30,7 @@ Set-Location $ScriptLocation
 
 If ($LaunchServer) {
     $ServerProcessName=$(Get-Item $ServerPath).BaseName
+    Write-Host $ServerProcessName
     $ElapsedSeconds=0
     If (-not (Server-IsRunning $ServerProcessName)) {
         Start-Process $ServerPath -ErrorAction SilentlyContinue
@@ -53,14 +54,18 @@ If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
         Write-Error "Firefox is already running. Profiles cannot be created while Firefox is running."
     } else {
         Start-Process $FirefoxPath -Wait -ArgumentList "-CreateProfile","miningbots"
-        $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
-        Copy-Item "firefox-chrome\user.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
         New-Item -Path (Join-Path $FirefoxProfileDirectory "chrome") -ItemType Directory | Out-Null
         Copy-Item "firefox-chrome\userChrome.css" (Join-Path $FirefoxProfileDirectory "chrome")
     }
 }
+$FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
 $FirefoxArguments=@("-p","miningbots","localhost")
 If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
+}
+If ($UIMode -ieq "debug") {
+    Copy-Item -Force "firefox-chrome\userdebug.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
+} Else {
+    Copy-Item -Force "firefox-chrome\user.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
 }
 Start-Process $FirefoxPath -ArgumentList $FirefoxArguments
