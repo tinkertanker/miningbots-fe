@@ -4,7 +4,7 @@
     Write-Host "`r" -NoNewline  # Moves the cursor back to the start
 }
 
-Function Server-IsRunning {
+Function Get-IsServerRunning {
     param ($ServerProcessName)
     Return (Get-Process -Name $ServerProcessName -ErrorAction SilentlyContinue)
 }
@@ -32,14 +32,14 @@ If ($LaunchServer) {
     $ServerProcessName=$(Get-Item $ServerPath).BaseName
     Write-Host $ServerProcessName
     $ElapsedSeconds=0
-    If (-not (Server-IsRunning $ServerProcessName)) {
+    If (-not (Get-IsServerRunning $ServerProcessName)) {
         Start-Process $ServerPath -ErrorAction SilentlyContinue
-        While (($ElapsedSeconds -le 20) -and -not (Server-IsRunning $ServerProcessName)) {
+        While (($ElapsedSeconds -le 20) -and -not (Get-IsServerRunning $ServerProcessName)) {
           Write-Host -NoNewline "`rLaunching server... ($ElapsedSeconds seconds elapsed)"
           Start-Sleep -Seconds 1
           $ElapsedSeconds++
         }
-        If (-not (Server-IsRunning $ServerProcessName)) {
+        If (-not (Get-IsServerRunning $ServerProcessName)) {
           Clear-Line
           Write-Host "`rServer failed to launch. Quitting."
           Exit-Error
