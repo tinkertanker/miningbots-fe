@@ -30,7 +30,6 @@ Set-Location $ScriptLocation
 
 If ($LaunchServer) {
     $ServerProcessName=$(Get-Item $ServerPath).BaseName
-    Write-Host $ServerProcessName
     $ElapsedSeconds=0
     If (-not (Get-IsServerRunning $ServerProcessName)) {
         Start-Process $ServerPath -ErrorAction SilentlyContinue
