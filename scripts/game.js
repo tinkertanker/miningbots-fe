@@ -755,7 +755,7 @@ function drawGame() {
             function showWinner(playerId) {
                 let name_insert = playername_map[playerId]["insert"];
                 let text = `<h1>Player ${playerId}${name_insert} Won!</h1>`;
-                DialogUtilities.showDialog(text,"Game Won");
+                DialogUtilities.showDialog(text,"We have a winner!");
             }
 
             //shows a row for each player showing each bot and their data
