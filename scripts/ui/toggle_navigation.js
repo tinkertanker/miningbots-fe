@@ -16,6 +16,9 @@ let NavigationManager = {
     event.stopPropagation();
     setTimeout(()=>{navigation_dropdown_.toggle()}, 0);
   },
+  isNavigationExpanded:function(){
+    return navigation_link_.ariaExpanded === "true";
+  },
   showNavigation: function () {
     navigation_dropdown_.show();
   }

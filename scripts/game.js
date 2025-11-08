@@ -877,8 +877,7 @@ function drawGame() {
             LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
             DialogUtilities.showDialog(`Error connecting to ${http_type}://${hostname}:${port}: <br><br>` + error + "<br><br>The server might be offline.<br>Try selecting another server from the menu.","Connection Failed",[{"text":"OK","action":()=>{
                 setTimeout(()=>{
-                    let link=document.getElementById("navbarDropdownMenuLink");
-                    if(link.ariaExpanded=="false")NavigationManager.showNavigation(); 
+                    if(!NavigationManager.isNavigationExpanded())NavigationManager.showNavigation(); 
                 },0);
             }}]);
         });
