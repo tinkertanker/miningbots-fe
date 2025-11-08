@@ -193,7 +193,7 @@ SettingsManager.ClickHandlers = {
                 window.opener.location.reload();
                 location.reload();
             });
-        }},{text:"Cancel",action:()=>true}]);
+        }},{text:"Cancel",action:null}]);
     },
     apply_clicked: function() {
         write_displayed_settings_(()=>{
