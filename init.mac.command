@@ -22,15 +22,15 @@ function start_browser(){
       end tell
 EOF
       echo "Firefox profile created."
-      PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
       cp -r "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
-      if [ "$UI_MODE" == "debug"]; then
-        cp "$PROFILE_DIR/chrome/userdebug.win.js" "$PROFILE_DIR/user.js"
-      else
-        cp "$PROFILE_DIR/chrome/user.win.js" "$PROFILE_DIR/user.js"
-      fi
     fi
+    PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
     source browsersettings.conf # simple way to load a name=value pairs config file
+    if [[ "$UI_MODE" == "debug" ]]; then
+        cp "firefox-chrome/userdebug.win.js" "$PROFILE_DIR/user.js"
+      else
+        cp "firefox-chrome/user.win.js" "$PROFILE_DIR/user.js"
+      fi
     [[ $UI_MODE == "fullscreen" ]]  && KIOSK="--kiosk" || KIOSK=""
     open -a "Firefox" --args $KIOSK -p miningbots --new-window http://localhost:8000
 }
