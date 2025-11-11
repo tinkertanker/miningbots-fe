@@ -16,7 +16,7 @@ let NavigationManager = {
     setTimeout(()=>{navigation_dropdown_.toggle()}, 0);
   },
   isNavigationExpanded:function(){
-    return navigation_link_.ariaExpanded === "true";
+    return navigation_link_.classList.contains('show');
   },
   showNavigation: function () {
     navigation_dropdown_.show();
