@@ -4,7 +4,7 @@ let HelpManager = {
         let content="<span style=\"white-space:nowrap;\">";
         document.querySelectorAll('#accessibility-labels *').forEach(el => {
             if(el.id.endsWith("-help") && !el.hasAttribute("helpon-only")){ // only include non-helpon-only elements
-                content+=el.innerHTML.replace("noimport","")+'<br>'; // remove noimport from svgfile elements (to ensure they are loaded)
+                content+=el.outerHTML.replace("noimport","")+'<br>'; // remove noimport from svgfile elements (to ensure they are loaded)
             }
         });
         content+="</span>";

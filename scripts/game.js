@@ -373,9 +373,9 @@ function drawGame() {
             let terrain_legend;
             if(CONFIG_["show_legend"]){
                 terrain_legend=document.createElement("span");
-                terrain_legend.id="terrain-legend-help";
+                terrain_legend.id="terrain-legends";
                 terrain_legend.innerHTML="Terrain Legend:<br><br>";
-                document.getElementById("accessibility-labels").appendChild(terrain_legend);
+                document.getElementById("legend-help").appendChild(terrain_legend);
             }
             let terrainTypesOriginal=map_config.terrain_configs;
             terrainTypes=map(map_config.terrain_configs,(config)=>{return config["name"].toLowerCase()})
@@ -472,9 +472,9 @@ function drawGame() {
             let resource_legend;
             if(CONFIG_["show_legend"]){
                 resource_legend=document.createElement("span");
-                resource_legend.id="resource-legend-help";
+                resource_legend.id="resource-legend";
                 resource_legend.innerHTML="Resource Legend:<br><br>";
-                document.getElementById("accessibility-labels").appendChild(resource_legend);
+                document.getElementById("legend-help").appendChild(resource_legend);
             }
             indexed_foreach(resource_configs,(id,resource) => {
                 resources[Object.keys(resources).length] = resource.name;

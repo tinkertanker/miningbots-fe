@@ -109,7 +109,7 @@ let DialogUtilities = {
     showDialog: function (html,title,buttons,defaultButton){
         //ensure security
         let cleanHTML=DOMPurify.sanitize(html,{
-            ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','p','b','i','em','strong','br','img','svgfile'],
+            ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','span','div','p','b','i','em','strong','br','img','svgfile'],
             ALLOWED_ATTR:['src','id','class','style']
         });
         let tempDiv=document.createElement("div");
