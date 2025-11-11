@@ -454,13 +454,18 @@ function drawGame() {
 
             // let resource_configs = result.map_config.resource_configs;
             //Adds new game elements from resource_configs if they do not already exist
-            let legend=document.getElementById("legend-help");
-            if(!CONFIG_["show_legend"])legend.remove();
+            let legend;
+            if(CONFIG_["show_legend"]){
+                legend=document.createElement("span");
+                legend.id="legend-help";
+                legend.innerHTML="Legend:<br><br>";
+                document.getElementById("accessibility-labels").appendChild(legend);
+            }
             indexed_foreach(resource_configs,(id,resource) => {
                 resources[Object.keys(resources).length] = resource.name;
                 let resource_name_lower=resource.name.toLowerCase();
                 elements[resource_name_lower] = 7 + Object.keys(resources).length - 1;
-                if(CONFIG_["show_legend"] && legend){
+                if(legend){
                     legend.innerHTML+="&nbsp;&nbsp;";
                     if (images[resource_name_lower].src)legend.innerHTML+="<img src=\"images/"+resource_name_lower+".png\" style=\"height:1.5em;vertical-align:middle;\"> ";
                     legend.innerHTML+=`${resource.name} (${resource_name_lower}, ${id})<br>`;
