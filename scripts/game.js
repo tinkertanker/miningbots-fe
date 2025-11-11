@@ -370,10 +370,25 @@ function drawGame() {
             });
 
             //iterate over the keys (land types) and set the sources
+            let terrain_legend;
+            if(CONFIG_["show_legend"]){
+                terrain_legend=document.createElement("span");
+                terrain_legend.id="terrain-legend-help";
+                terrain_legend.innerHTML="Terrain Legend:<br><br>";
+                document.getElementById("accessibility-labels").appendChild(terrain_legend);
+            }
+            let terrainTypesOriginal=map_config.terrain_configs;
             terrainTypes=map(map_config.terrain_configs,(config)=>{return config["name"].toLowerCase()})
+            let id=0;
             terrainTypes.forEach((terrain)=>{
                 terrainImages[terrain]=new Image();
                 terrainImages[terrain].src=`images/${terrain}.jpg`;
+                if(terrain_legend){
+                    terrain_legend.innerHTML+="&nbsp;&nbsp;";
+                    if (terrainImages[terrain].src)terrain_legend.innerHTML+="<img src=\"images/"+terrain+".jpg\" style=\"height:1.5em;vertical-align:middle;\"> ";
+                    terrain_legend.innerHTML+=`${terrainTypesOriginal[id].name} (${terrain}, ${id})<br>`;
+                }
+                id++;
             });
 
             // rendring information
@@ -454,21 +469,21 @@ function drawGame() {
 
             // let resource_configs = result.map_config.resource_configs;
             //Adds new game elements from resource_configs if they do not already exist
-            let legend;
+            let resource_legend;
             if(CONFIG_["show_legend"]){
-                legend=document.createElement("span");
-                legend.id="legend-help";
-                legend.innerHTML="Legend:<br><br>";
-                document.getElementById("accessibility-labels").appendChild(legend);
+                resource_legend=document.createElement("span");
+                resource_legend.id="resource-legend-help";
+                resource_legend.innerHTML="Resource Legend:<br><br>";
+                document.getElementById("accessibility-labels").appendChild(resource_legend);
             }
             indexed_foreach(resource_configs,(id,resource) => {
                 resources[Object.keys(resources).length] = resource.name;
                 let resource_name_lower=resource.name.toLowerCase();
                 elements[resource_name_lower] = 7 + Object.keys(resources).length - 1;
-                if(legend){
-                    legend.innerHTML+="&nbsp;&nbsp;";
-                    if (images[resource_name_lower].src)legend.innerHTML+="<img src=\"images/"+resource_name_lower+".png\" style=\"height:1.5em;vertical-align:middle;\"> ";
-                    legend.innerHTML+=`${resource.name} (${resource_name_lower}, ${id})<br>`;
+                if(resource_legend){
+                    resource_legend.innerHTML+="&nbsp;&nbsp;";
+                    if (images[resource_name_lower].src)resource_legend.innerHTML+="<img src=\"images/"+resource_name_lower+".png\" style=\"height:1.5em;vertical-align:middle;\"> ";
+                    resource_legend.innerHTML+=`${resource.name} (${resource_name_lower}, ${id})<br>`;
                 }
             });
 
