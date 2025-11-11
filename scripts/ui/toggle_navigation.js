@@ -12,8 +12,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 let NavigationManager = {
-  toggleNavigation: function (event) {
-    event.stopPropagation();
+  toggleNavigation: function () {
     setTimeout(()=>{navigation_dropdown_.toggle()}, 0);
   },
   isNavigationExpanded:function(){
