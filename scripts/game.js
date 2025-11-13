@@ -380,7 +380,7 @@ function drawGame() {
             let terrainTypesOriginal=map_config.terrain_configs;
             terrainTypes=map(map_config.terrain_configs,(config)=>{return config["name"].toLowerCase()})
             let id=0;
-            terrainTypes.forEach((terrain)=>{
+            indexed_foreach(terrainTypes,(id,terrain)=>{
                 terrainImages[terrain]=new Image();
                 terrainImages[terrain].src=`images/${terrain}.jpg`;
                 if(terrain_legend){
@@ -388,7 +388,6 @@ function drawGame() {
                     if (terrainImages[terrain].src)terrain_legend.innerHTML+="<img src=\"images/"+terrain+".jpg\" style=\"height:1.5em;vertical-align:middle;\"> ";
                     terrain_legend.innerHTML+=`${terrainTypesOriginal[id].name} (${terrain}, ${id})<br>`;
                 }
-                id++;
             });
 
             // rendring information
