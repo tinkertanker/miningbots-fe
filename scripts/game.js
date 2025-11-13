@@ -834,7 +834,7 @@ function drawGame() {
                         botDiv.classList.add('bot-info');
                         let variantLabel = NameMaps.mapName('variantMap',variant);
                         botDiv.innerHTML = `
-            <h4><b>${variantLabel}</b> ${id}</h4>
+            <h4><img alt="${variantLabel}" src="${images[variant].src}"><b>${variantLabel}</b> ${id}</h4>
             <hr>
             <p><b>Position:</b> ${position.x}, ${position.y}</p>
             <p><b>Energy:</b> ${current_energy}</p>
