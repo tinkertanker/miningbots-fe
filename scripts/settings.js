@@ -12,8 +12,8 @@ let SettingsManager={
                         : null
         },
         "show_legend": {
-            title:"Show element legend",
-            description:"Show the element legend in Help",
+            title:"Show legends",
+            description:"Show the legends in Help",
             type:"boolean",
             default:true,
             force_value:null
