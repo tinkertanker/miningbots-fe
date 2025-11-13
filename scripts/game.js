@@ -390,8 +390,6 @@ function drawGame() {
                 }
             });
 
-            // rendring information
-
             let screenWidth,screenHeight;
             var GRID_SIZE;
             function updateDimensions(lazy_render) {
