@@ -363,6 +363,7 @@ function drawGame() {
             original_elementTypes=elementTypes.slice(); // make a copy of the original element types
             elementTypes=map(map_config.resource_configs,(config)=>{return config.name.toLowerCase()});
             elementTypes=original_elementTypes.concat(elementTypes); // append the new element types
+            if(CONFIG_["show_legend"])document.getElementById("bot-legend").style.display="";
             elementTypes.forEach((element)=>{
                 let imageName=transliterateElementType(element);
                 images[element]=new Image();
