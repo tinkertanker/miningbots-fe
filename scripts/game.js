@@ -111,18 +111,17 @@ document.addEventListener("DOMContentLoaded",()=>{
         // callback for when a valid server socket is obtained
         function server_assigned(isCustomServer) {
             console.log(servers["localhost"].name);
-            if(isCustomServer)
-                setServerName(servers["custom.invalid"].name.replace(/\.+$/, ""));
-            else
-                setServerName(servers[server].name);
+            server_name=servers[hostname].name;
+            if(isCustomServer)server_name=server_name.replace(/\.+$/, "");
+            setServerName(server_name);
             drawGame();
         }
         // handle the special server types
         switch (servers[hostname].type) {
             case "custom":
-                setServerName(servers["custom.invalid"].name);
+                setServerName(servers[hostname].name);
                 function empty_handler() {
-                    setServerName(servers["custom.invalid"].name.replace(/\.+$/, ""));
+                    setServerName(servers[hostname].name.replace(/\.+$/, ""));
                     LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
                     setTimeout(NavigationManager.showNavigation,200);
                 }
