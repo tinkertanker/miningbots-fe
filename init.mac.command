@@ -35,6 +35,11 @@ EOF
     open -a "Firefox" --args $KIOSK -p miningbots --new-window $FRONTEND_URL
 }
 cd $(dirname $0)
+if [ ! -f browsersettings.conf ]; then
+  cp browsersettings.conf.example browsersettings.conf
+  echo "Created default browsersettings.conf. Please edit it as needed and re-run the script."
+  exit 1
+fi
 if server_is_running; then # if the frontend server is already running, only start the browser.
      start_browser
      exit
