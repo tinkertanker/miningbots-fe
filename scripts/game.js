@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
         // callback for when a valid server socket is obtained
         function server_assigned(isCustomServer) {
-            console.log(servers["localhost"].name);
+            console.log(servers[hostname].name);
             server_name=servers[hostname].name;
             if(isCustomServer)server_name=server_name.replace(/\.+$/, "");
             setServerName(server_name);
