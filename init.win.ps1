@@ -58,7 +58,7 @@ If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
     }
 }
 $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
-$FirefoxArguments=@("-p","miningbots","localhost")
+$FirefoxArguments=@("-p","miningbots","$FRONTEND_URL")
 If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
 }

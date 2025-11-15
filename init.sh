@@ -27,7 +27,7 @@ function start_browser(){
       return
     fi
     [ $UI_MODE == "fullscreen" ]  && KIOSK="--kiosk" || KIOSK=""
-    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="$CLASS" localhost:8000
+    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="$CLASS" "$FRONTEND_URL" &
 }
 cd $(dirname $0)
 if server_is_running; then # if the frontend server is already running, only start the browser.

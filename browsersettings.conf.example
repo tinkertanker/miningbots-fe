@@ -7,6 +7,8 @@ UI_MODE=debug
 START_WEB_SERVER=false
 #If START_WEB_SERVER is true, Path of web server relative to root of application
 REL_WEB_SERVER_PATH=webserver/abyssws
+#Frontend URL to open in browser
+FRONTEND_URL=http://localhost:8000
 #TEST_MODE is a boolean value (true or false). If true, starts mb-server
 TEST_MODE=false
 #If TEST_MODE is true, TEST_MB_SERVER_PATH is a UNIX path to the mb-server

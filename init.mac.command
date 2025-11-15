@@ -32,7 +32,7 @@ EOF
         cp "firefox-chrome/user.win.js" "$PROFILE_DIR/user.js"
       fi
     [[ $UI_MODE == "fullscreen" ]]  && KIOSK="--kiosk" || KIOSK=""
-    open -a "Firefox" --args $KIOSK -p miningbots --new-window http://localhost:8000
+    open -a "Firefox" --args $KIOSK -p miningbots --new-window $FRONTEND_URL
 }
 cd $(dirname $0)
 if server_is_running; then # if the frontend server is already running, only start the browser.
