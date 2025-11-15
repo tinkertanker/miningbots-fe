@@ -5,8 +5,8 @@ let DarkModeManager={
     isDarkMode: function(){
         return DM_ENABLED_;
     },
-    darkModeEnabled: function(settings){
-        switch (settings["theme"]){
+    darkModeEnabled: function(theme){
+        switch (theme){
             case "dark":
                 return true;
             case "light":
@@ -36,7 +36,7 @@ DarkModeManager.setDarkMode=function(enabled,is_setup_call){
 }
 DarkModeManager.pairDarkMode=function (settings){
     DM_DEVICE_.addEventListener("change",(e)=>{
-        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(settings));
+        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(settings['theme']));
     });
 }
 
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
         // set dark mode
         DarkModeManager.pairDarkMode(CONFIG_);
-        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_),true);
+        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(CONFIG_['theme']),true);
         if(interval!=-1)clearInterval(interval);
     }
     interval=setInterval(setup,100);

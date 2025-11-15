@@ -380,7 +380,7 @@ SettingsManager.initialize_main=function(){
 
 function onChange_(setting_update){
     if(setting_update.key=="theme"){
-        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled({"theme":setting_update.value}));
+        DarkModeManager.setDarkMode(DarkModeManager.darkModeEnabled(setting_update.value));
     }
 
     update_reset_button_(setting_update);
