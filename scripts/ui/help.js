@@ -9,7 +9,7 @@ let HelpManager = {
         });
         content+="</span>";
         DialogUtilities.showDialog(
-            content, "Help", undefined, "OK");
+            content, "Help", undefined, undefined, "OK");
     }
 }
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (helpText) {
                     isHelponActive = false; // Exit helpon mode
                     onHelponDeactivated_();
-                    DialogUtilities.showDialog(helpText, `Help on "${name}"`, undefined, "OK"); // undefined means default buttons
+                    DialogUtilities.showDialog(helpText, `Help on "${name}"`, undefined, undefined, "OK"); // undefined means default buttons
                 }
             }
         }

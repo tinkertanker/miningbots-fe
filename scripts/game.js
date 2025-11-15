@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         });
                         server_assigned(true);
                     } catch (e){
-                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", [{text: "OK", action: ()=>{prompt_socket(socket)}}], "OK");
+                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", empty_handler,[{text: "OK", action: ()=>{prompt_socket(socket)}}], "OK");
                     }
                 }
                 // we don't need to check if the cookie exists, since getCookie will return undefined if it doesn't exist anyways
@@ -893,7 +893,7 @@ function drawGame() {
             if(error.message=="cancelled")return;
             console.error("Error:", error);
             LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
-            DialogUtilities.showDialog(`Error connecting to ${http_type}://${hostname}:${port}: <br><br>` + error + "<br><br>The server might be offline.<br>Try selecting another server from the menu.","Connection Failed",[{"text":"OK","action":()=>{
+            DialogUtilities.showDialog(`Error connecting to ${http_type}://${hostname}:${port}: <br><br>` + error + "<br><br>The server might be offline.<br>Try selecting another server from the menu.","Connection Failed",null,[{"text":"OK","action":()=>{
                 setTimeout(()=>{
                     if(!NavigationManager.isNavigationExpanded())NavigationManager.showNavigation(); 
                 },0);

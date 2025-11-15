@@ -106,7 +106,7 @@ let DialogUtilities = {
     isAnotherDialogShowing: function (){
         return dialog_showing_;
     },
-    showDialog: function (html,title,buttons,defaultButton){
+    showDialog: function (html,title,onClose,buttons,defaultButton){
         //ensure security
         let cleanHTML=DOMPurify.sanitize(html,{
             ALLOWED_TAGS:['h1', 'h2', 'h3', 'h4', 'h5', 'h6','span','div','p','b','i','em','strong','br','img','svgfile'],
@@ -126,7 +126,8 @@ let DialogUtilities = {
             }
         });
         cleanHTML=tempDiv.innerHTML;
-        return showDialog_(cleanHTML,title,buttons,()=>{},defaultButton,hasSVGFiles);
+        if(typeof onClose!="function")onClose=()=>{};
+        return showDialog_(cleanHTML,title,buttons,onClose,defaultButton,hasSVGFiles);
     },
     prompt: function (html, title, defaultValue, ok_handler, cancel_handler) {
         //ensure security
