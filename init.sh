@@ -28,7 +28,8 @@ function start_browser(){
       return
     fi
     [ $UI_MODE == "fullscreen" ]  && KIOSK="--kiosk" || KIOSK=""
-    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="$CLASS" "$FRONTEND_URL" &
+    encoded_config=$(base64 < browsersettings.conf | tr -d '\n' | python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.stdin.read().strip()))")
+    XAPP_FORCE_GTKWINDOW_ICON="$PWD/favicon.ico" firefox $KIOSK -p miningbots --new-window --class="$CLASS" "$FRONTEND_URL?config=$encoded_config" &
 }
 cd $(dirname $0)
 if [ ! -f browsersettings.conf ]; then

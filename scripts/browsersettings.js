@@ -1,6 +1,6 @@
-async function read_config_file_() {
+async function read_default_config_file_() {
     var file_content = `UI_MODE=debug`;
-    await fetch("/browsersettings.conf").then(async (response) => {
+    await fetch("/browsersettings.conf.example").then(async (response) => {
         //If the status is not "good", do not process the body
         if (!response.ok) return;
         //Here, the status must be "good"
@@ -13,6 +13,18 @@ async function read_config_file_() {
     return file_content;
 }
 
+
+function read_config_file_() {
+    return atob(decodeURIComponent(URLArguments["config"] || ""));
+}
+
+function assemble_config_file_(file_content, default_file_content) {
+    var default_entries = parse_config_file_(default_file_content);
+    var file_entries = parse_config_file_(file_content);
+    //Override default entries with file entries
+    let target=Object.assign({},default_entries);
+    return Object.assign(target, file_entries);
+}
 function parse_config_file_(file_content) {
     var entries = {};
     var file_lines = file_content.split(/\r?\n|\r|\n/g); // split the lines (https://stackoverflow.com/a/21712066)
@@ -28,7 +40,7 @@ function parse_config_file_(file_content) {
 }
 
 async function is_production_() {
-    let config_file = parse_config_file_(await read_config_file_());
+    let config_file = assemble_config_file_(read_config_file_(),await read_default_config_file_());
     return config_file["UI_MODE"] == "fullscreen"; // MiningBots is deployed in full screen, hence full screen = production
 }
 

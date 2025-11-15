@@ -33,7 +33,8 @@ EOF
         cp "firefox-chrome/user.win.js" "$PROFILE_DIR/user.js"
       fi
     [[ $UI_MODE == "fullscreen" ]]  && KIOSK="--kiosk" || KIOSK=""
-    open -a "Firefox" --args $KIOSK -p miningbots --new-window $FRONTEND_URL
+    encoded_config=$(base64 < browsersettings.conf | tr -d '\n' | python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.stdin.read().strip()))")
+    open -a "Firefox" --args $KIOSK -p miningbots --new-window "$FRONTEND_URL?config=$encoded_config" &
 }
 cd $(dirname $0)
 if [ ! -f browsersettings.conf ]; then
