@@ -5,5 +5,5 @@ if [ ! -f browsersettings.conf ]; then
   exit 1
 fi
 source browsersettings.conf
-export UI_MODE START_WEB_SERVER REL_WEB_SERVER_PATH
+export UI_MODE START_WEB_SERVER REL_WEB_SERVER_PATH FRONTEND_URL
 start powershell ./init.win.ps1 # windows only
