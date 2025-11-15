@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         const gport=CONFIG_["game_port"];
         const lport = CONFIG_["localhost_port"];
         let servers={};
-        ["p","s"].forEach((server_type)=>{
+        /*["p","s"].forEach((server_type)=>{
             for(let i=1;i<=10;i++){
                 let hostname=`${server_type}${i}.bootcamp.tk.sg`;
                 let name;
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     port: gport
                 };
             }
-        });
+        });*/
         
         //add Development, Testing servers and Custom server placeholder
         return Object.assign(servers,{
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                 require_security: true
             },
             "custom.invalid": { // invalid special domain by IANA
-                name: "Custom...",
+                name: "Custom / Other server...",
                 type: "custom"
             }
         });
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         function server_assigned(isCustomServer) {
             console.log(servers["localhost"].name);
             if(isCustomServer)
-                setServerName("Custom");
+                setServerName(servers["custom.invalid"].name.replace(/\.+$/, ""));
             else
                 setServerName(servers[server].name);
             drawGame();
@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             case "custom":
                 setServerName(servers["custom.invalid"].name);
                 function empty_handler() {
-                    setServerName("Custom");
+                    setServerName(servers["custom.invalid"].name.replace(/\.+$/, ""));
                     LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
                     setTimeout(NavigationManager.showNavigation,200);
                 }
