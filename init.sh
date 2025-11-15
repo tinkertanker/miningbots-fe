@@ -1,6 +1,7 @@
 #!/bin/bash
+alias load_config='source browsersettings.conf.example;source browsersettings.conf' # alias to load the config file
 function server_is_running(){
-	source browsersettings.conf
+	load_config
         ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
@@ -14,7 +15,7 @@ function start_browser(){
       ln -s "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
       ln -s "chrome/user.js" "$PROFILE_DIR/user.js"
     fi
-    source browsersettings.conf # simple way to load a name=value pairs config file
+    load_config # simple way to load a name=value pairs config file
     # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ $UI_MODE == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
@@ -39,7 +40,7 @@ if server_is_running; then # if the frontend server is already running, only sta
      start_browser
      exit
 fi
-source browsersettings.conf
+load_config
 if $START_WEB_SERVER; then
 	echo "Server starting at $(date)" >> webserver/log/startup.log
 	./$REL_WEB_SERVER_PATH &
