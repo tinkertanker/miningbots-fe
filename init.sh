@@ -13,7 +13,6 @@ function start_browser(){
       ln -s "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
       ln -s "chrome/user.js" "$PROFILE_DIR/user.js"
     fi
-    load_config # simple way to load a name=value pairs config file
     # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ "$UI_MODE" == "debug" ]; then
       CLASS="Mining Bots (debug/test)"

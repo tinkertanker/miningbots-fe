@@ -24,7 +24,6 @@ EOF
       cp -r "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
     fi
     PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
-    load_config # simple way to load a name=value pairs config file
     if [[ "$UI_MODE" == "debug" ]]; then
         cp "firefox-chrome/userdebug.win.js" "$PROFILE_DIR/user.js"
       else
