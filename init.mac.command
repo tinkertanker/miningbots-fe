@@ -1,7 +1,5 @@
 #!/bin/zsh
-alias load_config='source browsersettings.conf.example;source browsersettings.conf'
 function server_is_running(){
-	load_config
         ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
@@ -42,11 +40,12 @@ if [ ! -f browsersettings.conf ]; then
   echo "Created default browsersettings.conf. Please edit it as needed and re-run the script."
   exit 1
 fi
+source browsersettings.conf.example
+source browsersettings.conf
 if server_is_running; then # if the frontend server is already running, only start the browser.
      start_browser
      exit
 fi
-load_config
 if $START_WEB_SERVER; then
 	echo "Server starting at $(date)" >> webserver/log/startup.log
 	./"$REL_WEB_SERVER_PATH" &

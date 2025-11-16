@@ -1,7 +1,5 @@
 #!/bin/bash
-alias load_config='source browsersettings.conf.example;source browsersettings.conf' # alias to load the config file
 function server_is_running(){
-	load_config
         ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
@@ -17,7 +15,6 @@ function start_browser(){
     fi
     load_config # simple way to load a name=value pairs config file
     # update the ffconfig (Firefox Config) depending on the UI Mode
-    if [ $UI_MODE == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
       ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit 1
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
@@ -37,11 +34,12 @@ if [ ! -f browsersettings.conf ]; then
   echo "Created default browsersettings.conf. Please edit it as needed and re-run the script."
   exit 1
 fi
+source browsersettings.conf.example
+source browsersettings.conf
 if server_is_running; then # if the frontend server is already running, only start the browser.
      start_browser
      exit
 fi
-load_config
 if $START_WEB_SERVER; then
 	echo "Server starting at $(date)" >> webserver/log/startup.log
 	./$REL_WEB_SERVER_PATH &
