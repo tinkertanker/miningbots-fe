@@ -15,6 +15,7 @@ function start_browser(){
     fi
     load_config # simple way to load a name=value pairs config file
     # update the ffconfig (Firefox Config) depending on the UI Mode
+    if [ "$UI_MODE" == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
       ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit 1
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
