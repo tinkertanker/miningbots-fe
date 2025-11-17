@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+a[role="button"] {
+  cursor: pointer;
+  text-decoration: none;
+  color:#000000;
+}
+
+svg {
+  width: 32px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+a[role="button"] svg:hover {
+  color: #999999 !important;
+}
+
+a[role="button"] svg:active {
+  color: #777777 !important;
+}
+
+@media (max-width: 992px) {
+  .collapse-if-minified {
+    display:none;
+  }
+}
