@@ -1,9 +1,14 @@
-ModeManager.IS_PRODUCTION_MODE=false;
+let ModeManager = {
+  IS_PRODUCTION_MODE: false,
+};
+function isFullscreen_() {
+  console.log(screen.availWidth, window.innerWidth, screen.availHeight, window.innerHeight);
+  return window.innerWidth>=screen.availWidth &&
+          window.innerHeight>=screen.availHeight;
+}
 document.addEventListener("DOMContentLoaded",(_e)=>{
-    ModeManager.IS_PRODUCTION_MODE = false;
-    ModeManager.is_production().then((production_mode) => {
-      ModeManager.IS_PRODUCTION_MODE = production_mode;
-    });
+    if(isFullscreen_())
+      ModeManager.IS_PRODUCTION_MODE = true;
     setTimeout(() => {
       if (ModeManager.IS_PRODUCTION_MODE) {
         let navbar=document.getElementById("navbar")

@@ -13,15 +13,6 @@ Function Exit-Error {
     pause
     Exit 1
 }
-
-Function URIBase64Encode {
-    param ($text)
-    # Base64 encode
-    $bytes = [System.Text.Encoding]::UTF8.GetBytes($text)
-    $base64 = [Convert]::ToBase64String($bytes)
-    $encoded=[System.Uri]::EscapeDataString($base64)
-    Return $encoded
-}
 #preprocess the bash variables
 $LaunchServer=$false
 If ($env:START_WEB_SERVER -eq "true") { # convert the bash style string to actual booleans
@@ -67,16 +58,7 @@ If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
     }
 }
 $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
-$browsersettingsPath = Join-Path $ScriptLocation "browsersettings.conf"
-if (Test-Path $browsersettingsPath) {
-    $browsersettingsContent = Get-Content $browsersettingsPath -Raw
-    $encodedConfig = URIBase64Encode $browsersettingsContent
-    $finalURL="$($env:FRONTEND_URL)?config=$encodedConfig"
-} else {
-    $encodedConfig = ""
-    $finalURL="$($env:FRONTEND_URL)"
-}
-$FirefoxArguments=@("-p","miningbots","$finalURL")
+$FirefoxArguments=@("-p","miningbots","$env:FRONTEND_URL")
 If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
 }
