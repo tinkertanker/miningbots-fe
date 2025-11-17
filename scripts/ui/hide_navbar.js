@@ -2,7 +2,6 @@ let ModeManager = {
   IS_PRODUCTION_MODE: false,
 };
 function isFullscreen_() {
-  console.log(screen.availWidth, window.innerWidth, screen.availHeight, window.innerHeight);
   return window.innerWidth>=screen.availWidth &&
           window.innerHeight>=screen.availHeight;
 }
