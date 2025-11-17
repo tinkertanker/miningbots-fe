@@ -1,7 +1,5 @@
 #!/bin/zsh
-alias load_config='source browsersettings.conf.example;source browsersettings.conf'
 function server_is_running(){
-	load_config
         ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
@@ -26,13 +24,12 @@ EOF
       cp -r "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
     fi
     PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
-    load_config # simple way to load a name=value pairs config file
     if [[ "$UI_MODE" == "debug" ]]; then
         cp "firefox-chrome/userdebug.win.js" "$PROFILE_DIR/user.js"
       else
         cp "firefox-chrome/user.win.js" "$PROFILE_DIR/user.js"
       fi
-    [[ $UI_MODE == "fullscreen" ]]  && KIOSK="--kiosk" || KIOSK=""
+    [[ "$UI_MODE" == "fullscreen" ]]  && KIOSK="--kiosk" || KIOSK=""
     encoded_config=$(base64 < browsersettings.conf | tr -d '\n' | python3 -c "import sys, urllib.parse; print(urllib.parse.quote(sys.stdin.read().strip()))")
     open -a "Firefox" --args $KIOSK -p miningbots --new-window "$FRONTEND_URL?config=$encoded_config" &
 }
@@ -42,11 +39,12 @@ if [ ! -f browsersettings.conf ]; then
   echo "Created default browsersettings.conf. Please edit it as needed and re-run the script."
   exit 1
 fi
+source browsersettings.conf.example
+source browsersettings.conf
 if server_is_running; then # if the frontend server is already running, only start the browser.
      start_browser
      exit
 fi
-load_config
 if $START_WEB_SERVER; then
 	echo "Server starting at $(date)" >> webserver/log/startup.log
 	./"$REL_WEB_SERVER_PATH" &
