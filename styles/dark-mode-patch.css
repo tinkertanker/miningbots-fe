@@ -84,3 +84,7 @@ option {
 #loadingbox {
   color: white;
 }
+
+#error-main, #error-sub, #tinkertanker-logo, #return {
+  color: white;
+}
