@@ -164,16 +164,6 @@ body.dark-mode .bot-info p {
   color:white;
 }
 
-.navbar {
-  padding-left: 1%;
-  z-index: 1000;
-}
-
-body.dark-mode .navbar {
-  background-color: rgb(75,75,75) !important;
-  border-bottom: #cccccc solid 1px;
-}
-
 .cargo-container {
   display: grid;
   grid-template-columns: auto auto;
