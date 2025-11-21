@@ -42,7 +42,7 @@ a[role="button"] svg:active {
   }
 }
 
-body.dark-mode input:not([type="checkbox"]):not(.nodark) {
+body.dark-mode input:not([type="checkbox"]) {
   background-color: #1f1f1f;   /* Dark background */
   color: #f0f0f0;              /* Light text */
   border: 1px solid #888;

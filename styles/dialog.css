@@ -67,3 +67,8 @@
   margin-left: 3px;
   margin-right: 3px;
 }
+
+.dialog-input {
+  background-color: white !important;
+  color: black !important;
+}

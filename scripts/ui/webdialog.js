@@ -66,7 +66,6 @@ function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
     buttonBoxContainer.classList.add("dialog-buttonbox-container");
     let buttonBox=document.createElement("div");
     buttonBox.classList.add("dialog-buttonbox");
-    buttonBox.classList.add("nodark");
     if(typeof buttons!="object"){
         buttons=[{"text":"OK","action":"close_dialog"}];
     }
@@ -153,7 +152,6 @@ let DialogUtilities = {
         input_elem.type="text";
         input_elem.defaultValue=defaultValue||"";
         input_elem.classList.add("dialog-input");
-        input_elem.classList.add("nodark");
         tempDiv.appendChild(innerDiv);
         tempDiv.appendChild(input_elem);
         cleanHTML=tempDiv.innerHTML;
