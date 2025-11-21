@@ -39,9 +39,17 @@
   margin-bottom: 0;
 }
 
+body.dark-mode .setting-text-name {
+  color:white !important;
+}
+
 .setting-text-description {
   font-size: 14px;
   color: gray;
+}
+
+body.dark-mode .setting-text-description {
+  color: rgb(204, 204, 204) ! important;
 }
 
 .setting-container {

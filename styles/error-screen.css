@@ -3,6 +3,10 @@ img#tinkertanker-logo {
     height: auto;
 }
 
+body.dark-mode #error-main,body.dark-mode #error-sub, body.dark-mode #tinkertanker-logo, #return {
+  color: white;
+}
+
 h3{
     font-size:14px;
 }

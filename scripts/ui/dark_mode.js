@@ -23,11 +23,10 @@ let DarkModeManager={
 };
 DarkModeManager.setDarkMode=function(enabled,is_setup_call){
     if(enabled==DM_ENABLED_)return;
-    if(enabled){
-        document.head.innerHTML+="<link href=\"/styles/dark-mode-patch.css\" rel=\"stylesheet\" id=\"set-dark-mode\">";
-    } else {
-        document.head.removeChild(document.getElementById("set-dark-mode"));
-    }
+    if(enabled)
+        document.body.classList.add("dark-mode");
+    else 
+        document.body.classList.remove("dark-mode");
     if(!is_setup_call)
         darkModeSwitchListeners_.forEach((target)=>{
             target.dispatchEvent(new Event("dm."+(enabled?"enabled":"disabled")))
