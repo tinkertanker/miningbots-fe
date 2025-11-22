@@ -21,9 +21,11 @@ function start_browser(){
       end tell
 EOF
       echo "Firefox profile created."
+      PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
       cp -r "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
+    else
+      PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
     fi
-    PROFILE_DIR=$(ls -d ~/Library/"Application Support"/Firefox/Profiles/*.miningbots | head -n 1)
     if [[ "$UI_MODE" == "debug" ]]; then
         cp "firefox-chrome/userdebug.js" "$PROFILE_DIR/user.js"
       else

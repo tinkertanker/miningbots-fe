@@ -54,10 +54,12 @@ If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
     } else {
         Start-Process $FirefoxPath -Wait -ArgumentList "-CreateProfile","miningbots"
         New-Item -Path (Join-Path $FirefoxProfileDirectory "chrome") -ItemType Directory | Out-Null
+        $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
         Copy-Item "firefox-chrome\userChrome.css" (Join-Path $FirefoxProfileDirectory "chrome")
     }
+} Else {
+    $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
 }
-$FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
 $FirefoxArguments=@("-p","miningbots","$env:FRONTEND_URL")
 If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
