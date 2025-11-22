@@ -3,7 +3,7 @@ img#tinkertanker-logo {
     height: auto;
 }
 
-body.dark-mode #error-main,body.dark-mode #error-sub, body.dark-mode #tinkertanker-logo, #return {
+body.dark-mode #error-main,body.dark-mode #error-sub, body.dark-mode #tinkertanker-logo, body.dark-mode #return {
   color: white;
 }
 
