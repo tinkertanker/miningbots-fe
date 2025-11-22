@@ -55,6 +55,7 @@ If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
         Start-Process $FirefoxPath -Wait -ArgumentList "-CreateProfile","miningbots"
         New-Item -Path (Join-Path $FirefoxProfileDirectory "chrome") -ItemType Directory | Out-Null
         $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
+        mkdir (Join-Path $FirefoxProfileDirectory "chrome")
         Copy-Item "firefox-chrome\userChrome.css" (Join-Path $FirefoxProfileDirectory "chrome")
     }
 } Else {
