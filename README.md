@@ -102,7 +102,7 @@ To be able to use this version, the following software must be installed:
 
 ### macOS version
 
-A macOS version is available, called ``` init.mac.sh ```
+A macOS version is available, called ``` init.mac.command ```
 <br>
 The only dependency is Firefox.
 ZSH is also used, but it is built into macOS
