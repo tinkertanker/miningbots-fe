@@ -63,8 +63,8 @@ If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
 }
 If ($UIMode -ieq "debug") {
-    Copy-Item -Force "firefox-chrome\userdebug.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
+    Copy-Item -Force "firefox-chrome\userdebug.js" (Join-Path $FirefoxProfileDirectory "user.js")
 } Else {
-    Copy-Item -Force "firefox-chrome\user.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
+    Copy-Item -Force "firefox-chrome\user.js" (Join-Path $FirefoxProfileDirectory "user.js")
 }
 Start-Process $FirefoxPath -ArgumentList $FirefoxArguments

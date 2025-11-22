@@ -3,23 +3,21 @@ function server_is_running(){
         ps -x | grep "$(basename "$REL_WEB_SERVER_PATH")" | grep -v grep > /dev/null
 }
 function start_browser(){
-    if [ ! -f firefox-chrome/user.js ]; then
-      ./utilities/update_ffconfig.py browser.shell.checkDefaultBrowser=false
-    fi
-    if ! ls -d ~/.mozilla/firefox/*.miningbots 1>/dev/null 2>&1; then
+    PROFILE_DIR=$(ls -d ~/.mozilla/firefox/*.miningbots | head -n 1)
+    if [ -z "$PROFILE_DIR" ]; then
       ps -x | grep firefox | grep -v grep >/dev/null && exit 1
       firefox -CreateProfile miningbots || exit 1
       PROFILE_DIR=$(ls -d ~/.mozilla/firefox/*.miningbots | head -n 1)
-      ln -s "$PWD/firefox-chrome" "$PROFILE_DIR/chrome"
-      ln -s "chrome/user.js" "$PROFILE_DIR/user.js"
+      mkdir "$PROFILE_DIR/chrome"
+      cp "$PWD/firefox-chrome/userChrome.css" "$PROFILE_DIR/chrome"
     fi
     # update the ffconfig (Firefox Config) depending on the UI Mode
     if [ "$UI_MODE" == "debug" ]; then
       CLASS="Mining Bots (debug/test)"
-      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=false browser.tabs.inTitlebar=1 || exit 1
+      cp "firefox-chrome/userdebug.js" "$PROFILE_DIR/user.js"
     elif [ '(' "$UI_MODE" == "minimalist" ')' -o '(' "$UI_MODE" == "fullscreen" ')' ]; then
       CLASS="Mining Bots"
-      ./utilities/update_ffconfig.py toolkit.legacyUserProfileCustomizations.stylesheets=true browser.tabs.inTitlebar=0 || exit 1
+      cp "firefox-chrome/user.js" "$PROFILE_DIR/user.js"
     else
       echo "Invalid UI mode" 1>&2
       return
