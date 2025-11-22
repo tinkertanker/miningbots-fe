@@ -151,6 +151,7 @@ let DialogUtilities = {
         let input_elem=document.createElement("input");
         input_elem.type="text";
         input_elem.defaultValue=defaultValue||"";
+        input_elem.ariaLabel="insert value here";
         input_elem.classList.add("dialog-input");
         tempDiv.appendChild(innerDiv);
         tempDiv.appendChild(input_elem);

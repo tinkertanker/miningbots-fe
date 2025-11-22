@@ -67,7 +67,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.body.addEventListener("click", (event) => {
+    document.addEventListener("click", (event) => {
         if (isHelponActive) {
             event.stopPropagation();
             event.preventDefault();
