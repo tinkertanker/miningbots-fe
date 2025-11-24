@@ -84,16 +84,6 @@ To use ``` init.sh ```, the following software must be installed:
 		<td>firefox</td>
 		<td>firefox</td>
 	</tr>
-	<tr>
-		<td>Python 3</td>
-		<td>python3</td>
-		<td>python3</td>
-	</tr>
-	<tr>
-		<td>Node.js</td>
-		<td>node</td>
-		<td>node</td>
-	</tr>
 </table>
 
 ### Windows version
@@ -112,7 +102,7 @@ To be able to use this version, the following software must be installed:
 
 ### macOS version
 
-A macOS version is available, called ``` init.mac.sh ```
+A macOS version is available, called ``` init.mac.command ```
 <br>
 The only dependency is Firefox.
 ZSH is also used, but it is built into macOS

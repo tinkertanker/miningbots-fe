@@ -111,31 +111,33 @@ function write_settings_(json_settings,complete_handler) {
         if(json_settings["show_notifications"]){
             switch(Notification.permission){
                 case "default":
+                    let dialog;
                     // code from https://riptutorial.com/javascript/example/2305/requesting-permission-to-send-notifications
                     NotificationUtilities.askForNotificationPermission().then((permission)=>{
                         if (!('permission' in Notification)) {
                             Notification.permission = permission;
                         }
                         if(!NotificationUtilities.notificationPermissionGranted()){
-                            alert("Notifications are unavailable");
-                            update_setting("show_notifications",false);
-                            finish_ui();
+                            dialog.close();
+                            DialogUtilities.showDialog("Notifications are unavailable","Enable Notifications",finish_ui,[{text:"OK",action:finish_ui}]);
+                            update_setting_("show_notifications",false);
                         } else {
                             finish_ui();
                             complete_handler();
                         }
                     },()=>{
-                        alert("Notifications are unavailable");
-                        update_setting("show_notifications",false);
-                        finish_ui();
+                        dialog.close();
+                        DialogUtilities.showDialog("Notifications are unavailable","Enable Notifications",finish_ui,[{text:"OK",action:finish_ui}]);
+                        update_setting_("show_notifications",false);
                     });
-                    alert("To enable notifications completely, allow notifications.");
+                    dialog=DialogUtilities.showDialog("To enable notifications, please allow notification permission in the browser prompt that just appeared.","Enable Notifications");
                     break;
                 case "denied":
-                    alert("Notifications disabled from browser. Please clear notification permission and try again.");
+                    DialogUtilities.showDialog("Notifications disabled from browser. Please clear notification permission and try again.","Enable Notifications",finish_ui,[{text:"OK",action:finish_ui}]);
                     finish_ui();
                     break;
                 case "granted":
+                    dialog.close();
                     finish_ui();
                     complete_handler(); // Permission allowed! Do nothing.
                     break;

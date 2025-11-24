@@ -54,17 +54,20 @@ If (-not (Test-Path (Join-Path $FirefoxProfilesDirectory "*.miningbots"))) {
     } else {
         Start-Process $FirefoxPath -Wait -ArgumentList "-CreateProfile","miningbots"
         New-Item -Path (Join-Path $FirefoxProfileDirectory "chrome") -ItemType Directory | Out-Null
+        $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
+        mkdir (Join-Path $FirefoxProfileDirectory "chrome")
         Copy-Item "firefox-chrome\userChrome.css" (Join-Path $FirefoxProfileDirectory "chrome")
     }
+} Else {
+    $FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
 }
-$FirefoxProfileDirectory=(Join-Path $FirefoxProfilesDirectory (Get-Item (Join-Path $FirefoxProfilesDirectory "*.miningbots")).Name)
 $FirefoxArguments=@("-p","miningbots","$env:FRONTEND_URL")
 If ($UIMode -ieq "fullscreen") {
     $FirefoxArguments=@("--kiosk") + $FirefoxArguments
 }
 If ($UIMode -ieq "debug") {
-    Copy-Item -Force "firefox-chrome\userdebug.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
+    Copy-Item -Force "firefox-chrome\userdebug.js" (Join-Path $FirefoxProfileDirectory "user.js")
 } Else {
-    Copy-Item -Force "firefox-chrome\user.win.js" (Join-Path $FirefoxProfileDirectory "user.js")
+    Copy-Item -Force "firefox-chrome\user.js" (Join-Path $FirefoxProfileDirectory "user.js")
 }
 Start-Process $FirefoxPath -ArgumentList $FirefoxArguments
