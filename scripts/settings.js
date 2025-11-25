@@ -108,17 +108,17 @@ function write_settings_(json_settings,complete_handler) {
         let updated_settings=Object.assign(SettingsManager.read_settings_cookie(/*raw=*/true),json_settings);
         let cookie_value =JSON.stringify(updated_settings);
         localStorage.setItem("settings",cookie_value);
+        let dialog;
         if(json_settings["show_notifications"]){
             switch(Notification.permission){
                 case "default":
-                    let dialog;
                     // code from https://riptutorial.com/javascript/example/2305/requesting-permission-to-send-notifications
                     NotificationUtilities.askForNotificationPermission().then((permission)=>{
                         if (!('permission' in Notification)) {
                             Notification.permission = permission;
                         }
                         if(!NotificationUtilities.notificationPermissionGranted()){
-                            dialog.close();
+                            if(dialog) dialog.close();
                             DialogUtilities.showDialog("Notifications are unavailable","Enable Notifications",finish_ui,[{text:"OK",action:finish_ui}]);
                             update_setting_("show_notifications",false);
                         } else {
@@ -126,7 +126,7 @@ function write_settings_(json_settings,complete_handler) {
                             complete_handler();
                         }
                     },()=>{
-                        dialog.close();
+                        if(dialog) dialog.close();
                         DialogUtilities.showDialog("Notifications are unavailable","Enable Notifications",finish_ui,[{text:"OK",action:finish_ui}]);
                         update_setting_("show_notifications",false);
                     });
@@ -137,7 +137,7 @@ function write_settings_(json_settings,complete_handler) {
                     finish_ui();
                     break;
                 case "granted":
-                    dialog.close();
+                    if(dialog) dialog.close();
                     finish_ui();
                     complete_handler(); // Permission allowed! Do nothing.
                     break;
