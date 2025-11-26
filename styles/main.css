@@ -64,7 +64,7 @@ body.dark-mode a.dropdown-item:hover,body.dark-mode a.dropdown-item:focus {
   grid-template-columns: auto auto;
 }
 
-.loadingbox {
+#loadingbox {
   display: flex;
   width: 100vw;
   height: 24px;
