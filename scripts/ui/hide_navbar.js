@@ -10,8 +10,9 @@ document.addEventListener("DOMContentLoaded",(_e)=>{
       ModeManager.IS_PRODUCTION_MODE = true;
     setTimeout(() => {
       if (ModeManager.IS_PRODUCTION_MODE) {
-        let navbar=document.getElementById("navbar")
-        navbar.classList.add("production-hidden");
+        let navbar=document.getElementById("navbar");
+        if(!document.querySelector("#navbar-peek-triggerbox:hover"))
+          navbar.classList.add("production-hidden");
         let dropdown=document.getElementById("navbarDropdownMenuLink");
         dropdown.addEventListener("shown.bs.dropdown",()=>{
             navbar.classList.remove("production-hidden");
