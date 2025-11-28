@@ -46,8 +46,11 @@ body.dark-mode a.dropdown-item:hover,body.dark-mode a.dropdown-item:focus {
 }
 
 .production-hidden:not(:hover):not(:focus) {
-  visibility: collapse;
   display: none;
+}
+
+#navbar-peek-triggerbox:hover + #navbar {
+  display: block !important;
 }
 
 #navbar-peek-triggerbox {

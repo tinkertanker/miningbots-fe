@@ -20,13 +20,6 @@ document.addEventListener("DOMContentLoaded",(_e)=>{
         dropdown.addEventListener("hidden.bs.dropdown",()=>{
             navbar.classList.add("production-hidden"); // put the class back
         });
-        let triggerbox=document.getElementById("navbar-peek-triggerbox");
-        triggerbox.addEventListener("mouseenter",()=>{
-            navbar.classList.remove("production-hidden");
-        });
-        triggerbox.addEventListener("mouseleave",()=>{
-            navbar.classList.add("production-hidden"); // put the class back
-        });
       }
     }, 400);
 });
