@@ -6,12 +6,9 @@ function isFullscreen_() {
           window.innerHeight>=screen.availHeight;
 }
 document.addEventListener("DOMContentLoaded",(_e)=>{
-    if(isFullscreen_())
+    if(isFullscreen_()){
       ModeManager.IS_PRODUCTION_MODE = true;
-    setTimeout(() => {
-      if (ModeManager.IS_PRODUCTION_MODE) {
-        let navbar=document.getElementById("navbar");
-        navbar.classList.add("production-hidden");
-      }
-    }, 400);
+      let navbar=document.getElementById("navbar");
+      navbar.classList.add("production-hidden");
+    }
 });
