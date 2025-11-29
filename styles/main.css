@@ -45,7 +45,7 @@ body.dark-mode a.dropdown-item:hover,body.dark-mode a.dropdown-item:focus {
   margin: 5px 5px;
 }
 
-.production-hidden:not(:hover):not(:focus) {
+.production-hidden:not(:hover):not(:focus-within) {
   display: none;
 }
 
