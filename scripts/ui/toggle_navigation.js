@@ -7,7 +7,13 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     if (navigation_link_.classList.contains('show')) {
       navigation_dropdown_.hide();
+      return;
     }
+    let navbar = document.getElementById("navbar");
+    if(ModeManager.IS_PRODUCTION_MODE &&
+       navbar.matches(":focus-within")
+    )
+      document.activeElement.blur(); // the active element must be in the navbar
   }
 });
 
