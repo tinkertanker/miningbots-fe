@@ -61,16 +61,14 @@ let SettingsManager={
         "show_gameId": {
             type:"boolean",
             title: "Debugging: Display Game ID",
-            description:`Display the Game ID in the top right corner.<br>
-            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game ID will also be hidden.`,
+            description:`Display the Game ID in the top right corner.<br>`,
             default:true,
             force_value:null
         },
         "show_gameStatus": {
             type:"boolean",
             title: "Debugging: Display Game Status",
-            description:`Display the Game Status in the top right corner.<br>
-            NOTE: If the UI Mode is set to &quot;fullscreen&quot;, the Game Status will also be hidden.`,
+            description:`Display the Game Status in the top right corner.`,
             default:true,
             force_value:null
         },
