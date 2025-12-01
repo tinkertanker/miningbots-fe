@@ -110,8 +110,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
         // callback for when a valid server socket is obtained
         function server_assigned(isCustomServer) {
-            console.log(servers[hostname].name);
-            server_name=servers[hostname].name;
+            console.log(servers[server].name);
+            server_name=servers[server].name;
             if(isCustomServer)server_name=server_name.replace(/\.+$/, "");
             setServerName(server_name);
             drawGame();
