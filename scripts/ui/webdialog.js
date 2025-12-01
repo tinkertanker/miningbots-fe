@@ -59,7 +59,7 @@ function showDialog_(html,title,buttons,onClose,submitButton,hasSVGFiles){
     dialogTitle.classList.add("dialog-title");
 
     // set dialog width
-    dialog.style.minWidth=`${getTextWidth_(title,"500 1.75rem Arial")+200}px`;
+    dialog.style.minWidth=`${getTextWidth_(title,"500 1.75rem Arial")+222}px`;
 
     //create the button box
     let buttonBoxContainer=document.createElement("div");
