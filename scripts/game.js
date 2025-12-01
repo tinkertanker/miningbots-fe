@@ -72,6 +72,12 @@ document.addEventListener("DOMContentLoaded",()=>{
         
         //add Development, Testing servers and Custom server placeholder
         return Object.assign(servers,{
+            "tk.invalid": {
+                name: "TK Server...",
+                type:"tkserver",
+                require_security: true,
+                port: gport
+            },
             "current.invalid": {
                 name: "Testing (on frontend server)",
                 type:"fe_host"
@@ -119,14 +125,19 @@ document.addEventListener("DOMContentLoaded",()=>{
         // handle the special server types
         switch (servers[hostname].type) {
             case "custom":
+            case "tkserver":
                 setServerName(servers[hostname].name);
+                let isTkserverMode = (servers[hostname].type=="tkserver");
                 function empty_handler() {
                     setServerName(servers[hostname].name.replace(/\.+$/, ""));
                     LoadingBox.setStatus(LoadingBox.Status.SERVER_UNAVAILABLE);
                     setTimeout(NavigationManager.showNavigation,200);
                 }
                 function prompt_socket(previous_socket) {
-                    DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", previous_socket, socket_obtained, empty_handler);
+                    if(isTkserverMode)
+                        DialogUtilities.prompt("Please enter the server subdomain for the TK server:<br>Format: [ps][0-9]+, p for production and s for staging.<br>For example, p1 means Game 1", "Enter Subdomain", previous_socket, subdomain_obtained, empty_handler);
+                    else
+                        DialogUtilities.prompt("Please enter the socket URL for the custom server:", "Socket URL", previous_socket, socket_obtained, empty_handler);
                 }
                 function socket_obtained(socket) {
                     socket = socket.trim();
@@ -146,10 +157,27 @@ document.addEventListener("DOMContentLoaded",()=>{
                         DialogUtilities.showDialog(`Error: ${e.message}`, "Error", empty_handler,[{text: "OK", action: ()=>{prompt_socket(socket)}}], "OK");
                     }
                 }
+                function subdomain_obtained(subdomain) {
+                    subdomain = subdomain.trim();
+                    try {
+                        if(subdomain.length==0) throw new Error("Subdomain cannot be empty");
+                        if(/[!@#$%^&*(),.?":{}|]/.test(subdomain)) throw new Error("Subdomain cannot contain special characters.");
+                        CookieUtilities.setCookie("custom_server",subdomain,"Fri, 31 Dec 9999 23:59:59 GMT",'/');
+                        port=servers[hostname].port;
+                        set_protocols(servers[hostname].require_security);
+                        hostname=`${subdomain}.bootcamp.tk.sg`;
+                        console.log("URL: " + subdomain);
+                        server_assigned(true);
+                    } catch (e){
+                        DialogUtilities.showDialog(`Error: ${e.message}`, "Error", empty_handler,[{text: "OK", action: ()=>{prompt_socket(subdomain)}}], "OK");
+                    }
+                }
                 // we don't need to check if the cookie exists, since getCookie will return undefined if it doesn't exist anyways
                 let socket=CookieUtilities.getCookie("custom_server");
                 // use the previous custom server if it exists and is valid
-                if(socket && SocketUtilities.isValidSocket(socket)) {
+                if(socket && isTkserverMode && !/[!@#$%^&*(),.?":{}|]/.test(socket)) {
+                    subdomain_obtained(socket);
+                } else if (socket && !isTkserverMode && SocketUtilities.isValidSocket(socket)) {
                     socket_obtained(socket);
                 } else {
                     //else prompt the user for the socket
