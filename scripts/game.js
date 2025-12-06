@@ -76,7 +76,6 @@ document.addEventListener("DOMContentLoaded",()=>{
             "tk.invalid": {
                 name: "TK Server...",
                 type:"tkserver",
-                require_security: true,
                 port: gport
             },
             "current.invalid": {
