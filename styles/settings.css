@@ -18,7 +18,7 @@
   height: 100px;
 }
 
-.settings-top-bar {
+#navbar {
   position:sticky;
   top:0;
 }
