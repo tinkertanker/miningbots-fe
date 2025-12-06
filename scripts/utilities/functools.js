@@ -43,3 +43,5 @@ function in_private_scope(f){
 function with_value(value,f){
     return f(value);
 }
+
+export { map,object_forEach,indexed_foreach,object_map,object_map_values,in_private_scope,with_value };

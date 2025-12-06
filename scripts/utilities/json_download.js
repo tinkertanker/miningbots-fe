@@ -23,7 +23,7 @@ const JSONDownloader = {
         URL.revokeObjectURL(link.href);
     },
     importJSON: function(complete_handler){
-        selector=document.createElement("input");
+        let selector=document.createElement("input");
         selector.type="file";
         selector.accept=".json"; // Only accept JSON files
         selector.style.display="none"; // Hide the file input element
@@ -42,3 +42,5 @@ const JSONDownloader = {
         });
     }
 }
+
+export { JSONDownloader };

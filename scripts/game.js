@@ -1,3 +1,13 @@
+import { with_value,in_private_scope,map,object_forEach,indexed_foreach } from "/scripts/utilities/functools.js";
+import { DialogUtilities } from "/scripts/ui/webdialog.js";
+import { SettingsManager } from "/scripts/settings.js";
+import { DarkModeManager } from "/scripts/ui/dark_mode.js";
+import { NameMaps } from "/scripts/ui/human_readable_names.js";
+import { CookieUtilities } from "/scripts/cookies.js";
+import { NotificationUtilities } from "/scripts/ui/notifications.js";
+import { LoadingBox } from "/scripts/ui/loadingbox.js";
+import { NavigationManager } from "/scripts/ui/toggle_navigation.js";
+
 console.log("script loaded");
 
 //Probably some default values for original testing:
@@ -10,7 +20,7 @@ var CONFIG_=SettingsManager.default_settings;
 var http_type, ws_type;
 var playername_map = {};
 
-function should_confirm_unload() {
+window.should_confirm_unload = function() {
     return Object.keys(playername_map).length > 0;
 }
 
@@ -117,7 +127,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         // callback for when a valid server socket is obtained
         function server_assigned(isCustomServer) {
             console.log(servers[server].name);
-            server_name=servers[server].name;
+            let server_name=servers[server].name;
             if(isCustomServer)server_name=server_name.replace(/\.+$/, "");
             setServerName(server_name);
             drawGame();
@@ -308,7 +318,7 @@ function drawGame() {
             console.log('games:', games);
             // get the first available game
             if(games.length>0){
-                game_info=games[0];
+                let game_info=games[0];
             
                 // and retrieve info about it
                 gameId = game_info.game_id;
@@ -387,7 +397,7 @@ function drawGame() {
                 }
                 return out;
             }
-            original_elementTypes=elementTypes.slice(); // make a copy of the original element types
+            let original_elementTypes=elementTypes.slice(); // make a copy of the original element types
             elementTypes=map(map_config.resource_configs,(config)=>{return config.name.toLowerCase()});
             elementTypes=original_elementTypes.concat(elementTypes); // append the new element types
             if(CONFIG_["show_legend"])document.getElementById("bot-legend").style.display="";

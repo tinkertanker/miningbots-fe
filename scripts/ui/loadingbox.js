@@ -8,11 +8,8 @@ let LoadingBox = {
         NO_GAME: 5
     }
 }
-let LB_OBJECT_ = null;
-document.addEventListener("DOMContentLoaded",()=>{
-    LB_OBJECT_ = document.getElementById("loadingbox");
-});
-function setLoadingBoxStatus_(status) {
+let LB_OBJECT_ = document.getElementById("loadingbox");
+LoadingBox.setStatus=function(status) {
     switch (status) {
         case LoadingBox.Status.LOADING_COMPLETED:
         case LoadingBox.Status.SERVER_NO_SELECTION:
@@ -42,12 +39,4 @@ function setLoadingBoxStatus_(status) {
     }
 }
 
-LoadingBox.setStatus = function (status) {
-    if(LB_OBJECT_){
-        setLoadingBoxStatus_(status);
-    } else {
-        document.addEventListener("DOMContentLoaded",()=>{
-            setLoadingBoxStatus_(status);
-        });
-    }
-}
+export { LoadingBox };

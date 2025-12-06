@@ -1,3 +1,6 @@
+import { KeyboardUtilities } from "/scripts/utilities/keyboard_utilities.js";
+import { DialogUtilities } from "/scripts/ui/webdialog.js";
+
 let HelpManager = {
     show_help: function() {
         if (DialogUtilities.isAnotherDialogShowing()) return; // Prevent showing another dialog if one is already open
@@ -66,33 +69,35 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    document.addEventListener("click", (event) => {
-        if (isHelponActive) {
-            event.stopPropagation();
-            event.preventDefault();
-            console.log("launching help dialog");
-            let target = event.target.closest("[helpon-available]"); // Get the closest element with an ID
-            if (target) {
-                let name = document.querySelector(`#accessibility-labels #${target.id}-label`).textContent || target.id; // Get from accessibility-labels, otherwise use ID
-                let helpText = document.querySelector(`#accessibility-labels #${target.id}-help`).innerHTML.replace("noimport", ""); // Get help text from accessibility-labels, removing noimport from svgfile elements (to ensure they are loaded)
-                if (helpText) {
-                    isHelponActive = false; // Exit helpon mode
-                    onHelponDeactivated_();
-                    DialogUtilities.showDialog(helpText, `Help on "${name}"`, undefined, undefined, "OK"); // undefined means default buttons
-                }
+document.addEventListener("click", (event) => {
+    if (isHelponActive) {
+        event.stopPropagation();
+        event.preventDefault();
+        console.log("launching help dialog");
+        let target = event.target.closest("[helpon-available]"); // Get the closest element with an ID
+        if (target) {
+            let name = document.querySelector(`#accessibility-labels #${target.id}-label`).textContent || target.id; // Get from accessibility-labels, otherwise use ID
+            let helpText = document.querySelector(`#accessibility-labels #${target.id}-help`).innerHTML.replace("noimport", ""); // Get help text from accessibility-labels, removing noimport from svgfile elements (to ensure they are loaded)
+            if (helpText) {
+                isHelponActive = false; // Exit helpon mode
+                onHelponDeactivated_();
+                DialogUtilities.showDialog(helpText, `Help on "${name}"`, undefined, undefined, "OK"); // undefined means default buttons
             }
         }
-    },{capture: true}); // Use capture phase to ensure it catches the event before other handlers
-    let hasHelp=document.getElementById("help");
-    let hasHelpOn=document.getElementById("help-on");
-    document.addEventListener("keydown", (event) => {
-        if (KeyboardUtilities.isMnemonicPressed(event,true,'h') && hasHelpOn) {
-            HelpManager.activate_helpon();
-            event.preventDefault();
-        } else if (KeyboardUtilities.isMnemonicPressed(event,false,'h') && hasHelp) {
-            HelpManager.show_help();
-            event.preventDefault();
-        }
-    });
+    }
+},{capture: true}); // Use capture phase to ensure it catches the event before other handlers
+let hasHelp=document.getElementById("help");
+let hasHelpOn=document.getElementById("help-on");
+
+document.addEventListener("keydown", (event) => {
+    if (KeyboardUtilities.isMnemonicPressed(event,true,'h') && hasHelpOn) {
+        HelpManager.activate_helpon();
+        event.preventDefault();
+    } else if (KeyboardUtilities.isMnemonicPressed(event,false,'h') && hasHelp) {
+        HelpManager.show_help();
+        event.preventDefault();
+    }
 });
+
+window.HelpManager=HelpManager; // make globally accessible
+export { HelpManager };

@@ -12,16 +12,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.4/purify.min.js"
     integrity="sha384-KGmzmwrs7oAU2sG5qfETslFsscVcCaxQrX2d7PW7I9bTrsuTD/eSMFr9jaMS9i+b"
     crossorigin="anonymous"></script>
-  <link href="/styles/dialog.css" rel="stylesheet" />
-  <script src="/scripts/ui/webdialog.js"></script>
-  <script src="/scripts/utilities/keyboard_utilities.js"></script>
-  <script src="/scripts/utilities/svgimporter.js"></script>
-  <script src="/scripts/ui/help.js"></script>
-  <script src="/scripts/ui/notifications.js"></script>
-  <script src="/scripts/utilities/functools.js"></script>
-  <script src="/scripts/utilities/json_download.js"></script>
-  <script src="/scripts/settings.js"></script>
-  <script src="/scripts/ui/dark_mode.js"></script>
+  <script src="/scripts/utilities/svgimporter.js" type="module"></script>
+  <script src="/scripts/ui/help.js" type="module"></script>
+  <script src="/scripts/settings.js" type="module"></script>
+  <script src="/scripts/ui/dark_mode.js" type="module"></script>
   <style>
     input[type=number] {
       -moz-appearance: textfield;
@@ -60,25 +54,24 @@
           id="export-button" helpon-available><svgfile aria-hidden="true" src="/images/ui/export.svg"></svgfile></a>
         <a role="button" onclick="SettingsManager.import_settings();" title="Import settings"
           id="import-button" helpon-available><svgfile aria-hidden="true" src="/images/ui/import.svg"></svgfile></a>
-        <script>
-          document.addEventListener("DOMContentLoaded",()=> {
-            function setMnemonic(element, useSecondary, key,additional_key) {
-              let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')
-              element.title += ` (${keyTag})`;
-              let describerId=`${element.id}-description`;
-              element.setAttribute("aria-labelledby", `${element.id}-label`);
-              document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
-              element.setAttribute("aria-describedby", describerId);
-            }
-            setMnemonic(document.getElementById("help-on"),true,'H');
-            setMnemonic(document.getElementById("help"),false,'H');
-            setMnemonic(document.getElementById("reset-all-button"),false,'D');
-            setMnemonic(document.getElementById("ok-button"),false,'O');
-            setMnemonic(document.getElementById("cancel-button"),false,'C','Escape');
-            setMnemonic(document.getElementById("apply-button"),false,'A');
-            setMnemonic(document.getElementById("export-button"),false,'S');
-            setMnemonic(document.getElementById("import-button"),false,'I');
-          });
+        <script type="module">
+          import { KeyboardUtilities } from '/scripts/utilities/keyboard_utilities.js';
+          function setMnemonic(element, useSecondary, key,additional_key) {
+            let keyTag = KeyboardUtilities.joinMnemonic(useSecondary,key) + (additional_key ? ` or ${additional_key}` : '')
+            element.title += ` (${keyTag})`;
+            let describerId=`${element.id}-description`;
+            element.setAttribute("aria-labelledby", `${element.id}-label`);
+            document.getElementById(describerId).textContent = `Shortcut: (${keyTag})`;
+            element.setAttribute("aria-describedby", describerId);
+          }
+          setMnemonic(document.getElementById("help-on"),true,'H');
+          setMnemonic(document.getElementById("help"),false,'H');
+          setMnemonic(document.getElementById("reset-all-button"),false,'D');
+          setMnemonic(document.getElementById("ok-button"),false,'O');
+          setMnemonic(document.getElementById("cancel-button"),false,'C','Escape');
+          setMnemonic(document.getElementById("apply-button"),false,'A');
+          setMnemonic(document.getElementById("export-button"),false,'S');
+          setMnemonic(document.getElementById("import-button"),false,'I');
         </script>
       </div>
     </nav>
@@ -95,7 +88,10 @@
       </b>
     </div>
   </div>
-  <script>SettingsManager.initialize_popup();</script>
+  <script type="module">
+    import { SettingsManager } from "/scripts/settings.js";
+    SettingsManager.initialize_popup();
+  </script>
   <div id="accessibility-labels" style="display:none">
     <span id="help-on-label">Help On</span>
     <span id="help-on-description"></span>

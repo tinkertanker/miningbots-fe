@@ -43,3 +43,5 @@ NameMaps.mapName=function(table,key){
         return key;
     }
 }
+
+export { NameMaps };

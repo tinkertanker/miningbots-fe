@@ -11,7 +11,7 @@ let CookieUtilities = {
       return day + ', ' + dd + ' ' + month + ' ' + yyyy + ' ' + hour + ':' + minute + ':' + second + ' UTC';
    },
    setCookie:function(name, value, expiry, path) {
-      cookie = `${name}=${value}`;
+      let cookie = `${name}=${value}`;
       if (expiry != "session") {
          cookie += `;expires=${expiry}`;
       }
@@ -33,3 +33,5 @@ CookieUtilities.hasCookie=function(name){
 CookieUtilities.deleteCookie=function(name){
    CookieUtilities.setCookie(name,"deleted",'Thu, 1 Jan 1970 00:00:00');
 }
+
+export { CookieUtilities };

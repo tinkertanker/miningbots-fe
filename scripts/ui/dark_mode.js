@@ -1,3 +1,4 @@
+import { SettingsManager } from "/scripts/settings.js";
 const DM_DEVICE_=window.matchMedia('(prefers-color-scheme: dark)');
 let DM_ENABLED_=false;
 let darkModeSwitchListeners_=[];
@@ -39,11 +40,13 @@ DarkModeManager.pairDarkMode=function (settings){
     });
 }
 
+export { DarkModeManager };
+
 document.addEventListener("DOMContentLoaded",()=>{
     let interval=-1;
     function setup(){
         if(!SettingsManager)return;
-        CONFIG_ = SettingsManager.read_settings_cookie();
+        let CONFIG_ = SettingsManager.read_settings_cookie();
 
         // set dark mode
         DarkModeManager.pairDarkMode(CONFIG_);

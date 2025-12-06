@@ -32,4 +32,5 @@ let SVGImporter = {
   }
 }
 
-document.addEventListener("DOMContentLoaded", SVGImporter.reimport);
+SVGImporter.reimport();
+export { SVGImporter };

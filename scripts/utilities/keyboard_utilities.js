@@ -1,3 +1,5 @@
+import { map } from "/scripts/utilities/functools.js";
+
 let KeyboardUtilities = {
     isMac : navigator.userAgent.includes("Macintosh")
 }
@@ -19,7 +21,7 @@ KeyboardUtilities.isMnemonicPressed = function(event, usesSecondary, letter) {
 }
 
 KeyboardUtilities.joinKeys = function(...keys) {
-    output = "";
+    let output = "";
     if(KeyboardUtilities.isMac){
         Array.from(keys).forEach((key) => {
             output += key.replace("Primary", "⌘").replace("Alt", "⌥").replace("Shift", "⇧");
@@ -53,6 +55,6 @@ function setTabIndices() {
     });
 }
 
-document.addEventListener("DOMContentLoaded", (_e) => {
-    setTabIndices();
-});
+setTabIndices();
+
+export { KeyboardUtilities };

@@ -1,3 +1,5 @@
+import { SVGImporter } from "/scripts/utilities/svgimporter.js";
+
 function getTextWidth_(text, font) {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -159,13 +161,18 @@ let DialogUtilities = {
         function cancel_wrapper(){
             if(cancel_handler) cancel_handler();
         }
-        dialog=showDialog_(cleanHTML,title,[{"text":"OK","action":()=>{
+        let dialog=showDialog_(cleanHTML,title,[{"text":"OK","action":()=>{
             ok_handler(input_elem.value);
         }},{text:"Cancel",action:cancel_wrapper}],cancel_wrapper,"OK",hasSVGFiles);
         input_elem=document.querySelector(".dialog-input");
         return dialog;
     },
 }
+
+export { DialogUtilities };
+
+// add stylesheet
+document.head.innerHTML+=`<link rel="stylesheet" href="/styles/dialog.css">`;
 
 // add key handlers
 document.addEventListener('keydown', (event) => {

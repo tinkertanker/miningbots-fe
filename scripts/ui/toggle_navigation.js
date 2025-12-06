@@ -1,8 +1,5 @@
-let navigation_link_,navigation_dropdown_;
-document.addEventListener("DOMContentLoaded", (_e) => {
-  navigation_link_ = document.getElementById('navbarDropdownMenuLink');
-  navigation_dropdown_ = bootstrap.Dropdown.getOrCreateInstance(navigation_link_);
-});
+let navigation_link_ = document.getElementById('navbarDropdownMenuLink');
+let navigation_dropdown_ = bootstrap.Dropdown.getOrCreateInstance(navigation_link_);
 
 let NavigationManager = {
   toggleNavigation: function () {
@@ -18,6 +15,10 @@ let NavigationManager = {
     navigation_dropdown_.show();
   }
 }
+
+window.NavigationManager = NavigationManager; // make globally accessible
+export { NavigationManager };
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     if (NavigationManager.isNavigationExpanded()) {

@@ -1,3 +1,10 @@
+import { object_map_values,object_forEach,with_value } from "/scripts/utilities/functools.js";
+import { KeyboardUtilities } from "/scripts/utilities/keyboard_utilities.js";
+import { DialogUtilities } from "/scripts/ui/webdialog.js";
+import { NotificationUtilities } from "/scripts/ui/notifications.js";
+import { SVGImporter } from "/scripts/utilities/svgimporter.js";
+import { JSONDownloader } from "/scripts/utilities/json_download.js";
+
 let SettingsManager={
     settings: {
         "require_security": {
@@ -152,8 +159,8 @@ SettingsManager.dump_settings=function() {
     object_forEach(SettingsManager.settings,(key,setting)=>{
         if(!SettingsManager.is_value_forced(setting)){ // only store values that are not forced
             let source=document.getElementById(key+'_input');
-            source_property=setting.type=="boolean" ? "checked" : "value";
-            value=source[source_property];
+            let source_property=setting.type=="boolean" ? "checked" : "value";
+            let value=source[source_property];
             if(setting.type=="number")value=JSON.parse(value); //convert string to int
             json_settings[key]=value;
         }
@@ -177,7 +184,7 @@ SettingsManager.export_settings=function() {
 }
 
 SettingsManager.import_settings=function() {
-    dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",null,[{text:"OK",action: ()=>{
+    let dialog=DialogUtilities.showDialog("After clicking OK, please select the settings.json file","Import Settings",null,[{text:"OK",action: ()=>{
         JSONDownloader.importJSON((json_string)=>{
             //confirmation dialog
             display_settings_(JSON.parse(json_string));
@@ -236,7 +243,7 @@ function display_settings_(json_settings) {
     object_forEach(json_settings,(key,value)=>{
         if(SettingsManager.settings.hasOwnProperty(key)){
             let destination=document.getElementById(key+'_input');
-            destination_property=SettingsManager.settings[key].type=="boolean" ? "checked" : "value"
+            let destination_property=SettingsManager.settings[key].type=="boolean" ? "checked" : "value"
             destination[destination_property]=value;
             update_reset_button_({key:key,value:value});
         }
@@ -401,3 +408,6 @@ SettingsManager.open_popup=function() {
     let top = Math.floor((screen.height / 2) - (height / 2));
     return window.open('/settings.html', '',`popup=yes,width=${width},height=${height},left=${left},top=${top}`);
 }
+
+window.SettingsManager=SettingsManager; // make globally accessible
+export { SettingsManager };

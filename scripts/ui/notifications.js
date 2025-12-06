@@ -25,3 +25,4 @@ NotificationUtilities.sendNotification=function(title, content, icon) {
         }
     }, 500);
 }
+export { NotificationUtilities };
