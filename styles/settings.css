@@ -71,6 +71,13 @@ body.dark-mode .setting-text-description {
   margin-bottom: auto;
 }
 
+input.setting-value::-webkit-outer-spin-button,
+input.setting-value::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .settings-right-box {
   display: flex;
   flex-direction: row;
@@ -78,6 +85,8 @@ body.dark-mode .setting-text-description {
 
 input[type=number].setting-value{
   height:20px !important;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 select {
