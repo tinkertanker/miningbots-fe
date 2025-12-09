@@ -8,6 +8,7 @@ import { NotificationUtilities } from "/scripts/ui/notifications.js";
 import { LoadingBox } from "/scripts/ui/loadingbox.js";
 import { NavigationManager } from "/scripts/ui/toggle_navigation.js";
 import { ModeManager } from "/scripts/ui/hide_navbar.js";
+import { SocketUtilities } from "/scripts/socketnames.js";
 
 console.log("script loaded");
 
@@ -154,7 +155,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     socket = socket.trim();
                     try {
                         if(socket.length==0) throw new Error("Socket URL cannot be empty");
-                        url=SocketUtilities.breakUpSocket(socket);
+                        let url=SocketUtilities.breakUpSocket(socket);
                         hostname = url.hostname;
                         CookieUtilities.setCookie("custom_server",socket,"Fri, 31 Dec 9999 23:59:59 GMT",'/')
                         console.log("URL: " + socket);

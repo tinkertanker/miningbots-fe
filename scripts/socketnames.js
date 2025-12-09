@@ -18,7 +18,7 @@ let SocketUtilities = {
             url=`http://${url}`;
         if(url.endsWith(':'))
             throw new Error("Port missing after :");
-        brokenUpSocket=new URL(url);
+        let brokenUpSocket=new URL(url);
         if(brokenUpSocket.pathname!="/" || url.endsWith('/'))
             throw new Error("Path name not allowed");
         return brokenUpSocket;
@@ -33,3 +33,5 @@ SocketUtilities.isValidSocket=function(socket){
         return false;
     }
 }
+
+export { SocketUtilities };
