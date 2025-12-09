@@ -7,6 +7,7 @@ import { CookieUtilities } from "/scripts/cookies.js";
 import { NotificationUtilities } from "/scripts/ui/notifications.js";
 import { LoadingBox } from "/scripts/ui/loadingbox.js";
 import { NavigationManager } from "/scripts/ui/toggle_navigation.js";
+import { ModeManager } from "/scripts/ui/hide_navbar.js";
 
 console.log("script loaded");
 

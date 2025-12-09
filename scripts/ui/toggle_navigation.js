@@ -1,3 +1,5 @@
+import { ModeManager } from "/scripts/ui/hide_navbar.js";
+
 let navigation_link_ = document.getElementById('navbarDropdownMenuLink');
 let navigation_dropdown_ = bootstrap.Dropdown.getOrCreateInstance(navigation_link_);
 

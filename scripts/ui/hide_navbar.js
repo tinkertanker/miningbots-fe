@@ -5,10 +5,11 @@ function isFullscreen_() {
   return window.innerWidth>=screen.availWidth &&
           window.innerHeight>=screen.availHeight;
 }
-document.addEventListener("DOMContentLoaded",(_e)=>{
-    if(isFullscreen_()){
-      ModeManager.IS_PRODUCTION_MODE = true;
-      let navbar=document.getElementById("navbar");
-      navbar.classList.add("production-hidden");
-    }
-});
+
+if(isFullscreen_()){
+  ModeManager.IS_PRODUCTION_MODE = true;
+  let navbar=document.getElementById("navbar");
+  navbar.classList.add("production-hidden");
+}
+
+export { ModeManager };
