@@ -1,4 +1,4 @@
-function map(array,f) {
+export function map(array,f) {
     let output=[];
     array.forEach(element => {
         output.push(f(element));
@@ -6,19 +6,19 @@ function map(array,f) {
     return output;
 }
 
-function object_forEach(object,f){
+export function object_forEach(object,f){
     Object.keys(object).forEach((key)=>{
         f(key,object[key]);
     });
 }
 
-function indexed_foreach(array,f){
+export function indexed_foreach(array,f){
     for(let i=0;i<array.length;i++){
         f(i,array[i]);
     }
 }
 
-function object_map(object,f){
+export function object_map(object,f){
     let array=[];
     object_forEach(object,(key,value)=>{
         array.push(f(key,value));
@@ -26,7 +26,7 @@ function object_map(object,f){
     return array;
 }
 
-function object_map_values(object,f){
+export function object_map_values(object,f){
     let target=Object.assign({},object);
     object_forEach(object,(key,value)=>{
         target[key]=f(key,value);
@@ -35,13 +35,11 @@ function object_map_values(object,f){
 }
 
 // helper to create a subscope for intermediate values, without passing any arguments
-function in_private_scope(f){
+export function in_private_scope(f){
     return f();
 }
 
 // helper to create a subscope for intermediate values
-function with_value(value,f){
+export function with_value(value,f){
     return f(value);
 }
-
-export { map,object_forEach,indexed_foreach,object_map,object_map_values,in_private_scope,with_value };
