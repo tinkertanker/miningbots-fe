@@ -26,7 +26,7 @@ window.should_confirm_unload = function() {
     return Object.keys(playername_map).length > 0;
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
+function main(){
     console.log("script activated");
 
     CONFIG_ = SettingsManager.read_settings_cookie();
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         location.reload();
         // drawGame();
     });
-});
+}
 
 // Player Name fetch code 
 async function fetchPlayerNames(gameId, playerIds) {
@@ -939,3 +939,5 @@ function drawGame() {
             }}]);
         });
 }
+
+main();
