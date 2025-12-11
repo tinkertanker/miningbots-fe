@@ -28,11 +28,11 @@ DarkModeManager.setDarkMode=function(enabled,is_setup_call){
         document.body.classList.add("dark-mode");
     else 
         document.body.classList.remove("dark-mode");
+    DM_ENABLED_=enabled;
     if(!is_setup_call)
         darkModeSwitchListeners_.forEach((target)=>{
             target.dispatchEvent(new Event("dm."+(enabled?"enabled":"disabled")))
         });
-    DM_ENABLED_=enabled;
 }
 DarkModeManager.pairDarkMode=function (settings){
     DM_DEVICE_.addEventListener("change",(e)=>{

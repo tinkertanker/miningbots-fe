@@ -854,11 +854,14 @@ function drawGame() {
                 header.classList.add("sidebar-header");
                 header.textContent = `Player: ${player_id}${name_insert}`;
                 header.style.color = color;
+                //force rerender so the color on the map is in sync with the sidebar
                 DarkModeManager.addDarkModeListener(header,"dm.enabled",()=>{
                     header.style.color = inverted_colors[playerIndex];
+                    render();
                 });
                 DarkModeManager.addDarkModeListener(header,"dm.disabled",()=>{
                     header.style.color = colors[playerIndex];
+                    render();
                 });
                 sidebar.appendChild(header);
 
