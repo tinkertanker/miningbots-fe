@@ -1,6 +1,7 @@
 import { ModeManager } from "/scripts/ui/hide_navbar.js";
 
 let navigation_link_ = document.getElementById('navbarDropdownMenuLink');
+let dropdownMenu_ = document.getElementById('dropdown-menu');
 let navigation_dropdown_ = bootstrap.Dropdown.getOrCreateInstance(navigation_link_);
 
 let NavigationManager = {
@@ -32,5 +33,16 @@ document.addEventListener("keydown", (event) => {
        navbar.matches(":focus-within")
     )
       document.activeElement.blur(); // the active element must be in the navbar
+  }
+});
+
+window.matchMedia("(max-width: 992px)").addEventListener('change', e => {
+  if (!e.matches) { // switched to desktop mode
+    dropdownMenu_.style.marginTop = ""; // reset margin
+    dropdownMenu_.style.marginLeft = "";
+  } else {
+    let toggler=document.querySelector(".navbar-toggler").getBoundingClientRect();
+    dropdownMenu_.style.marginTop = toggler.height/2+"px";
+    dropdownMenu_.style.marginLeft = "-"+toggler.width+"px";
   }
 });
