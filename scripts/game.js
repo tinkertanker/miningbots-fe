@@ -200,7 +200,6 @@ function main(){
             case "fe_host":
                 hostname=location.hostname;
                 port=CONFIG_["localhost_port"];
-                custom_server="current";
                 set_protocols(servers["localhost"].require_security);
                 server_assigned();
                 break;
