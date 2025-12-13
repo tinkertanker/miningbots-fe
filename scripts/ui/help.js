@@ -18,6 +18,7 @@ let HelpManager = {
 
 function disableBootstrapTogglers_() {
     document.querySelectorAll('[data-bs-toggle]').forEach(el => {
+        bootstrap.Dropdown.getOrCreateInstance(el).hide(); // Hide any open dropdowns
         el.setAttribute('data-bs-toggle-backup', el.getAttribute('data-bs-toggle'));
         el.removeAttribute('data-bs-toggle');
     });
