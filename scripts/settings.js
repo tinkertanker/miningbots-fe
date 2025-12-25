@@ -46,6 +46,13 @@ let SettingsManager={
             default:514525537,
             range:"unbound",
             force_value:null
+        },
+        "show_player_names": {
+            type:"boolean",
+            title:"Show Player Names",
+            description:"Show player names next to their player ID in the game UI",
+            default:true,
+            force_value:null
         }
     }
 }

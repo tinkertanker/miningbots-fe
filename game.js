@@ -260,6 +260,7 @@ function drawGame(hostname, port) {
         //Map config taken from server data
         .then(async result => {
             let map_config = await result.map_config;
+            let gameId = await result.game_id;
             console.log('map_config:', map_config);
             // rendring information
 
@@ -453,7 +454,7 @@ function drawGame(hostname, port) {
             const botMap = new Map();
             const jobMap = new Map();
             const players = {};
-            const playerNames = {};
+            var playerNames = {};
 
             ws.onopen = function () {
                 console.log('Connected to WebSocket server');
@@ -629,7 +630,7 @@ function drawGame(hostname, port) {
 
             //Display a dialog box in the middle of the screen indicating the winner
             function showWinner(playerId) {
-                let text = `<h1>Player ${playerId} Won!</h1>`;
+                let text = `<h1>Player ${appendPlayerName(playerId,playerId)} Won!</h1>`;
                 DialogUtilities.showDialog(text,"We have a winner!");
             }
 
@@ -645,6 +646,14 @@ function drawGame(hostname, port) {
             }
             //shows a row for each player showing each bot and their data
             async function updateUI(player_id) {
+                function appendPlayerName(text, player_id) {
+                    if (playerNames.hasOwnProperty(player_id) && CONFIG_['show_player_names']) {
+                        return text + ` (${playerNames[player_id]})`;
+                    } else {
+                        return text;
+                    }
+                }
+
                 if (!players.hasOwnProperty(player_id) && Object.keys(players).length < 2) {
                     players[player_id] = Object.keys(players).length;
                 }
@@ -656,7 +665,7 @@ function drawGame(hostname, port) {
                 // Player names code: 
                 let playerInfo = await fetchPlayerNames(gameId, [player_id]);
                 console.log(playerInfo);
-                // var name = playerInfo[0].name;
+                playerNames[player_id] = playerInfo[0].name;
 
                 const playerIndex = players[player_id];
                 console.log('playerIndex:', playerIndex);
@@ -669,7 +678,7 @@ function drawGame(hostname, port) {
                 sidebar.innerHTML = ''; // Clear the existing sidebar content
 
                 const header = document.createElement('h4');
-                header.textContent = `Player: ${player_id}`;
+                header.textContent = appendPlayerName(`Player: ${player_id}`,player_id);
                 header.style.color = color;
                 header.style.fontSize = "0.8vw"; 
                 header.style.margin = "0vw";
