@@ -17,6 +17,7 @@
   <link href="styles.css" rel="stylesheet" />
   <script src="/scripts/utilities/svgimporter.js" type="module"></script>
   <script src="/scripts/ui/server_text.js"></script>
+  <script src="/scripts/debuginfod.js" type="module"></script>
 </head>
 
 <body>
@@ -40,6 +41,7 @@
         </li>
       </ul>
     </div>
+    <a role="button" title="Debug Information" onclick="DebugInfod.showDebugInfo();" id="debuginfo-button" helpon-available><svgfile aria-hidden="true" src="/assets/ui/debuginfo.svg"></svgfile></a>
     <a role="button" title="Settings" onclick="SettingsManager.open_popup();" id="settings-button" helpon-available><svgfile aria-hidden="true" src="/assets/ui/settings.svg"></svgfile></a>
   </nav>
 
