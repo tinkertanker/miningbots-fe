@@ -3,6 +3,7 @@ import KeyboardUtilities from "/scripts/utilities/keyboard_utilities.js";
 import DialogUtilities from "/scripts/ui/webdialog.js";
 import SVGImporter from "/scripts/utilities/svgimporter.js";
 import JSONDownloader from "/scripts/utilities/json_download.js";
+import DebugInfod from "/scripts/debuginfod.js"
 
 let SettingsManager={
     settings: {
@@ -291,6 +292,9 @@ SettingsManager.initialize_main=function(){
         window.addEventListener("keydown", (event) => {
             if (KeyboardUtilities.isMnemonicPressed(event,true,'c')) {
                 SettingsManager.open_popup(); // weird Firefox browser error: popup blocker when triggered by non-mouse event (e.g. keyboard here)
+                event.preventDefault();
+            } else if (KeyboardUtilities.isMnemonicPressed(event,false,'d')){
+                DebugInfod.showDebugInfo();
                 event.preventDefault();
             }
         });

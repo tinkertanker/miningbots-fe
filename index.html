@@ -70,6 +70,7 @@
       element.setAttribute("aria-describedby", describerId);
     }
     setMnemonic(document.getElementById("settings-button"),true,'C');
+    setMnemonic(document.getElementById("debuginfo-button"),false,'D')
   </script>
   <script type="module">
     import SettingsManager from "/scripts/settings.js";
@@ -78,6 +79,8 @@
   <div id="accessibility-labels">
     <span id="settings-button-label">Settings</span>
     <span id="settings-button-description"></span>
+    <span id="debuginfo-button-label">Debug Information</span>
+    <span id="debuginfo-button-description"></span>
   </div>
 </body>
 
