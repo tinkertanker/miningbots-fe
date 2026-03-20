@@ -56,7 +56,7 @@
           title="Enter Competition Mode";
           icon="fullscreen";
         }
-        document.getElementById("fullscreen-button").title=`${title} (${KeyboardUtilities.joinMnemonic(false,'F')})`;
+        document.getElementById("fullscreen-button").title=`${title} (${KeyboardUtilities.joinMnemonic(false,'F')})`; //reappend mnemonic so it doesn't disappear when fullscreen changes
         let svgicon=document.createElement("svgfile");
         svgicon.ariaHidden=true;
         svgicon.id="fullscreen-icon";
