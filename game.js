@@ -150,9 +150,9 @@ var servers = in_private_scope(()=>{
 let selectedServerUrl = null;
 
 if(server && servers[server]){
-    setServerName(servers[server].name);
     const isSpecial=servers[server].hasOwnProperty("type");
     if(isSpecial){
+        setServerName(servers[server].name);
         switch(servers[server].type){
             case "custom":
                 function empty_handler() {
@@ -208,6 +208,7 @@ if(server && servers[server]){
             port = (servers[hostname].require_security || CONFIG_['require_security']) ? '443' : '80';
         }
         set_protocols(servers[server].require_security);
+        setServerName(servers[hostname].name);
         main();
     }
 }
@@ -311,6 +312,7 @@ function drawGame(hostname, port) {
 
             if (response.ok) {
                 console.log('Second fetch response:', response);
+                LoadingBox.setStatus(LoadingBox.Status.LOADING_COMPLETED);
                 return { map_config: response.json(), game_id: result.game_id };
             } else {
                 throw new Error(response.statusText);
@@ -364,7 +366,7 @@ function drawGame(hostname, port) {
                 // Update canvas dimensions
                 canvas.width = COLS * GRID_SIZE;
                 canvas.height = ROWS * GRID_SIZE;
-                
+
                 updateSidebarDimensions();
                 if(!lazy_render) render();
             }
@@ -525,42 +527,49 @@ function drawGame(hostname, port) {
             ws.onmessage = function (msg) {
                 console.log('before parse:', msg);
                 try {
-                    const data = JSON.parse(msg.data);
-                    console.log('after parse:', data);
-                    switch (data.update_type) {
-                        case 'kTickUpdate':
-                            console.log('tick update: ', data)
-                            if (Array.isArray(data.bot_updates)) {
-                                data.bot_updates.forEach(botUpdate => {
-                                    console.log('botUpdate: ', botUpdate);
-                                    updateBot(botUpdate, data.player_id);
-                                })
-                            }
-                            if (Array.isArray(data.job_updates)) {
-                                data.job_updates.forEach(jobUpdate => {
-                                    console.log('jobUpdate: ', jobUpdate);
-                                    updateJob(jobUpdate);
-                                })
-                            }
-                            if (Array.isArray(data.land_updates)) {
-                                data.land_updates.forEach(landUpdate => {
-                                    console.log('landUpdate: ', landUpdate);
-                                    updateLand(landUpdate);
-                                })
-                            }
-                            updateUI(data.player_id);
-                            render();
-                            break;
-                        case 'kEndInWin':
-                            console.log(`game ended player id ${data.player_id} won`);
-                            showWinner(data.player_id);
-                            break;
-                        case 'kEndInDraw':
-                            console.log('game ended in draw');
-                            break;
-                        default:
-                            console.log(data.UpdateType);
-                            break;
+                    function parse_callback(json_string){
+                        const data = JSON.parse(json_string);
+                        console.log('after parse:', data);
+                        switch (data.update_type) {
+                            case 'kTickUpdate':
+                                console.log('tick update: ', data)
+                                if (Array.isArray(data.bot_updates)) {
+                                    data.bot_updates.forEach(botUpdate => {
+                                        console.log('botUpdate: ', botUpdate);
+                                        updateBot(botUpdate, data.player_id);
+                                    })
+                                }
+                                if (Array.isArray(data.job_updates)) {
+                                    data.job_updates.forEach(jobUpdate => {
+                                        console.log('jobUpdate: ', jobUpdate);
+                                        updateJob(jobUpdate);
+                                    })
+                                }
+                                if (Array.isArray(data.land_updates)) {
+                                    data.land_updates.forEach(landUpdate => {
+                                        console.log('landUpdate: ', landUpdate);
+                                        updateLand(landUpdate);
+                                    })
+                                }
+                                updateUI(data.player_id);
+                                render();
+                                break;
+                            case 'kEndInWin':
+                                console.log(`game ended player id ${data.player_id} won`);
+                                showWinner(data.player_id);
+                                break;
+                            case 'kEndInDraw':
+                                console.log('game ended in draw');
+                                break;
+                            default:
+                                console.log(data.UpdateType);
+                                break;
+                        }
+                    }
+                    if (msg.data instanceof Blob) {
+                        msg.data.text().then(text => parse_callback(text));
+                    } else if (typeof msg.data === 'string') {
+                        parse_callback(msg.data);
                     }
                 } catch (error) {
                     console.error('Error parsing message:', error);
@@ -799,9 +808,7 @@ function drawGame(hostname, port) {
 function main(){
     LoadingBox.setStatus(LoadingBox.Status.LOADING);
     console.log(servers["localhost"].name);
-    // special servers set their name somewhere else
     if (hostname !== null) {
-        if(!servers[server].hasOwnProperty("type"))setServerName(servers[hostname].name);
         drawGame(hostname, port);
     }
 }
