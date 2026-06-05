@@ -578,6 +578,18 @@ function drawGame(hostname, port) {
             //Possibly add more colours for >2 players too
             const colors = ['blue', 'red', 'green', 'yellow', 'purple', 'orange', 'pink'];
 
+            function ensurePlayer(playerId) {
+                if (!players.hasOwnProperty(playerId)) {
+                    players[playerId] = Object.keys(players).length;
+                    let sidebar=document.createElement("div");
+                    sidebar.classList.add("sidebar");
+                    sidebar.id="bot-sidebar-"+(Object.keys(players).length);
+                    document.getElementById("bot-info-megacontainer").appendChild(sidebar);
+                    sidebars.push(sidebar);
+                }
+                return players[playerId];
+            }
+
             function getPlayerLabel(playerId) {
                 return playerNames[playerId] || `Player ${playerId}`;
             }
@@ -707,15 +719,7 @@ function drawGame(hostname, port) {
             //Updates the bot's position and its job?
             function updateBot(botUpdate, playerId) {
                 const effectivePlayerId = botUpdate.player_id ?? playerId;
-                if (!players.hasOwnProperty(effectivePlayerId)) {
-                    players[effectivePlayerId] = Object.keys(players).length;
-                    let sidebar=document.createElement("div");
-                    sidebar.classList.add("sidebar");
-                    sidebar.id="bot-sidebar-"+(Object.keys(players).length);
-                    document.getElementById("bot-info-megacontainer").appendChild(sidebar);
-                    sidebars.push(sidebar);
-                }
-                const playerIndex = players[effectivePlayerId];
+                const playerIndex = ensurePlayer(effectivePlayerId);
 
                 const { id, position, variant, current_energy, current_job_id, cargo } = botUpdate;
                 if (botMap.has(id)) {
@@ -815,7 +819,8 @@ function drawGame(hostname, port) {
             }
 
             //Display a dialog box in the middle of the screen indicating the winner
-            function showWinner(playerId) {
+            async function showWinner(playerId) {
+                await ensurePlayerName(playerId);
                 let text = `<h1>${escapeHTML(getPlayerLabel(playerId))} Won!</h1>`;
                 DialogUtilities.showDialog(text,"We have a winner!");
             }
@@ -832,9 +837,7 @@ function drawGame(hostname, port) {
             }
             //shows a row for each player showing each bot and their data
             async function updateUI(player_id) {
-                if (!players.hasOwnProperty(player_id)) {
-                    players[player_id] = Object.keys(players).length;
-                }
+                const playerIndex = ensurePlayer(player_id);
 
                 console.log('Players object:', players);
                 console.log('Current player ID:', player_id);
@@ -842,7 +845,6 @@ function drawGame(hostname, port) {
 
                 await ensurePlayerName(player_id);
 
-                const playerIndex = players[player_id];
                 console.log('playerIndex:', playerIndex);
 
                 const sidebar = sidebars[playerIndex];
@@ -854,11 +856,10 @@ function drawGame(hostname, port) {
 
                 const header = document.createElement('div');
                 header.classList.add('player-header');
-                header.style.borderColor = color;
+                header.style.color = color;
 
                 const playerName = document.createElement('h4');
                 playerName.textContent = getPlayerLabel(player_id);
-                playerName.style.color = color;
                 header.appendChild(playerName);
 
                 const playerIdText = document.createElement('span');
