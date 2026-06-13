@@ -92,7 +92,7 @@ function write_default_settings_(complete_handler) {
 
 SettingsManager.export_settings=function() {
     let json_settings=dump_settings_();
-    JSONDownloader.exportJSON(JSON.stringify(json_setings),"settings.json");
+    JSONDownloader.exportJSON(JSON.stringify(json_settings),"settings.json");
     alert("Settings exported to settings.json");
 }
 
