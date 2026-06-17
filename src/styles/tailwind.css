@@ -94,7 +94,7 @@
   }
 
   #nav-peek-triggerbox:hover + .app-nav {
-    @apply !block;
+    @apply !flex;
   }
 
   .app-nav-toggle {
